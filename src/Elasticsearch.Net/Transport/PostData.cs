@@ -26,7 +26,9 @@ namespace Elasticsearch.Net
 	public abstract class PostData
 	{
 		protected const int BufferSize = 81920;
-		protected static readonly byte[] NewLineByteArray = { (byte)'\n' };
+		protected const byte NewLineByte = (byte)'\n';
+		// TODO: Remove in NEST 7.x
+		protected static readonly byte[] NewLineByteArray = { NewLineByte };
 		protected const string NewLineString = "\n";
 
 		public bool? DisableDirectStreaming { get; set; }
@@ -62,88 +64,103 @@ namespace Elasticsearch.Net
 
 		public override void Write(Stream writableStream, IConnectionConfigurationValues settings)
 		{
-			MemoryStream ms = null;
+			var disableDirectStreaming = this.DisableDirectStreaming ?? settings.DisableDirectStreaming;
 			switch (Type)
 			{
 				case PostType.ByteArray:
-					ms = settings.MemoryStreamFactory.Create(WrittenBytes);
+					writableStream.Write(WrittenBytes, 0, WrittenBytes.Length);
 					break;
 				case PostType.LiteralString:
-					ms = !string.IsNullOrEmpty(_literalString)
-						? settings.MemoryStreamFactory.Create(_literalString?.Utf8Bytes())
-						: null;
+					if (_literalString != null)
+					{
+						var bytes = _literalString.Utf8Bytes();
+						writableStream.Write(bytes, 0, bytes.Length);
+						WrittenBytes = bytes;
+					}
 					break;
 				case PostType.EnumerableOfString:
-					ms = _enumurableOfStrings.HasAny()
-						? settings.MemoryStreamFactory.Create((string.Join(NewLineString, _enumurableOfStrings) + NewLineString).Utf8Bytes())
-						: null;
+					if (_enumurableOfStrings != null)
+					{
+						var bytes = (string.Join(NewLineString, _enumurableOfStrings) + NewLineString).Utf8Bytes();
+						writableStream.Write(bytes, 0, bytes.Length);
+						WrittenBytes = bytes;
+					}
 					break;
 				case PostType.EnumerableOfObject:
-					if (!_enumerableOfObject.HasAny()) return;
-					Stream stream = null;
-					if (this.DisableDirectStreaming ?? settings.DisableDirectStreaming)
+					if (_enumerableOfObject != null)
 					{
-						ms = settings.MemoryStreamFactory.Create();
-						stream = ms;
-					}
-					else stream = writableStream;
-					foreach (var o in _enumerableOfObject)
-					{
-						settings.RequestResponseSerializer.Serialize(o, stream, SerializationFormatting.None);
-						stream.Write(NewLineByteArray, 0, 1);
+						MemoryStream ms = null;
+
+						if (disableDirectStreaming)
+							ms = settings.MemoryStreamFactory.Create();
+
+						var stream = ms ?? writableStream;
+
+						foreach (var o in _enumerableOfObject)
+						{
+							settings.RequestResponseSerializer.Serialize(o, stream, SerializationFormatting.None);
+							stream.WriteByte(NewLineByte);
+						}
+
+						if (ms != null)
+						{
+							ms.Position = 0;
+							ms.CopyTo(writableStream, BufferSize);
+							WrittenBytes = ms.ToArray();
+						}
 					}
 					break;
 			}
-			if (ms != null)
-			{
-				ms.Position = 0;
-				ms.CopyTo(writableStream, BufferSize);
-			}
-			if (this.Type != 0)
-				this.WrittenBytes = ms?.ToArray();
 		}
 
 		public override async Task WriteAsync(Stream writableStream, IConnectionConfigurationValues settings, CancellationToken cancellationToken)
 		{
-			MemoryStream ms = null;
+			var disableDirectStreaming = this.DisableDirectStreaming ?? settings.DisableDirectStreaming;
 			switch (Type)
 			{
 				case PostType.ByteArray:
-					ms = settings.MemoryStreamFactory.Create(WrittenBytes);
+					await writableStream.WriteAsync(WrittenBytes, 0, WrittenBytes.Length, cancellationToken).ConfigureAwait(false);
 					break;
 				case PostType.LiteralString:
-					ms = !string.IsNullOrEmpty(_literalString)
-						? settings.MemoryStreamFactory.Create(_literalString.Utf8Bytes())
-						: null;
+					if (_literalString != null)
+					{
+						var bytes = _literalString.Utf8Bytes();
+						await writableStream.WriteAsync(bytes, 0, bytes.Length, cancellationToken).ConfigureAwait(false);
+						WrittenBytes = bytes;
+					}
 					break;
 				case PostType.EnumerableOfString:
-					ms = _enumurableOfStrings.HasAny()
-						? settings.MemoryStreamFactory.Create((string.Join(NewLineString, _enumurableOfStrings) + NewLineString).Utf8Bytes())
-						: null;
+					if (_enumurableOfStrings != null)
+					{
+						var bytes = (string.Join(NewLineString, _enumurableOfStrings) + NewLineString).Utf8Bytes();
+						await writableStream.WriteAsync(bytes, 0, bytes.Length, cancellationToken).ConfigureAwait(false);
+						WrittenBytes = bytes;
+					}
 					break;
 				case PostType.EnumerableOfObject:
-					if (!_enumerableOfObject.HasAny()) return;
-					Stream stream = null;
-					if (this.DisableDirectStreaming ?? settings.DisableDirectStreaming)
+					if (_enumerableOfObject != null)
 					{
-						ms = settings.MemoryStreamFactory.Create();
-						stream = ms;
-					}
-					else stream = writableStream;
-					foreach (var o in _enumerableOfObject)
-					{
-						await settings.RequestResponseSerializer.SerializeAsync(o, stream, SerializationFormatting.None, cancellationToken).ConfigureAwait(false);
-						await stream.WriteAsync(NewLineByteArray, 0, 1, cancellationToken).ConfigureAwait(false);
+						MemoryStream ms = null;
+						if (disableDirectStreaming)
+							ms = settings.MemoryStreamFactory.Create();
+
+						var stream = ms ?? writableStream;
+
+						foreach (var o in _enumerableOfObject)
+						{
+							await settings.RequestResponseSerializer.SerializeAsync(o, stream, SerializationFormatting.None, cancellationToken).ConfigureAwait(false);
+							stream.WriteByte(NewLineByte);
+						}
+
+						if (ms != null)
+						{
+							ms.Position = 0;
+							await ms.CopyToAsync(writableStream, BufferSize, cancellationToken).ConfigureAwait(false);
+							WrittenBytes = ms.ToArray();
+						}
 					}
 					break;
 			}
-			if (ms != null)
-			{
-				ms.Position = 0;
-				await ms.CopyToAsync(writableStream, BufferSize, cancellationToken).ConfigureAwait(false);
-			}
-			if (this.Type != 0)
-				this.WrittenBytes = ms?.ToArray();
 		}
 	}
 }

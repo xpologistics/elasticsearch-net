@@ -17,42 +17,44 @@ namespace Elasticsearch.Net
 
 		public override void Write(Stream writableStream, IConnectionConfigurationValues settings)
 		{
-			var indent = settings.PrettyJson ? SerializationFormatting.Indented : SerializationFormatting.None;
-			var stream = writableStream;
-			MemoryStream ms = null;
-			if (this.DisableDirectStreaming ?? settings.DisableDirectStreaming)
-			{
-				ms = settings.MemoryStreamFactory.Create();
-				stream = ms;
-			}
+			var indent = settings.PrettyJson
+				? SerializationFormatting.Indented
+				: SerializationFormatting.None;
+
+			var ms = (this.DisableDirectStreaming ?? settings.DisableDirectStreaming)
+				? settings.MemoryStreamFactory.Create()
+				: null;
+
+			var stream = ms ?? writableStream;
 			settings.RequestResponseSerializer.Serialize(this._serializable, stream, indent);
+
 			if (ms != null)
 			{
 				ms.Position = 0;
 				ms.CopyTo(writableStream, BufferSize);
+				this.WrittenBytes = ms.ToArray();
 			}
-			if (this.Type != 0)
-				this.WrittenBytes = ms?.ToArray();
 		}
 
 		public override async Task WriteAsync(Stream writableStream, IConnectionConfigurationValues settings, CancellationToken cancellationToken)
 		{
-			var indent = settings.PrettyJson ? SerializationFormatting.Indented : SerializationFormatting.None;
-			var stream = writableStream;
-			MemoryStream ms = null;
-			if (this.DisableDirectStreaming ?? settings.DisableDirectStreaming)
-			{
-				ms = settings.MemoryStreamFactory.Create();
-				stream = ms;
-			}
+			var indent = settings.PrettyJson
+				? SerializationFormatting.Indented
+				: SerializationFormatting.None;
+
+			var ms = (this.DisableDirectStreaming ?? settings.DisableDirectStreaming)
+				? settings.MemoryStreamFactory.Create()
+				: null;
+
+			var stream = ms ?? writableStream;
 			await settings.RequestResponseSerializer.SerializeAsync(this._serializable, stream, indent, cancellationToken).ConfigureAwait(false);
+
 			if (ms != null)
 			{
 				ms.Position = 0;
 				await ms.CopyToAsync(writableStream, BufferSize, cancellationToken).ConfigureAwait(false);
+				this.WrittenBytes = ms.ToArray();
 			}
-			if (this.Type != 0)
-				this.WrittenBytes = ms?.ToArray();
 		}
 	}
 }
