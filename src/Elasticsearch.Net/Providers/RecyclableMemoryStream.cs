@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace Elasticsearch.Net
@@ -128,6 +129,7 @@ namespace Elasticsearch.Net
 		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
 		internal RecyclableMemoryStreamManager MemoryManager
 		{
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get
 			{
 				this.CheckDisposed();
@@ -738,6 +740,7 @@ namespace Elasticsearch.Net
 		#region Helper Methods
 		private bool Disposed => Interlocked.Read(ref this._disposedState) != 0;
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void CheckDisposed()
 		{
 			if (this.Disposed)
@@ -746,6 +749,7 @@ namespace Elasticsearch.Net
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private int InternalRead(byte[] buffer, int offset, int count, int fromPosition)
 		{
 			if (this.length - fromPosition <= 0)
@@ -787,6 +791,7 @@ namespace Elasticsearch.Net
 			public int Block;
 			public int Offset;
 
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public BlockAndOffset(int block, int offset)
 			{
 				this.Block = block;
@@ -794,12 +799,14 @@ namespace Elasticsearch.Net
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private BlockAndOffset GetBlockAndRelativeOffset(int offset)
 		{
 			var blockSize = this._memoryManager.BlockSize;
 			return new BlockAndOffset(offset / blockSize, offset % blockSize);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void EnsureCapacity(int newCapacity)
 		{
 			if (newCapacity > this._memoryManager.MaximumStreamCapacity && this._memoryManager.MaximumStreamCapacity > 0)

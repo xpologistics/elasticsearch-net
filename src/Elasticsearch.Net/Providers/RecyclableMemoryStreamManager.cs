@@ -28,6 +28,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace Elasticsearch.Net
@@ -231,6 +232,7 @@ namespace Elasticsearch.Net
 		/// Removes and returns a single block from the pool.
 		/// </summary>
 		/// <returns>A byte[] array</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal byte[] GetBlock()
 		{
 			if (!this.smallPool.TryPop(out var block))
@@ -255,6 +257,7 @@ namespace Elasticsearch.Net
 		/// <param name="requiredSize">The minimum length of the buffer</param>
 		/// <param name="tag">The tag of the stream returning this buffer, for logging if necessary.</param>
 		/// <returns>A buffer of at least the required size.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal byte[] GetLargeBuffer(int requiredSize, string tag)
 		{
 			requiredSize = this.RoundToLargeBufferMultiple(requiredSize);
@@ -290,11 +293,13 @@ namespace Elasticsearch.Net
 			return buffer;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private int RoundToLargeBufferMultiple(int requiredSize)
 		{
 			return ((requiredSize + this.LargeBufferMultiple - 1) / this.LargeBufferMultiple) * this.LargeBufferMultiple;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private bool IsLargeBufferMultiple(int value)
 		{
 			return (value != 0) && (value % this.LargeBufferMultiple) == 0;
@@ -307,6 +312,7 @@ namespace Elasticsearch.Net
 		/// <param name="tag">The tag of the stream returning this buffer, for logging if necessary.</param>
 		/// <exception cref="ArgumentNullException">buffer is null</exception>
 		/// <exception cref="ArgumentException">buffer.Length is not a multiple of LargeBufferMultiple (it did not originate from this pool)</exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal void ReturnLargeBuffer(byte[] buffer, string tag)
 		{
 			if (buffer == null)
@@ -349,6 +355,7 @@ namespace Elasticsearch.Net
 		/// <param name="tag">The tag of the stream returning these blocks, for logging if necessary.</param>
 		/// <exception cref="ArgumentNullException">blocks is null</exception>
 		/// <exception cref="ArgumentException">blocks contains buffers that are the wrong size (or null) for this memory manager</exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal void ReturnBlocks(ICollection<byte[]> blocks, string tag)
 		{
 			if (blocks == null)
@@ -386,6 +393,7 @@ namespace Elasticsearch.Net
 		/// Retrieve a new MemoryStream object with no tag and a default initial capacity.
 		/// </summary>
 		/// <returns>A MemoryStream.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public MemoryStream GetStream()
 		{
 			return new RecyclableMemoryStream(this);
@@ -396,6 +404,7 @@ namespace Elasticsearch.Net
 		/// </summary>
 		/// <param name="tag">A tag which can be used to track the source of the stream.</param>
 		/// <returns>A MemoryStream.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public MemoryStream GetStream(string tag)
 		{
 			return new RecyclableMemoryStream(this, tag);
@@ -407,6 +416,7 @@ namespace Elasticsearch.Net
 		/// <param name="tag">A tag which can be used to track the source of the stream.</param>
 		/// <param name="requiredSize">The minimum desired capacity for the stream.</param>
 		/// <returns>A MemoryStream.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public MemoryStream GetStream(string tag, int requiredSize)
 		{
 			return new RecyclableMemoryStream(this, tag, requiredSize);
@@ -424,6 +434,7 @@ namespace Elasticsearch.Net
 		/// <param name="requiredSize">The minimum desired capacity for the stream.</param>
 		/// <param name="asContiguousBuffer">Whether to attempt to use a single contiguous buffer.</param>
 		/// <returns>A MemoryStream.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public MemoryStream GetStream(string tag, int requiredSize, bool asContiguousBuffer)
 		{
 			if (!asContiguousBuffer || requiredSize <= this.BlockSize)
@@ -444,6 +455,7 @@ namespace Elasticsearch.Net
 		/// <param name="offset">The offset from the start of the buffer to copy from.</param>
 		/// <param name="count">The number of bytes to copy from the buffer.</param>
 		/// <returns>A MemoryStream.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		[SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
 		public MemoryStream GetStream(string tag, byte[] buffer, int offset, int count)
 		{

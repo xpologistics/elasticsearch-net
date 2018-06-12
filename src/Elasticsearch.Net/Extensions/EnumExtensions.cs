@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace Elasticsearch.Net
 {
 	public static class EnumExtensions
 	{
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetStringValue(this HttpMethod enumValue)
 		{
 			switch (enumValue)

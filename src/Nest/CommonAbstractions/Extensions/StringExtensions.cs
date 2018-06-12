@@ -26,6 +26,7 @@ namespace Nest
 
 			return queryParameters;
 		}
+
 		internal static string ToCamelCase(this string s)
 		{
 			if (string.IsNullOrEmpty(s))
@@ -40,7 +41,5 @@ namespace Nest
 
 			return camelCase;
 		}
-
-
 	}
 }

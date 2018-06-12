@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Elasticsearch.Net
@@ -9,31 +10,20 @@ namespace Elasticsearch.Net
 	internal static class Extensions
 	{
 #if !DOTNETCORE
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static string Utf8String(this byte[] bytes) => bytes == null ? null : Encoding.UTF8.GetString(bytes);
 #else
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static string Utf8String(this byte[] bytes) => bytes == null ? null : Encoding.UTF8.GetString(bytes, 0, bytes.Length);
 #endif
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static byte[] Utf8Bytes(this string s)
 		{
 			return s.IsNullOrEmpty() ? null : Encoding.UTF8.GetBytes(s);
 		}
 
-		internal static string ToCamelCase(this string s)
-		{
-			if (string.IsNullOrEmpty(s))
-				return s;
-
-			if (!char.IsUpper(s[0]))
-				return s;
-
-			string camelCase = char.ToLowerInvariant(s[0]).ToString();
-			if (s.Length > 1)
-				camelCase += s.Substring(1);
-
-			return camelCase;
-		}
-
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static string NotNull(this string @object, string parameterName)
 		{
 			@object.ThrowIfNull(parameterName);
@@ -42,18 +32,22 @@ namespace Elasticsearch.Net
 			return @object;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static string NotNull(this Enum @object, string parameterName)
 		{
 			@object.ThrowIfNull(parameterName);
 			return @object.GetStringValue();
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void ThrowIfEmpty<T>(this IEnumerable<T> @object, string parameterName)
 		{
 			@object.ThrowIfNull(parameterName);
 			if (!@object.Any())
 				throw new ArgumentException("Argument can not be an empty collection", parameterName);
 		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static bool HasAny<T>(this IEnumerable<T> list)
 		{
 			return list != null && list.Any();
@@ -66,11 +60,14 @@ namespace Elasticsearch.Net
 			return es.Length == 1 ? es[0] : new AggregateException(es);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void ThrowIfNull<T>(this T value, string name)
 		{
 			if (value == null)
 				throw new ArgumentNullException(name);
 		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static bool IsNullOrEmpty(this string value)
 		{
 			return string.IsNullOrEmpty(value);

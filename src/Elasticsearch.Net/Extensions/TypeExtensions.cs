@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Elasticsearch.Net
 {
@@ -39,6 +40,8 @@ namespace Elasticsearch.Net
 			CachedActivators.TryAdd(key, activator);
 			return activator(args);
 		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static bool IsValueType(this Type type)
 		{
 #if DOTNETCORE
