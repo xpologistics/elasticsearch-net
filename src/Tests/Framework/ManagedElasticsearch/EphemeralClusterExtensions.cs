@@ -22,28 +22,33 @@ namespace Tests.Framework.ManagedElasticsearch
 			where TConfig : EphemeralClusterConfiguration
 		{
 			createSettings = createSettings ?? (s => s);
-			return cluster.GetOrAddClient(c =>
+			return cluster.GetOrAddClient(c => CreateClient((IEphemeralCluster<TConfig>)c, createSettings, createPool));
+		}
+
+		public static ElasticClient CreateClient<TConfig>(
+			this IEphemeralCluster<TConfig> cluster,
+			Func<ConnectionSettings, ConnectionSettings> createSettings = null,
+			Func<ICollection<Uri>, IConnectionPool> createPool = null)
+			where TConfig : EphemeralClusterConfiguration
+		{
+			var host = (RunningFiddler) ? "ipv4.fiddler" : "localhost";
+			createPool = createPool ?? (uris => new StaticConnectionPool(uris));
+			var connectionPool = createPool(cluster.NodesUris(host));
+			var connection = TestClient.Configuration.RunIntegrationTests ? TestClient.CreateLiveConnection() : new InMemoryConnection();
+			var settings = TestClient.CreateSettings(createSettings, connection, connectionPool);
+
+			var current = (IConnectionConfigurationValues) settings;
+			var notAlreadyAuthenticated = current.BasicAuthenticationCredentials == null && current.ClientCertificates == null;
+			var noCertValidation = current.ServerCertificateValidationCallback == null;
+
+			if (cluster.ClusterConfiguration.EnableSecurity && notAlreadyAuthenticated)
+				settings = settings.BasicAuthentication(ClusterAuthentication.Admin.Username, ClusterAuthentication.Admin.Password);
+			if (cluster.ClusterConfiguration.EnableSsl && noCertValidation)
 			{
-				var host = (RunningFiddler) ? "ipv4.fiddler" : "localhost";
-				createPool = createPool ?? (uris => new StaticConnectionPool(uris));
-				var connectionPool = createPool(c.NodesUris(host));
-				var connection = TestClient.Configuration.RunIntegrationTests ? TestClient.CreateLiveConnection() : new InMemoryConnection();
-				var settings = TestClient.CreateSettings(createSettings, connection, connectionPool);
-
-				var current = (IConnectionConfigurationValues) settings;
-				var notAlreadyAuthenticated = current.BasicAuthenticationCredentials == null && current.ClientCertificates == null;
-				var noCertValidation = current.ServerCertificateValidationCallback == null;
-
-				if (cluster.ClusterConfiguration.EnableSecurity && notAlreadyAuthenticated)
-					settings = settings.BasicAuthentication(ClusterAuthentication.Admin.Username, ClusterAuthentication.Admin.Password);
-				if (cluster.ClusterConfiguration.EnableSsl && noCertValidation)
-				{
-					var ca = new X509Certificate2(cluster.ClusterConfiguration.FileSystem.CaCertificate);
-					settings = settings.ServerCertificateValidationCallback(CertificateValidations.AllowAll);
-				}
-				var client = new ElasticClient(settings);
-				return client;
-			});
+				settings = settings.ServerCertificateValidationCallback(CertificateValidations.AllowAll);
+			}
+			var client = new ElasticClient(settings);
+			return client;
 		}
 	}
 }

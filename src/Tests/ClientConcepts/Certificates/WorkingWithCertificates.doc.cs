@@ -10,6 +10,7 @@ using FluentAssertions;
 using Nest;
 using Tests.Framework;
 using Tests.Framework.Integration;
+using static Tests.Framework.ManagedElasticsearch.EphemeralClusterExtensions;
 
 namespace Tests.ClientConcepts.Certificates
 {
@@ -143,6 +144,12 @@ namespace Tests.ClientConcepts.Certificates
 		 */
 		public class BadCertgenCaCluster : SslAndKpiXPackCluster
 		{
+			// Clients are cached per IEphemeralCluster type. Since this shares a type hierarchy
+			// of IEphemeralCluster<SslAndKpiClusterConfiguration> with CertgenCaCluster, create
+			// a new client to ensure ServerCertificateValidationCallback below is used.
+			// hide
+			public override IElasticClient Client => this.CreateClient(c => Authenticate(ConnectionSettings(c)));
+
 			protected override ConnectionSettings ConnectionSettings(ConnectionSettings s) => s
 				.ServerCertificateValidationCallback(
 					CertificateValidations.AuthorityPartOfChain(new X509Certificate(this.ClusterConfiguration.FileSystem.UnusedCaCertificate))
