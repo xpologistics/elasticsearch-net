@@ -1,56 +1,68 @@
-Feature: First Usage
+Feature: First usage
 
-#DefaultMaxIsNumberOfNodes
+	By default, a client will retry a request as many times as there
+	are known nodes in the cluster.
 	
-	Given I have a cluster with nodes: A to K
-	and nodes A to J do not respond to client calls
-	and node K does respond to client calls
-	and pings are disabled
-	When I use the client
-	Then nodes A to J should be marked as dead
-	and node K should be marked as alive
-	
-#FixedMaximumNumberOfRetries
-	
- 	Given I have a cluster with nodes: A to K
- 	and nodes A to J do not respond to client calls
- 	and node K does respond to client calls
- 	and pings are disabled
-	and retries are attempted a maximum of 3 times
- 	When I use the client
- 	Then nodes A to D should be marked as dead
- 	and client should fail with maximum retries reached
-	
-#RespectsOverallRequestTimeout
+	Retries still respect the request timeout; if you have a 100 node cluster
+	and a request timeout of 20 seconds, the client will retry as many
+	times as it can before giving up at the request timeout of 20 seconds.
 
-	Given I have a cluster with nodes: A to K
-	and nodes A to J do not respond to client calls after 10 seconds
-	and node K does respond to client calls
-	and pings are disabled
-	and request timeouts are set to 20 seconds
-	When I use the client
-	Then nodes A to B should be marked as dead
-	and client should fail with maximum timeout reached
-
-#RespectsMaxRetryTimeoutOverRequestTimeout
-
-	Given I have a cluster with nodes: A to K
-	and all nodes do not respond to client calls after 3 seconds
-	and pings are disabled
-	and request timeouts are set to 2 seconds
-	and maximum retry timeout is set to 10 seconds
-	When I use the client
-	Then nodes A to E should be marked as dead
-	and client should fail with maximum timeout reached
-	
- #RetriesAreLimitedByNodesInPool
-
-	Given I have a cluster with nodes: A, B
-	and all nodes do not respond to client calls after 3 seconds
-	and pings are disabled
-	and request timeouts are set to 2 seconds
-	and maximum retry timeout is set to 10 seconds
-	When I use the client
-	Then nodes A, B should be marked as dead
-	and client should fail with maximum retries reached and all nodes failed
+	Scenario: Retry for every known node in the cluster, the client will
+	          automatically fail over to each node for a single request.
 		
+		Given I have a cluster with 10 nodes
+		And nodes 1 to 9 respond with a Bad response
+		And node 10 responds with a Healthy response
+		And pings are disabled
+		When I make a request with the client
+		Then nodes 1 to 9 should be marked as dead
+		And node 10 should be marked as alive
+	
+	Scenario: A maxiumum number of retries can be specified to limit the
+			  number of nodes that can be failed over.
+			  The number of requests is Initial attempt + Number of retries
+
+		Given I have a cluster with 10 nodes
+		And nodes 1 to 9 respond with a Bad response
+		And node 10 responds with a Healthy response
+		And pings are disabled
+		And maximum retries is 3 times
+		When I make a request with the client
+		Then nodes 1 to 4 should be marked as dead
+		And the client should raise a maximum retries reached audit event
+		
+	Scenario: Overall request timeout is respected when attempting retries
+	          across nodes that are slow to respond.
+
+	Given I have a cluster with 10 nodes
+	And nodes 1 to 9 respond with a Bad response after 10 seconds
+	And node 10 responds with a Healthy response
+	And pings are disabled
+	And request timeouts are set to 20 seconds
+	When I make a request with the client
+	Then nodes 1 and 2 should be marked as dead
+	And the client should raise a maximum timeout reached audit event
+
+	Scenario: A maximum retry timeout can be specified to help contain individual
+			  request timeouts.
+
+	Given I have a cluster with 10 nodes
+	And all nodes respond with a Bad response after 3 seconds
+	And pings are disabled
+	And request timeouts are set to 2 seconds
+	And maximum retry timeout is set to 10 seconds
+	When I make a request with the client
+	Then nodes 1 to 5 should be marked as dead
+	And the client should raise a maximum timeout reached audit event
+	
+	Scenario: The client will not retry the same node twice.
+
+	Given I have a cluster with 2 nodes
+	And all nodes respond with a Bad response after 3 seconds
+	And pings are disabled
+	And request timeouts are set to 2 seconds
+	And maximum retry timeout is set to 10 seconds
+	When I make a request with the client
+	Then nodes 1 and 2 should be marked as dead
+	And the client should raise a maximum retries reached audit event
+	And the client should raise an all nodes failed event
