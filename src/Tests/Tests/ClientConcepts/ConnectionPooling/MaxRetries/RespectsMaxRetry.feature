@@ -29,7 +29,7 @@ Feature: First usage
 		And maximum retries is 3 times
 		When I make a request with the client
 		Then nodes 1 to 4 should be marked as dead
-		And the client should raise a maximum retries reached audit event
+		And the client should raise a maximum retries reached
 		
 	Scenario: Overall request timeout is respected when attempting retries
 	          across nodes that are slow to respond.
@@ -41,7 +41,7 @@ Feature: First usage
 	And request timeouts are set to 20 seconds
 	When I make a request with the client
 	Then nodes 1 and 2 should be marked as dead
-	And the client should raise a maximum timeout reached audit event
+	And the client should raise a maximum timeout reached
 
 	Scenario: A maximum retry timeout can be specified to help contain individual
 			  request timeouts.
@@ -53,7 +53,7 @@ Feature: First usage
 	And maximum retry timeout is set to 10 seconds
 	When I make a request with the client
 	Then nodes 1 to 5 should be marked as dead
-	And the client should raise a maximum timeout reached audit event
+	And the client should raise a maximum timeout reached
 	
 	Scenario: The client will not retry the same node twice.
 
@@ -64,5 +64,5 @@ Feature: First usage
 	And maximum retry timeout is set to 10 seconds
 	When I make a request with the client
 	Then nodes 1 and 2 should be marked as dead
-	And the client should raise a maximum retries reached audit event
+	And the client should raise a maximum retries reached
 	And the client should raise an all nodes failed event
