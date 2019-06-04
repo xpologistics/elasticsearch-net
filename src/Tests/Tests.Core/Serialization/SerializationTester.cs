@@ -215,7 +215,24 @@ namespace Tests.Core.Serialization
 
 		private static bool MatchJson<T>(JToken expectedJson, string actualJson, RoundTripResult<T> result, string message)
 		{
-			var actualJsonToken = JToken.Parse(actualJson);
+			actualJson = actualJson.TrimEnd('0');
+			if (!actualJson.StartsWith("{"))
+			{
+				throw new Exception("WRONG START:  " +actualJson.Substring(0, Math.Min(actualJson.Length, 30)));
+			}
+
+			JToken actualJsonToken;
+			try
+			{
+				actualJsonToken = JToken.Parse(actualJson);
+			}
+			catch (Exception e)
+			{
+				var start = Math.Max(0, actualJson.Length - 20);
+				var take = Math.Min(20, actualJson.Length - 20);
+				var end = actualJson.Substring(start, take);
+				throw new Exception("WRONG END?:  " + end);
+			}
 			var matches = JToken.DeepEquals(expectedJson, actualJsonToken);
 			if (matches) return true;
 

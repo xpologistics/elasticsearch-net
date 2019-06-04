@@ -61,15 +61,15 @@ namespace Tests.Framework.EndpointTests
 					throw new ResponseAssertionException(e.SourceException, r).Demystify();
 				}
 
-				try
-				{
+				//try
+				//{
 					assert(r);
-				}
-				catch (Exception e)
-				{
-					var ex = ExceptionDispatchInfo.Capture(e.Demystify());
-					throw new ResponseAssertionException(ex.SourceException, r).Demystify();
-				}
+//			/	}
+//				catch (Exception e)
+//				{
+//					var ex = ExceptionDispatchInfo.Capture(e.Demystify());
+//					throw new ResponseAssertionException(ex.SourceException, r).Demystify();
+//				}
 			});
 		}
 	}

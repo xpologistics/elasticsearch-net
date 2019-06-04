@@ -19,701 +19,1009 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-//
-// https://github.com/Microsoft/Microsoft.IO.RecyclableMemoryStream/blob/master/src/RecyclableMemoryStream.cs
-// MIT license: https://github.com/Microsoft/Microsoft.IO.RecyclableMemoryStream/blob/master/LICENSE
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Threading;
-
+// ReSharper disable ArrangeThisQualifier
+// ReSharper disable InconsistentNaming
+// ReSharper disable ArrangeConstructorOrDestructorBody
+// ReSharper disable SuggestVarOrType_BuiltInTypes
+// ReSharper disable ArrangeMethodOrOperatorBody
+// ReSharper disable RemoveRedundantBraces
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
+// ReSharper disable BuiltInTypeReferenceStyleForMemberAccess
 namespace Elasticsearch.Net
 {
-	/// <summary>
-	///  MemoryStream implementation that deals with pooling and managing memory streams which use potentially large
-	///  buffers.
-	/// </summary>
-	/// <remarks>
-	///  This class works in tandem with the RecylableMemoryStreamManager to supply MemoryStream
-	///  objects to callers, while avoiding these specific problems:
-	///  1. LOH allocations - since all large buffers are pooled, they will never incur a Gen2 GC
-	///  2. Memory waste - A standard memory stream doubles its size when it runs out of room. This
-	///  leads to continual memory growth as each stream approaches the maximum allowed size.
-	///  3. Memory copying - Each time a MemoryStream grows, all the bytes are copied into new buffers.
-	///  This implementation only copies the bytes when GetBuffer is called.
-	///  4. Memory fragmentation - By using homogeneous buffer sizes, it ensures that blocks of memory
-	///  can be easily reused.
-	///  The stream is implemented on top of a series of uniformly-sized blocks. As the stream's length grows,
-	///  additional blocks are retrieved from the memory manager. It is these blocks that are pooled, not the stream
-	///  object itself.
-	///  The biggest wrinkle in this implementation is when GetBuffer() is called. This requires a single
-	///  contiguous buffer. If only a single block is in use, then that block is returned. If multiple blocks
-	///  are in use, we retrieve a larger buffer from the memory manager. These large buffers are also pooled,
-	///  split by size--they are multiples of a chunk size (1 MB by default).
-	///  Once a large buffer is assigned to the stream the blocks are NEVER again used for this stream. All operations take place on the
-	///  large buffer. The large buffer can be replaced by a larger buffer from the pool as needed. All blocks and large buffers
-	///  are maintained in the stream until the stream is disposed (unless AggressiveBufferReturn is enabled in the stream manager).
-	/// </remarks>
-	internal class RecyclableMemoryStream : MemoryStream
-	{
-		private const long MaxStreamLength = int.MaxValue;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
+    using System.Threading;
 
-		private static readonly byte[] EmptyArray = new byte[0];
+    /// <summary>
+    /// MemoryStream implementation that deals with pooling and managing memory streams which use potentially large
+    /// buffers.
+    /// </summary>
+    /// <remarks>
+    /// This class works in tandem with the RecyclableMemoryStreamManager to supply MemoryStream
+    /// objects to callers, while avoiding these specific problems:
+    /// 1. LOH allocations - since all large buffers are pooled, they will never incur a Gen2 GC
+    /// 2. Memory waste - A standard memory stream doubles its size when it runs out of room. This
+    /// leads to continual memory growth as each stream approaches the maximum allowed size.
+    /// 3. Memory copying - Each time a MemoryStream grows, all the bytes are copied into new buffers.
+    /// This implementation only copies the bytes when GetBuffer is called.
+    /// 4. Memory fragmentation - By using homogeneous buffer sizes, it ensures that blocks of memory
+    /// can be easily reused.
+    ///
+    /// The stream is implemented on top of a series of uniformly-sized blocks. As the stream's length grows,
+    /// additional blocks are retrieved from the memory manager. It is these blocks that are pooled, not the stream
+    /// object itself.
+    ///
+    /// The biggest wrinkle in this implementation is when GetBuffer() is called. This requires a single
+    /// contiguous buffer. If only a single block is in use, then that block is returned. If multiple blocks
+    /// are in use, we retrieve a larger buffer from the memory manager. These large buffers are also pooled,
+    /// split by size--they are multiples/exponentials of a chunk size (1 MB by default).
+    ///
+    /// Once a large buffer is assigned to the stream the blocks are NEVER again used for this stream. All operations take place on the
+    /// large buffer. The large buffer can be replaced by a larger buffer from the pool as needed. All blocks and large buffers
+    /// are maintained in the stream until the stream is disposed (unless AggressiveBufferReturn is enabled in the stream manager).
+    ///
+    /// </remarks>
+    internal sealed class RecyclableMemoryStream : MemoryStream
+    {
+        private const long MaxStreamLength = Int32.MaxValue;
 
-		/// <summary>
-		/// All of these blocks must be the same size
-		/// </summary>
-		private readonly List<byte[]> _blocks = new List<byte[]>(1);
+        private static readonly byte[] emptyArray = new byte[0];
 
-		private readonly Guid _id;
+        /// <summary>
+        /// All of these blocks must be the same size
+        /// </summary>
+        private readonly List<byte[]> blocks = new List<byte[]>(1);
 
-		private readonly RecyclableMemoryStreamManager _memoryManager;
+        /// <summary>
+        /// This buffer exists so that WriteByte can forward all of its calls to Write
+        /// without creating a new byte[] buffer on every call.
+        /// </summary>
+        private readonly byte[] byteBuffer = new byte[1];
 
-		private readonly string _tag;
+        private readonly Guid id;
 
-		/// <summary>
-		/// This list is used to store buffers once they're replaced by something larger.
-		/// This is for the cases where you have users of this class that may hold onto the buffers longer
-		/// than they should and you want to prevent race conditions which could corrupt the data.
-		/// </summary>
-		private List<byte[]> _dirtyBuffers;
+        private readonly RecyclableMemoryStreamManager memoryManager;
 
-		// long to allow Interlocked.Read (for .NET Standard 1.4 compat)
-		private long _disposedState;
+        private readonly string tag;
 
-		/// <summary>
-		/// This is only set by GetBuffer() if the necessary buffer is larger than a single block size, or on
-		/// construction if the caller immediately requests a single large buffer.
-		/// </summary>
-		/// <remarks>
-		/// If this field is non-null, it contains the concatenation of the bytes found in the individual
-		/// blocks. Once it is created, this (or a larger) largeBuffer will be used for the life of the stream.
-		/// </remarks>
-		private byte[] _largeBuffer;
+        /// <summary>
+        /// This list is used to store buffers once they're replaced by something larger.
+        /// This is for the cases where you have users of this class that may hold onto the buffers longer
+        /// than they should and you want to prevent race conditions which could corrupt the data.
+        /// </summary>
+        private List<byte[]> dirtyBuffers;
 
-		private int _length;
+        // long to allow Interlocked.Read (for .NET Standard 1.4 compat)
+        private long disposedState;
 
-		private int _position;
+        /// <summary>
+        /// This is only set by GetBuffer() if the necessary buffer is larger than a single block size, or on
+        /// construction if the caller immediately requests a single large buffer.
+        /// </summary>
+        /// <remarks>If this field is non-null, it contains the concatenation of the bytes found in the individual
+        /// blocks. Once it is created, this (or a larger) largeBuffer will be used for the life of the stream.
+        /// </remarks>
+        private byte[] largeBuffer;
 
-		/// <summary>
-		/// Allocate a new RecyclableMemoryStream object.
-		/// </summary>
-		/// <param name="memoryManager">The memory manager</param>
-		public RecyclableMemoryStream(RecyclableMemoryStreamManager memoryManager)
-			: this(memoryManager, null, 0, null) { }
+        /// <summary>
+        /// Unique identifier for this stream across it's entire lifetime
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        internal Guid Id
+        {
+            get
+            {
+                this.CheckDisposed();
+                return this.id;
+            }
+        }
 
-		/// <summary>
-		/// Allocate a new RecyclableMemoryStream object
-		/// </summary>
-		/// <param name="memoryManager">The memory manager</param>
-		/// <param name="tag">A string identifying this stream for logging and debugging purposes</param>
-		public RecyclableMemoryStream(RecyclableMemoryStreamManager memoryManager, string tag)
-			: this(memoryManager, tag, 0, null) { }
+        /// <summary>
+        /// A temporary identifier for the current usage of this stream.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        internal string Tag
+        {
+            get
+            {
+                this.CheckDisposed();
+                return this.tag;
+            }
+        }
 
-		/// <summary>
-		/// Allocate a new RecyclableMemoryStream object
-		/// </summary>
-		/// <param name="memoryManager">The memory manager</param>
-		/// <param name="tag">A string identifying this stream for logging and debugging purposes</param>
-		/// <param name="requestedSize">The initial requested size to prevent future allocations</param>
-		public RecyclableMemoryStream(RecyclableMemoryStreamManager memoryManager, string tag, int requestedSize)
-			: this(memoryManager, tag, requestedSize, null) { }
+        /// <summary>
+        /// Gets the memory manager being used by this stream.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        internal RecyclableMemoryStreamManager MemoryManager
+        {
+            get
+            {
+                this.CheckDisposed();
+                return this.memoryManager;
+            }
+        }
 
-		/// <summary>
-		/// Allocate a new RecyclableMemoryStream object
-		/// </summary>
-		/// <param name="memoryManager">The memory manager</param>
-		/// <param name="tag">A string identifying this stream for logging and debugging purposes</param>
-		/// <param name="requestedSize">The initial requested size to prevent future allocations</param>
-		/// <param name="initialLargeBuffer">
-		/// An initial buffer to use. This buffer will be owned by the stream and returned to the memory manager upon
-		/// Dispose.
-		/// </param>
-		internal RecyclableMemoryStream(RecyclableMemoryStreamManager memoryManager, string tag, int requestedSize,
-			byte[] initialLargeBuffer
-		)
-			: base(EmptyArray)
-		{
-			_memoryManager = memoryManager;
-			_id = Guid.NewGuid();
-			_tag = tag;
+        /// <summary>
+        /// Callstack of the constructor. It is only set if MemoryManager.GenerateCallStacks is true,
+        /// which should only be in debugging situations.
+        /// </summary>
+        internal string AllocationStack { get; }
 
-			if (requestedSize < memoryManager.BlockSize) requestedSize = memoryManager.BlockSize;
+        /// <summary>
+        /// Callstack of the Dispose call. It is only set if MemoryManager.GenerateCallStacks is true,
+        /// which should only be in debugging situations.
+        /// </summary>
+        internal string DisposeStack { get; private set; }
 
-			if (initialLargeBuffer == null)
-				EnsureCapacity(requestedSize);
-			else
-				_largeBuffer = initialLargeBuffer;
-		}
+        #region Constructors
+        /// <summary>
+        /// Allocate a new RecyclableMemoryStream object.
+        /// </summary>
+        /// <param name="memoryManager">The memory manager</param>
+        public RecyclableMemoryStream(RecyclableMemoryStreamManager memoryManager)
+            : this(memoryManager, null, 0, null) { }
 
-		/// <summary>
-		/// Whether the stream can currently read
-		/// </summary>
-		public override bool CanRead => !Disposed;
+        /// <summary>
+        /// Allocate a new RecyclableMemoryStream object
+        /// </summary>
+        /// <param name="memoryManager">The memory manager</param>
+        /// <param name="tag">A string identifying this stream for logging and debugging purposes</param>
+        public RecyclableMemoryStream(RecyclableMemoryStreamManager memoryManager, string tag)
+            : this(memoryManager, tag, 0, null) { }
 
-		/// <summary>
-		/// Whether the stream can currently seek
-		/// </summary>
-		public override bool CanSeek => !Disposed;
+        /// <summary>
+        /// Allocate a new RecyclableMemoryStream object
+        /// </summary>
+        /// <param name="memoryManager">The memory manager</param>
+        /// <param name="tag">A string identifying this stream for logging and debugging purposes</param>
+        /// <param name="requestedSize">The initial requested size to prevent future allocations</param>
+        public RecyclableMemoryStream(RecyclableMemoryStreamManager memoryManager, string tag, int requestedSize)
+            : this(memoryManager, tag, requestedSize, null) { }
 
-		/// <summary>
-		/// Always false
-		/// </summary>
-		public override bool CanTimeout => false;
+        /// <summary>
+        /// Allocate a new RecyclableMemoryStream object
+        /// </summary>
+        /// <param name="memoryManager">The memory manager</param>
+        /// <param name="tag">A string identifying this stream for logging and debugging purposes</param>
+        /// <param name="requestedSize">The initial requested size to prevent future allocations</param>
+        /// <param name="initialLargeBuffer">An initial buffer to use. This buffer will be owned by the stream and returned to the memory manager upon Dispose.</param>
+        internal RecyclableMemoryStream(RecyclableMemoryStreamManager memoryManager, string tag, int requestedSize,
+                                        byte[] initialLargeBuffer)
+            : base(emptyArray)
+        {
+            this.memoryManager = memoryManager;
 
-		/// <summary>
-		/// Whether the stream can currently write
-		/// </summary>
-		public override bool CanWrite => !Disposed;
+			this.id = Guid.Empty;
+			// https://github.com/microsoft/Microsoft.IO.RecyclableMemoryStream/pull/61
+			if (RecyclableMemoryStreamManager.Events.Writer.IsEnabled())
+				this.id = Guid.NewGuid();
+            this.tag = tag;
 
-		/// <summary>
-		/// Gets or sets the capacity
-		/// </summary>
-		/// <remarks>
-		/// Capacity is always in multiples of the memory manager's block size, unless
-		/// the large buffer is in use.  Capacity never decreases during a stream's lifetime.
-		/// Explicitly setting the capacity to a lower value than the current value will have no effect.
-		/// This is because the buffers are all pooled by chunks and there's little reason to
-		/// allow stream truncation.
-		/// </remarks>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
-		public override int Capacity
-		{
-			get
-			{
-				CheckDisposed();
-				if (_largeBuffer != null) return _largeBuffer.Length;
+            if (requestedSize < memoryManager.BlockSize)
+            {
+                requestedSize = memoryManager.BlockSize;
+            }
 
-				var size = (long)_blocks.Count * _memoryManager.BlockSize;
-				return (int)Math.Min(int.MaxValue, size);
-			}
-			set
-			{
-				CheckDisposed();
-				EnsureCapacity(value);
-			}
-		}
+            if (initialLargeBuffer == null)
+            {
+                this.EnsureCapacity(requestedSize);
+            }
+            else
+            {
+                this.largeBuffer = initialLargeBuffer;
+            }
 
-		/// <summary>
-		/// Gets the number of bytes written to this stream.
-		/// </summary>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
-		public override long Length
-		{
-			get
-			{
-				CheckDisposed();
-				return _length;
-			}
-		}
+            if (this.memoryManager.GenerateCallStacks)
+            {
+                this.AllocationStack = Environment.StackTrace;
+            }
 
-		/// <summary>
-		/// Gets the current position in the stream
-		/// </summary>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
-		public override long Position
-		{
-			get
-			{
-				CheckDisposed();
-				return _position;
-			}
-			set
-			{
-				CheckDisposed();
-				if (value < 0) throw new ArgumentOutOfRangeException("value", "value must be non-negative");
+            RecyclableMemoryStreamManager.Events.Writer.MemoryStreamCreated(this.id, this.tag, requestedSize);
+            this.memoryManager.ReportStreamCreated();
+        }
+        #endregion
 
-				if (value > MaxStreamLength) throw new ArgumentOutOfRangeException("value", "value cannot be more than " + MaxStreamLength);
+        #region Dispose and Finalize
+        ~RecyclableMemoryStream()
+        {
+            this.Dispose(false);
+        }
 
-				_position = (int)value;
-			}
-		}
+        /// <summary>
+        /// Returns the memory used by this stream back to the pool.
+        /// </summary>
+        /// <param name="disposing">Whether we're disposing (true), or being called by the finalizer (false)</param>
+        [SuppressMessage("Microsoft.Usage", "CA1816:CallGCSuppressFinalizeCorrectly",
+            Justification = "We have different disposal semantics, so SuppressFinalize is in a different spot.")]
+        protected override void Dispose(bool disposing)
+        {
+            if (Interlocked.CompareExchange(ref this.disposedState, 1, 0) != 0)
+            {
+                string doubleDisposeStack = null;
+                if (this.memoryManager.GenerateCallStacks)
+                {
+                    doubleDisposeStack = Environment.StackTrace;
+                }
 
-		/// <summary>
-		/// Unique identifier for this stream across it's entire lifetime
-		/// </summary>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
-		internal Guid Id
-		{
-			get
-			{
-				CheckDisposed();
-				return _id;
-			}
-		}
+                RecyclableMemoryStreamManager.Events.Writer.MemoryStreamDoubleDispose(this.id, this.tag,
+                                                                                     this.AllocationStack,
+                                                                                     this.DisposeStack,
+                                                                                     doubleDisposeStack);
+                return;
+            }
 
-		/// <summary>
-		/// Gets the memory manager being used by this stream.
-		/// </summary>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
-		internal RecyclableMemoryStreamManager MemoryManager
-		{
-			get
-			{
-				CheckDisposed();
-				return _memoryManager;
-			}
-		}
+            RecyclableMemoryStreamManager.Events.Writer.MemoryStreamDisposed(this.id, this.tag);
 
-		/// <summary>
-		/// A temporary identifier for the current usage of this stream.
-		/// </summary>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
-		internal string Tag
-		{
-			get
-			{
-				CheckDisposed();
-				return _tag;
-			}
-		}
+            if (this.memoryManager.GenerateCallStacks)
+            {
+                this.DisposeStack = Environment.StackTrace;
+            }
 
-		private bool Disposed => Interlocked.Read(ref _disposedState) != 0;
+            if (disposing)
+            {
+                this.memoryManager.ReportStreamDisposed();
 
-		~RecyclableMemoryStream() => Dispose(false);
+                GC.SuppressFinalize(this);
+            }
+            else
+            {
+                // We're being finalized.
 
-		/// <summary>
-		/// Returns the memory used by this stream back to the pool.
-		/// </summary>
-		/// <param name="disposing">Whether we're disposing (true), or being called by the finalizer (false)</param>
-		[SuppressMessage("Microsoft.Usage", "CA1816:CallGCSuppressFinalizeCorrectly",
-			Justification = "We have different disposal semantics, so SuppressFinalize is in a different spot.")]
-		protected override void Dispose(bool disposing)
-		{
-			if (Interlocked.CompareExchange(ref _disposedState, 1, 0) != 0) return;
+                RecyclableMemoryStreamManager.Events.Writer.MemoryStreamFinalized(this.id, this.tag, this.AllocationStack);
 
-			if (disposing)
-				GC.SuppressFinalize(this);
-			else
-			{
-#if !DOTNETCORE
-				if (AppDomain.CurrentDomain.IsFinalizingForUnload())
-				{
-					// If we're being finalized because of a shutdown, don't go any further.
-					// We have no idea what's already been cleaned up. Triggering events may cause
-					// a crash.
-					base.Dispose(disposing);
-					return;
-				}
+                if (AppDomain.CurrentDomain.IsFinalizingForUnload())
+                {
+                    // If we're being finalized because of a shutdown, don't go any further.
+                    // We have no idea what's already been cleaned up. Triggering events may cause
+                    // a crash.
+                    base.Dispose(disposing);
+                    return;
+                }
+
+                this.memoryManager.ReportStreamFinalized();
+            }
+
+            this.memoryManager.ReportStreamLength(this.length);
+
+            if (this.largeBuffer != null)
+            {
+                this.memoryManager.ReturnLargeBuffer(this.largeBuffer, this.tag);
+            }
+
+            if (this.dirtyBuffers != null)
+            {
+                foreach (var buffer in this.dirtyBuffers)
+                {
+                    this.memoryManager.ReturnLargeBuffer(buffer, this.tag);
+                }
+            }
+
+            this.memoryManager.ReturnBlocks(this.blocks, this.tag);
+            this.blocks.Clear();
+
+            base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Equivalent to Dispose
+        /// </summary>
+#if NETSTANDARD1_4
+        public void Close()
+#else
+        public override void Close()
 #endif
-			}
+        {
+            this.Dispose(true);
+        }
+        #endregion
 
-			if (_largeBuffer != null) _memoryManager.ReturnLargeBuffer(_largeBuffer, _tag);
+        #region MemoryStream overrides
+        /// <summary>
+        /// Gets or sets the capacity
+        /// </summary>
+        /// <remarks>Capacity is always in multiples of the memory manager's block size, unless
+        /// the large buffer is in use.  Capacity never decreases during a stream's lifetime.
+        /// Explicitly setting the capacity to a lower value than the current value will have no effect.
+        /// This is because the buffers are all pooled by chunks and there's little reason to
+        /// allow stream truncation.
+        /// </remarks>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        public override int Capacity
+        {
+            get
+            {
+                this.CheckDisposed();
+                if (this.largeBuffer != null)
+                {
+                    return this.largeBuffer.Length;
+                }
 
-			if (_dirtyBuffers != null)
-				foreach (var buffer in _dirtyBuffers)
-					_memoryManager.ReturnLargeBuffer(buffer, _tag);
+                long size = (long)this.blocks.Count * this.memoryManager.BlockSize;
+                return (int)Math.Min(int.MaxValue, size);
+            }
+            set
+            {
+                this.CheckDisposed();
+                this.EnsureCapacity(value);
+            }
+        }
 
-			_memoryManager.ReturnBlocks(_blocks, _tag);
-			_blocks.Clear();
+        private int length;
 
-			base.Dispose(disposing);
-		}
+        /// <summary>
+        /// Gets the number of bytes written to this stream.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        public override long Length
+        {
+            get
+            {
+                this.CheckDisposed();
+                return this.length;
+            }
+        }
 
-		/// <summary>
-		/// Equivalent to Dispose
-		/// </summary>
-		public override void Close() => Dispose(true);
+        private int position;
 
-		/// <summary>
-		/// Returns a single buffer containing the contents of the stream.
-		/// The buffer may be longer than the stream length.
-		/// </summary>
-		/// <returns>A byte[] buffer</returns>
-		/// <remarks>
-		/// IMPORTANT: Doing a Write() after calling GetBuffer() invalidates the buffer. The old buffer is held onto
-		/// until Dispose is called, but the next time GetBuffer() is called, a new buffer from the pool will be required.
-		/// </remarks>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
-		public override byte[] GetBuffer()
-		{
-			CheckDisposed();
+        /// <summary>
+        /// Gets the current position in the stream
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        public override long Position
+        {
+            get
+            {
+                this.CheckDisposed();
+                return this.position;
+            }
+            set
+            {
+                this.CheckDisposed();
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("value", "value must be non-negative");
+                }
 
-			if (_largeBuffer != null) return _largeBuffer;
+                if (value > MaxStreamLength)
+                {
+                    throw new ArgumentOutOfRangeException("value", "value cannot be more than " + MaxStreamLength);
+                }
 
-			if (_blocks.Count == 1) return _blocks[0];
+                this.position = (int)value;
+            }
+        }
 
-			// Buffer needs to reflect the capacity, not the length, because
-			// it's possible that people will manipulate the buffer directly
-			// and set the length afterward. Capacity sets the expectation
-			// for the size of the buffer.
-			var newBuffer = _memoryManager.GetLargeBuffer(Capacity, _tag);
+        /// <summary>
+        /// Whether the stream can currently read
+        /// </summary>
+        public override bool CanRead => !this.Disposed;
 
-			// InternalRead will check for existence of largeBuffer, so make sure we
-			// don't set it until after we've copied the data.
-			InternalRead(newBuffer, 0, _length, 0);
-			_largeBuffer = newBuffer;
+        /// <summary>
+        /// Whether the stream can currently seek
+        /// </summary>
+        public override bool CanSeek => !this.Disposed;
 
-			if (_blocks.Count > 0 && _memoryManager.AggressiveBufferReturn)
-			{
-				_memoryManager.ReturnBlocks(_blocks, _tag);
-				_blocks.Clear();
-			}
+        /// <summary>
+        /// Always false
+        /// </summary>
+        public override bool CanTimeout => false;
 
-			return _largeBuffer;
-		}
+        /// <summary>
+        /// Whether the stream can currently write
+        /// </summary>
+        public override bool CanWrite => !this.Disposed;
 
-		/// <summary>
-		/// Returns a new array with a copy of the buffer's contents. You should almost certainly be using GetBuffer combined with the Length to
-		/// access the bytes in this stream. Calling ToArray will destroy the benefits of pooled buffers, but it is included
-		/// for the sake of completeness.
-		/// </summary>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        /// <summary>
+        /// Returns a single buffer containing the contents of the stream.
+        /// The buffer may be longer than the stream length.
+        /// </summary>
+        /// <returns>A byte[] buffer</returns>
+        /// <remarks>IMPORTANT: Doing a Write() after calling GetBuffer() invalidates the buffer. The old buffer is held onto
+        /// until Dispose is called, but the next time GetBuffer() is called, a new buffer from the pool will be required.</remarks>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+#if NETSTANDARD1_4
+        public byte[] GetBuffer()
+#else
+        public override byte[] GetBuffer()
+#endif
+        {
+            this.CheckDisposed();
+
+            if (this.largeBuffer != null)
+            {
+                return this.largeBuffer;
+            }
+
+            if (this.blocks.Count == 1)
+            {
+                return this.blocks[0];
+            }
+
+            // Buffer needs to reflect the capacity, not the length, because
+            // it's possible that people will manipulate the buffer directly
+            // and set the length afterward. Capacity sets the expectation
+            // for the size of the buffer.
+            var newBuffer = this.memoryManager.GetLargeBuffer(this.Capacity, this.tag);
+
+            // InternalRead will check for existence of largeBuffer, so make sure we
+            // don't set it until after we've copied the data.
+            this.InternalRead(newBuffer, 0, this.length, 0);
+            this.largeBuffer = newBuffer;
+
+            if (this.blocks.Count > 0 && this.memoryManager.AggressiveBufferReturn)
+            {
+                this.memoryManager.ReturnBlocks(this.blocks, this.tag);
+                this.blocks.Clear();
+            }
+
+            return this.largeBuffer;
+        }
+
+        /// <summary>
+        /// Returns an ArraySegment that wraps a single buffer containing the contents of the stream.
+        /// </summary>
+        /// <param name="buffer">An ArraySegment containing a reference to the underlying bytes.</param>
+        /// <returns>Always returns true.</returns>
+        /// <remarks>GetBuffer has no failure modes (it always returns something, even if it's an empty buffer), therefore this method
+        /// always returns a valid ArraySegment to the same buffer returned by GetBuffer.</remarks>
+#if NET40 || NET45
+        public bool TryGetBuffer(out ArraySegment<byte> buffer)
+#else
+        public override bool TryGetBuffer(out ArraySegment<byte> buffer)
+#endif
+        {
+            this.CheckDisposed();
+            buffer = new ArraySegment<byte>(this.GetBuffer(), 0, (int)this.Length);
+            // GetBuffer has no failure modes, so this should always succeed
+            return true;
+        }
+
+        /// <summary>
+        /// Returns a new array with a copy of the buffer's contents. You should almost certainly be using GetBuffer combined with the Length to
+        /// access the bytes in this stream. Calling ToArray will destroy the benefits of pooled buffers, but it is included
+        /// for the sake of completeness.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
 #pragma warning disable CS0809
-		[Obsolete("This method has degraded performance vs. GetBuffer and should be avoided.")]
-		public override byte[] ToArray()
-		{
-			CheckDisposed();
-			var newBuffer = new byte[Length];
+        [Obsolete("This method has degraded performance vs. GetBuffer and should be avoided.")]
+        public override byte[] ToArray()
+        {
+            this.CheckDisposed();
+            var newBuffer = new byte[this.Length];
 
-			InternalRead(newBuffer, 0, _length, 0);
-			return newBuffer;
-		}
+            this.InternalRead(newBuffer, 0, this.length, 0);
+            string stack = this.memoryManager.GenerateCallStacks ? Environment.StackTrace : null;
+            RecyclableMemoryStreamManager.Events.Writer.MemoryStreamToArray(this.id, this.tag, stack, 0);
+            this.memoryManager.ReportStreamToArray();
+
+            return newBuffer;
+        }
 #pragma warning restore CS0809
 
-		/// <summary>
-		/// Reads from the current position into the provided buffer
-		/// </summary>
-		/// <param name="buffer">Destination buffer</param>
-		/// <param name="offset">Offset into buffer at which to start placing the read bytes.</param>
-		/// <param name="count">Number of bytes to read.</param>
-		/// <returns>The number of bytes read</returns>
-		/// <exception cref="ArgumentNullException">buffer is null</exception>
-		/// <exception cref="ArgumentOutOfRangeException">offset or count is less than 0</exception>
-		/// <exception cref="ArgumentException">offset subtracted from the buffer length is less than count</exception>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
-		public override int Read(byte[] buffer, int offset, int count) => SafeRead(buffer, offset, count, ref _position);
+        /// <summary>
+        /// Reads from the current position into the provided buffer
+        /// </summary>
+        /// <param name="buffer">Destination buffer</param>
+        /// <param name="offset">Offset into buffer at which to start placing the read bytes.</param>
+        /// <param name="count">Number of bytes to read.</param>
+        /// <returns>The number of bytes read</returns>
+        /// <exception cref="ArgumentNullException">buffer is null</exception>
+        /// <exception cref="ArgumentOutOfRangeException">offset or count is less than 0</exception>
+        /// <exception cref="ArgumentException">offset subtracted from the buffer length is less than count</exception>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            return this.SafeRead(buffer, offset, count, ref this.position);
+        }
 
-		/// <summary>
-		/// Reads from the specified position into the provided buffer
-		/// </summary>
-		/// <param name="buffer">Destination buffer</param>
-		/// <param name="offset">Offset into buffer at which to start placing the read bytes.</param>
-		/// <param name="count">Number of bytes to read.</param>
-		/// <param name="streamPosition">Position in the stream to start reading from</param>
-		/// <returns>The number of bytes read</returns>
-		/// <exception cref="ArgumentNullException">buffer is null</exception>
-		/// <exception cref="ArgumentOutOfRangeException">offset or count is less than 0</exception>
-		/// <exception cref="ArgumentException">offset subtracted from the buffer length is less than count</exception>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
-		public int SafeRead(byte[] buffer, int offset, int count, ref int streamPosition)
-		{
-			CheckDisposed();
-			if (buffer == null) throw new ArgumentNullException(nameof(buffer));
+        /// <summary>
+        /// Reads from the specified position into the provided buffer
+        /// </summary>
+        /// <param name="buffer">Destination buffer</param>
+        /// <param name="offset">Offset into buffer at which to start placing the read bytes.</param>
+        /// <param name="count">Number of bytes to read.</param>
+        /// <param name="streamPosition">Position in the stream to start reading from</param>
+        /// <returns>The number of bytes read</returns>
+        /// <exception cref="ArgumentNullException">buffer is null</exception>
+        /// <exception cref="ArgumentOutOfRangeException">offset or count is less than 0</exception>
+        /// <exception cref="ArgumentException">offset subtracted from the buffer length is less than count</exception>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        public int SafeRead(byte[] buffer, int offset, int count, ref int streamPosition)
+        {
+            this.CheckDisposed();
+            if (buffer == null)
+            {
+                throw new ArgumentNullException(nameof(buffer));
+            }
 
-			if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset), "offset cannot be negative");
+            if (offset < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(offset), "offset cannot be negative");
+            }
 
-			if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "count cannot be negative");
+            if (count < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count), "count cannot be negative");
+            }
 
-			if (offset + count > buffer.Length) throw new ArgumentException("buffer length must be at least offset + count");
+            if (offset + count > buffer.Length)
+            {
+                throw new ArgumentException("buffer length must be at least offset + count");
+            }
 
-			var amountRead = InternalRead(buffer, offset, count, streamPosition);
-			streamPosition += amountRead;
-			return amountRead;
-		}
+            int amountRead = this.InternalRead(buffer, offset, count, streamPosition);
+            streamPosition += amountRead;
+            return amountRead;
+        }
 
-		/// <summary>
-		/// Writes the buffer to the stream
-		/// </summary>
-		/// <param name="buffer">Source buffer</param>
-		/// <param name="offset">Start position</param>
-		/// <param name="count">Number of bytes to write</param>
-		/// <exception cref="ArgumentNullException">buffer is null</exception>
-		/// <exception cref="ArgumentOutOfRangeException">offset or count is negative</exception>
-		/// <exception cref="ArgumentException">buffer.Length - offset is not less than count</exception>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
-		public override void Write(byte[] buffer, int offset, int count)
-		{
-			CheckDisposed();
-			if (buffer == null) throw new ArgumentNullException(nameof(buffer));
+#if NETCOREAPP2_1 || NETSTANDARD2_1
+        /// <summary>
+        /// Reads from the current position into the provided buffer
+        /// </summary>
+        /// <param name="buffer">Destination buffer</param>
+        /// <returns>The number of bytes read</returns>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        public override int Read(Span<byte> buffer)
+        {
+            return this.SafeRead(buffer, ref this.position);
+        }
 
-			if (offset < 0)
-				throw new ArgumentOutOfRangeException(nameof(offset), offset,
-					"Offset must be in the range of 0 - buffer.Length-1");
+        /// <summary>
+        /// Reads from the specified position into the provided buffer
+        /// </summary>
+        /// <param name="buffer">Destination buffer</param>
+        /// <param name="streamPosition">Position in the stream to start reading from</param>
+        /// <returns>The number of bytes read</returns>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        public int SafeRead(Span<byte> buffer, ref int streamPosition)
+        {
+            this.CheckDisposed();
 
-			if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), count, "count must be non-negative");
+            int amountRead = this.InternalRead(buffer, streamPosition);
+            streamPosition += amountRead;
+            return amountRead;
+        }
+#endif
 
-			if (count + offset > buffer.Length) throw new ArgumentException("count must be greater than buffer.Length - offset");
+        /// <summary>
+        /// Writes the buffer to the stream
+        /// </summary>
+        /// <param name="buffer">Source buffer</param>
+        /// <param name="offset">Start position</param>
+        /// <param name="count">Number of bytes to write</param>
+        /// <exception cref="ArgumentNullException">buffer is null</exception>
+        /// <exception cref="ArgumentOutOfRangeException">offset or count is negative</exception>
+        /// <exception cref="ArgumentException">buffer.Length - offset is not less than count</exception>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        public override void Write(byte[] buffer, int offset, int count)
+        {
+            this.CheckDisposed();
+            if (buffer == null)
+            {
+                throw new ArgumentNullException(nameof(buffer));
+            }
 
-			var blockSize = _memoryManager.BlockSize;
-			var end = (long)_position + count;
-			// Check for overflow
-			if (end > MaxStreamLength) throw new IOException("Maximum capacity exceeded");
+            if (offset < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(offset), offset,
+                                                      "Offset must be in the range of 0 - buffer.Length-1");
+            }
 
-			var requiredBuffers = (end + blockSize - 1) / blockSize;
+            if (count < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count), count, "count must be non-negative");
+            }
 
-			if (requiredBuffers * blockSize > MaxStreamLength) throw new IOException("Maximum capacity exceeded");
+            if (count + offset > buffer.Length)
+            {
+                throw new ArgumentException("count must be greater than buffer.Length - offset");
+            }
 
-			EnsureCapacity((int)end);
+            int blockSize = this.memoryManager.BlockSize;
+            long end = (long)this.position + count;
+            // Check for overflow
+            if (end > MaxStreamLength)
+            {
+                throw new IOException("Maximum capacity exceeded");
+            }
 
-			if (_largeBuffer == null)
-			{
-				var bytesRemaining = count;
-				var bytesWritten = 0;
-				var blockAndOffset = GetBlockAndRelativeOffset(_position);
+            this.EnsureCapacity((int)end);
 
-				while (bytesRemaining > 0)
-				{
-					var currentBlock = _blocks[blockAndOffset.Block];
-					var remainingInBlock = blockSize - blockAndOffset.Offset;
-					var amountToWriteInBlock = Math.Min(remainingInBlock, bytesRemaining);
+            if (this.largeBuffer == null)
+            {
+                int bytesRemaining = count;
+                int bytesWritten = 0;
+                var blockAndOffset = this.GetBlockAndRelativeOffset(this.position);
 
-					Buffer.BlockCopy(buffer, offset + bytesWritten, currentBlock, blockAndOffset.Offset,
-						amountToWriteInBlock);
+                while (bytesRemaining > 0)
+                {
+					// ReSharper disable once SuggestVarOrType_Elsewhere
+					byte[] currentBlock = this.blocks[blockAndOffset.Block];
+                    int remainingInBlock = blockSize - blockAndOffset.Offset;
+                    int amountToWriteInBlock = Math.Min(remainingInBlock, bytesRemaining);
 
-					bytesRemaining -= amountToWriteInBlock;
-					bytesWritten += amountToWriteInBlock;
+                    Buffer.BlockCopy(buffer, offset + bytesWritten, currentBlock, blockAndOffset.Offset,
+                                     amountToWriteInBlock);
 
-					++blockAndOffset.Block;
-					blockAndOffset.Offset = 0;
-				}
-			}
-			else
-				Buffer.BlockCopy(buffer, offset, _largeBuffer, _position, count);
-			_position = (int)end;
-			_length = Math.Max(_position, _length);
-		}
+                    bytesRemaining -= amountToWriteInBlock;
+                    bytesWritten += amountToWriteInBlock;
 
-		/// <summary>
-		/// Returns a useful string for debugging. This should not normally be called in actual production code.
-		/// </summary>
-		public override string ToString() => $"Id = {Id}, Tag = {Tag}, Length = {Length:N0} bytes";
+                    ++blockAndOffset.Block;
+                    blockAndOffset.Offset = 0;
+                }
+            }
+            else
+            {
+                Buffer.BlockCopy(buffer, offset, this.largeBuffer, this.position, count);
+            }
+            this.position = (int)end;
+            this.length = Math.Max(this.position, this.length);
+        }
 
-		/// <summary>
-		/// Writes a single byte to the current position in the stream.
-		/// </summary>
-		/// <param name="value">byte value to write</param>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
-		public override void WriteByte(byte value)
-		{
-			CheckDisposed();
-			var end = _position + 1;
+#if NETCOREAPP2_1 || NETSTANDARD2_1
+        /// <summary>
+        /// Writes the buffer to the stream
+        /// </summary>
+        /// <param name="source">Source buffer</param>
+        /// <exception cref="ArgumentNullException">buffer is null</exception>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        public override void Write(ReadOnlySpan<byte> source)
+        {
+            this.CheckDisposed();
 
-			// Check for overflow
-			if (end > MaxStreamLength) throw new IOException("Maximum capacity exceeded");
+            int blockSize = this.memoryManager.BlockSize;
+            long end = (long)this.position + source.Length;
+            // Check for overflow
+            if (end > MaxStreamLength)
+            {
+                throw new IOException("Maximum capacity exceeded");
+            }
 
-			EnsureCapacity(end);
-			if (_largeBuffer == null)
-			{
-				var blockSize = _memoryManager.BlockSize;
-				var block = _position / blockSize;
-				var offset = _position - block * blockSize;
-				var currentBlock = _blocks[block];
-				currentBlock[offset] = value;
-			}
-			else
-				_largeBuffer[_position] = value;
+            this.EnsureCapacity((int)end);
 
-			_position = end;
-			_length = Math.Max(_position, _length);
-		}
+            if (this.largeBuffer == null)
+            {
+                var blockAndOffset = this.GetBlockAndRelativeOffset(this.position);
 
-		/// <summary>
-		/// Reads a single byte from the current position in the stream.
-		/// </summary>
-		/// <returns>The byte at the current position, or -1 if the position is at the end of the stream.</returns>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
-		public override int ReadByte() => SafeReadByte(ref _position);
+                while (source.Length > 0)
+                {
+                    byte[] currentBlock = this.blocks[blockAndOffset.Block];
+                    int remainingInBlock = blockSize - blockAndOffset.Offset;
+                    int amountToWriteInBlock = Math.Min(remainingInBlock, source.Length);
 
-		/// <summary>
-		/// Reads a single byte from the specified position in the stream.
-		/// </summary>
-		/// <param name="streamPosition">The position in the stream to read from</param>
-		/// <returns>The byte at the current position, or -1 if the position is at the end of the stream.</returns>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
-		public int SafeReadByte(ref int streamPosition)
-		{
-			CheckDisposed();
-			if (streamPosition == _length) return -1;
+                    source.Slice(0, amountToWriteInBlock)
+                        .CopyTo(currentBlock.AsSpan(blockAndOffset.Offset));
 
-			byte value;
-			if (_largeBuffer == null)
-			{
-				var blockAndOffset = GetBlockAndRelativeOffset(streamPosition);
-				value = _blocks[blockAndOffset.Block][blockAndOffset.Offset];
-			}
-			else
-				value = _largeBuffer[streamPosition];
-			streamPosition++;
-			return value;
-		}
+                    source = source.Slice(amountToWriteInBlock);
 
-		/// <summary>
-		/// Sets the length of the stream
-		/// </summary>
-		/// <exception cref="ArgumentOutOfRangeException">value is negative or larger than MaxStreamLength</exception>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
-		public override void SetLength(long value)
-		{
-			CheckDisposed();
-			if (value < 0 || value > MaxStreamLength)
-				throw new ArgumentOutOfRangeException(nameof(value),
-					"value must be non-negative and at most " + MaxStreamLength);
+                    ++blockAndOffset.Block;
+                    blockAndOffset.Offset = 0;
+                }
+            }
+            else
+            {
+                source.CopyTo(this.largeBuffer.AsSpan(this.position));
+            }
+            this.position = (int)end;
+            this.length = Math.Max(this.position, this.length);
+        }
+#endif
 
-			EnsureCapacity((int)value);
+        /// <summary>
+        /// Returns a useful string for debugging. This should not normally be called in actual production code.
+        /// </summary>
+        public override string ToString()
+        {
+            return $"Id = {this.Id}, Tag = {this.Tag}, Length = {this.Length:N0} bytes";
+        }
 
-			_length = (int)value;
-			if (_position > value) _position = (int)value;
-		}
+        /// <summary>
+        /// Writes a single byte to the current position in the stream.
+        /// </summary>
+        /// <param name="value">byte value to write</param>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        public override void WriteByte(byte value)
+        {
+            this.CheckDisposed();
+            this.byteBuffer[0] = value;
+            this.Write(this.byteBuffer, 0, 1);
+        }
 
-		/// <summary>
-		/// Sets the position to the offset from the seek location
-		/// </summary>
-		/// <param name="offset">How many bytes to move</param>
-		/// <param name="loc">From where</param>
-		/// <returns>The new position</returns>
-		/// <exception cref="ObjectDisposedException">Object has been disposed</exception>
-		/// <exception cref="ArgumentOutOfRangeException">offset is larger than MaxStreamLength</exception>
-		/// <exception cref="ArgumentException">Invalid seek origin</exception>
-		/// <exception cref="IOException">Attempt to set negative position</exception>
-		public override long Seek(long offset, SeekOrigin loc)
-		{
-			CheckDisposed();
-			if (offset > MaxStreamLength) throw new ArgumentOutOfRangeException(nameof(offset), "offset cannot be larger than " + MaxStreamLength);
+        /// <summary>
+        /// Reads a single byte from the current position in the stream.
+        /// </summary>
+        /// <returns>The byte at the current position, or -1 if the position is at the end of the stream.</returns>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        public override int ReadByte()
+        {
+            return this.SafeReadByte(ref this.position);
+        }
 
-			int newPosition;
-			switch (loc)
-			{
-				case SeekOrigin.Begin:
-					newPosition = (int)offset;
-					break;
-				case SeekOrigin.Current:
-					newPosition = (int)offset + _position;
-					break;
-				case SeekOrigin.End:
-					newPosition = (int)offset + _length;
-					break;
-				default:
-					throw new ArgumentException("Invalid seek origin", nameof(loc));
-			}
-			if (newPosition < 0) throw new IOException("Seek before beginning");
+        /// <summary>
+        /// Reads a single byte from the specified position in the stream.
+        /// </summary>
+        /// <param name="streamPosition">The position in the stream to read from</param>
+        /// <returns>The byte at the current position, or -1 if the position is at the end of the stream.</returns>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        public int SafeReadByte(ref int streamPosition)
+        {
+            this.CheckDisposed();
+            if (streamPosition == this.length)
+            {
+                return -1;
+            }
+            byte value;
+            if (this.largeBuffer == null)
+            {
+                var blockAndOffset = this.GetBlockAndRelativeOffset(streamPosition);
+                value = this.blocks[blockAndOffset.Block][blockAndOffset.Offset];
+            }
+            else
+            {
+                value = this.largeBuffer[streamPosition];
+            }
+            streamPosition++;
+            return value;
+        }
 
-			_position = newPosition;
-			return _position;
-		}
+        /// <summary>
+        /// Sets the length of the stream
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">value is negative or larger than MaxStreamLength</exception>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        public override void SetLength(long value)
+        {
+            this.CheckDisposed();
+            if (value < 0 || value > MaxStreamLength)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value),
+                                                      "value must be non-negative and at most " + MaxStreamLength);
+            }
 
-		/// <summary>
-		/// Synchronously writes this stream's bytes to the parameter stream.
-		/// </summary>
-		/// <param name="stream">Destination stream</param>
-		/// <remarks>Important: This does a synchronous write, which may not be desired in some situations</remarks>
-		public override void WriteTo(Stream stream)
-		{
-			CheckDisposed();
-			if (stream == null) throw new ArgumentNullException(nameof(stream));
+            this.EnsureCapacity((int)value);
 
-			if (_largeBuffer == null)
-			{
-				var currentBlock = 0;
-				var bytesRemaining = _length;
+            this.length = (int)value;
+            if (this.position > value)
+            {
+                this.position = (int)value;
+            }
+        }
 
-				while (bytesRemaining > 0)
-				{
-					var amountToCopy = Math.Min(_blocks[currentBlock].Length, bytesRemaining);
-					stream.Write(_blocks[currentBlock], 0, amountToCopy);
+        /// <summary>
+        /// Sets the position to the offset from the seek location
+        /// </summary>
+        /// <param name="offset">How many bytes to move</param>
+        /// <param name="loc">From where</param>
+        /// <returns>The new position</returns>
+        /// <exception cref="ObjectDisposedException">Object has been disposed</exception>
+        /// <exception cref="ArgumentOutOfRangeException">offset is larger than MaxStreamLength</exception>
+        /// <exception cref="ArgumentException">Invalid seek origin</exception>
+        /// <exception cref="IOException">Attempt to set negative position</exception>
+        public override long Seek(long offset, SeekOrigin loc)
+        {
+            this.CheckDisposed();
+            if (offset > MaxStreamLength)
+            {
+                throw new ArgumentOutOfRangeException(nameof(offset), "offset cannot be larger than " + MaxStreamLength);
+            }
 
-					bytesRemaining -= amountToCopy;
+            int newPosition;
+            switch (loc)
+            {
+            case SeekOrigin.Begin:
+                newPosition = (int)offset;
+                break;
+            case SeekOrigin.Current:
+                newPosition = (int)offset + this.position;
+                break;
+            case SeekOrigin.End:
+                newPosition = (int)offset + this.length;
+                break;
+            default:
+                throw new ArgumentException("Invalid seek origin", nameof(loc));
+            }
+            if (newPosition < 0)
+            {
+                throw new IOException("Seek before beginning");
+            }
+            this.position = newPosition;
+            return this.position;
+        }
 
-					++currentBlock;
-				}
-			}
-			else
-				stream.Write(_largeBuffer, 0, _length);
-		}
+        /// <summary>
+        /// Synchronously writes this stream's bytes to the parameter stream.
+        /// </summary>
+        /// <param name="stream">Destination stream</param>
+        /// <remarks>Important: This does a synchronous write, which may not be desired in some situations</remarks>
+        public override void WriteTo(Stream stream)
+        {
+            this.CheckDisposed();
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
 
-		private void CheckDisposed()
-		{
-			if (Disposed) throw new ObjectDisposedException($"The stream with Id {_id} and Tag {_tag} is disposed.");
-		}
+            if (this.largeBuffer == null)
+            {
+                int currentBlock = 0;
+                int bytesRemaining = this.length;
 
-		private int InternalRead(byte[] buffer, int offset, int count, int fromPosition)
-		{
-			if (_length - fromPosition <= 0) return 0;
+                while (bytesRemaining > 0)
+                {
+                    int amountToCopy = Math.Min(this.blocks[currentBlock].Length, bytesRemaining);
+                    stream.Write(this.blocks[currentBlock], 0, amountToCopy);
 
-			int amountToCopy;
+                    bytesRemaining -= amountToCopy;
 
-			if (_largeBuffer == null)
-			{
-				var blockAndOffset = GetBlockAndRelativeOffset(fromPosition);
-				var bytesWritten = 0;
-				var bytesRemaining = Math.Min(count, _length - fromPosition);
+                    ++currentBlock;
+                }
+            }
+            else
+            {
+                stream.Write(this.largeBuffer, 0, this.length);
+            }
+        }
+#endregion
 
-				while (bytesRemaining > 0)
-				{
-					amountToCopy = Math.Min(_blocks[blockAndOffset.Block].Length - blockAndOffset.Offset,
-						bytesRemaining);
+#region Helper Methods
+        private bool Disposed => Interlocked.Read(ref this.disposedState) != 0;
 
-					Buffer.BlockCopy(_blocks[blockAndOffset.Block], blockAndOffset.Offset, buffer,
-						bytesWritten + offset, amountToCopy);
+        private void CheckDisposed()
+        {
+            if (this.Disposed)
+            {
+                throw new ObjectDisposedException($"The stream with Id {this.id} and Tag {this.tag} is disposed.");
+            }
+        }
 
-					bytesWritten += amountToCopy;
-					bytesRemaining -= amountToCopy;
+        private int InternalRead(byte[] buffer, int offset, int count, int fromPosition)
+        {
+            if (this.length - fromPosition <= 0)
+            {
+                return 0;
+            }
 
-					++blockAndOffset.Block;
-					blockAndOffset.Offset = 0;
-				}
-				return bytesWritten;
-			}
-			amountToCopy = Math.Min(count, _length - fromPosition);
-			Buffer.BlockCopy(_largeBuffer, fromPosition, buffer, offset, amountToCopy);
-			return amountToCopy;
-		}
+            int amountToCopy;
 
-		private BlockAndOffset GetBlockAndRelativeOffset(int offset)
-		{
-			var blockSize = _memoryManager.BlockSize;
-			return new BlockAndOffset(offset / blockSize, offset % blockSize);
-		}
+            if (this.largeBuffer == null)
+            {
+                var blockAndOffset = this.GetBlockAndRelativeOffset(fromPosition);
+                int bytesWritten = 0;
+                int bytesRemaining = Math.Min(count, this.length - fromPosition);
 
-		private void EnsureCapacity(int newCapacity)
-		{
-			if (newCapacity > _memoryManager.MaximumStreamCapacity && _memoryManager.MaximumStreamCapacity > 0)
-				throw new InvalidOperationException("Requested capacity is too large: " + newCapacity + ". Limit is " +
-					_memoryManager.MaximumStreamCapacity);
+                while (bytesRemaining > 0)
+                {
+                    amountToCopy = Math.Min(this.blocks[blockAndOffset.Block].Length - blockAndOffset.Offset,
+                                                bytesRemaining);
+                    Buffer.BlockCopy(this.blocks[blockAndOffset.Block], blockAndOffset.Offset, buffer,
+                                     bytesWritten + offset, amountToCopy);
 
-			if (_largeBuffer != null)
-			{
-				if (newCapacity > _largeBuffer.Length)
-				{
-					var newBuffer = _memoryManager.GetLargeBuffer(newCapacity, _tag);
-					InternalRead(newBuffer, 0, _length, 0);
-					ReleaseLargeBuffer();
-					_largeBuffer = newBuffer;
-				}
-			}
-			else
-				while (Capacity < newCapacity)
-					_blocks.Add(_memoryManager.GetBlock());
-		}
+                    bytesWritten += amountToCopy;
+                    bytesRemaining -= amountToCopy;
 
-		/// <summary>
-		/// Release the large buffer (either stores it for eventual release or returns it immediately).
-		/// </summary>
-		private void ReleaseLargeBuffer()
-		{
-			if (_memoryManager.AggressiveBufferReturn)
-				_memoryManager.ReturnLargeBuffer(_largeBuffer, _tag);
-			else
-			{
-				if (_dirtyBuffers == null) _dirtyBuffers = new List<byte[]>(1);
-				_dirtyBuffers.Add(_largeBuffer);
-			}
+                    ++blockAndOffset.Block;
+                    blockAndOffset.Offset = 0;
+                }
+                return bytesWritten;
+            }
+            amountToCopy = Math.Min(count, this.length - fromPosition);
+            Buffer.BlockCopy(this.largeBuffer, fromPosition, buffer, offset, amountToCopy);
+            return amountToCopy;
+        }
 
-			_largeBuffer = null;
-		}
+#if NETCOREAPP2_1 || NETSTANDARD2_1
+        private int InternalRead(Span<byte> buffer, int fromPosition)
+        {
+            if (this.length - fromPosition <= 0)
+            {
+                return 0;
+            }
 
-		private struct BlockAndOffset
-		{
-			public int Block;
-			public int Offset;
+            int amountToCopy;
 
-			public BlockAndOffset(int block, int offset)
-			{
-				Block = block;
-				Offset = offset;
-			}
-		}
-	}
+            if (this.largeBuffer == null)
+            {
+                var blockAndOffset = this.GetBlockAndRelativeOffset(fromPosition);
+                int bytesWritten = 0;
+                int bytesRemaining = Math.Min(buffer.Length, this.length - fromPosition);
+
+                while (bytesRemaining > 0)
+                {
+                    amountToCopy = Math.Min(this.blocks[blockAndOffset.Block].Length - blockAndOffset.Offset,
+                                            bytesRemaining);
+                    this.blocks[blockAndOffset.Block].AsSpan(blockAndOffset.Offset, amountToCopy)
+                        .CopyTo(buffer.Slice(bytesWritten));
+
+                    bytesWritten += amountToCopy;
+                    bytesRemaining -= amountToCopy;
+
+                    ++blockAndOffset.Block;
+                    blockAndOffset.Offset = 0;
+                }
+                return bytesWritten;
+            }
+            amountToCopy = Math.Min(buffer.Length, this.length - fromPosition);
+            this.largeBuffer.AsSpan(fromPosition, amountToCopy).CopyTo(buffer);
+            return amountToCopy;
+        }
+#endif
+
+        private struct BlockAndOffset
+        {
+            public int Block;
+            public int Offset;
+
+            public BlockAndOffset(int block, int offset)
+            {
+                this.Block = block;
+                this.Offset = offset;
+            }
+        }
+
+        private BlockAndOffset GetBlockAndRelativeOffset(int offset)
+        {
+            var blockSize = this.memoryManager.BlockSize;
+            return new BlockAndOffset(offset / blockSize, offset % blockSize);
+        }
+
+        private void EnsureCapacity(int newCapacity)
+        {
+            if (newCapacity > this.memoryManager.MaximumStreamCapacity && this.memoryManager.MaximumStreamCapacity > 0)
+            {
+                RecyclableMemoryStreamManager.Events.Writer.MemoryStreamOverCapacity(newCapacity,
+                                                                                    this.memoryManager
+                                                                                        .MaximumStreamCapacity, this.tag,
+                                                                                    this.AllocationStack);
+                throw new InvalidOperationException("Requested capacity is too large: " + newCapacity + ". Limit is " +
+                                                    this.memoryManager.MaximumStreamCapacity);
+            }
+
+            if (this.largeBuffer != null)
+            {
+                if (newCapacity > this.largeBuffer.Length)
+                {
+                    var newBuffer = this.memoryManager.GetLargeBuffer(newCapacity, this.tag);
+                    this.InternalRead(newBuffer, 0, this.length, 0);
+                    this.ReleaseLargeBuffer();
+                    this.largeBuffer = newBuffer;
+                }
+            }
+            else
+            {
+                while (this.Capacity < newCapacity)
+                {
+                    blocks.Add((this.memoryManager.GetBlock()));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Release the large buffer (either stores it for eventual release or returns it immediately).
+        /// </summary>
+        private void ReleaseLargeBuffer()
+        {
+            if (this.memoryManager.AggressiveBufferReturn)
+            {
+                this.memoryManager.ReturnLargeBuffer(this.largeBuffer, this.tag);
+            }
+            else
+            {
+                if (this.dirtyBuffers == null)
+                {
+                    // We most likely will only ever need space for one
+                    this.dirtyBuffers = new List<byte[]>(1);
+                }
+                this.dirtyBuffers.Add(this.largeBuffer);
+            }
+
+            this.largeBuffer = null;
+        }
+#endregion
+    }
 }
+
