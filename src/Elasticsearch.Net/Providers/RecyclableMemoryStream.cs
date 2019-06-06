@@ -474,7 +474,7 @@ namespace Elasticsearch.Net
 #else
         public override bool TryGetBuffer(out ArraySegment<byte> buffer)
 #endif
-        {
+		{
             this.CheckDisposed();
             buffer = new ArraySegment<byte>(this.GetBuffer(), 0, (int)this.Length);
             // GetBuffer has no failure modes, so this should always succeed

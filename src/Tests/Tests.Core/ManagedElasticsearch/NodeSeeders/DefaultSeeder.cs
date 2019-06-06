@@ -130,7 +130,7 @@ namespace Tests.Core.ManagedElasticsearch.NodeSeeders
 			await Task.WhenAll(tasks);
 		}
 
-		private async Task CreateIndicesAndSeedIndexDataAsync()
+		public async Task CreateIndicesAndSeedIndexDataAsync()
 		{
 			await CreateIndicesAsync();
 			await SeedIndexDataAsync();

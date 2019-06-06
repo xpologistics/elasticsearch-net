@@ -12,7 +12,7 @@ namespace Elasticsearch.Net
 		public static RecyclableMemoryStreamFactory Default { get; } = new RecyclableMemoryStreamFactory();
 
 		public RecyclableMemoryStreamFactory() =>
-			_manager = new RecyclableMemoryStreamManager { AggressiveBufferReturn = true };
+			_manager = new RecyclableMemoryStreamManager { AggressiveBufferReturn = false };
 
 		public MemoryStream Create() => _manager.GetStream();
 

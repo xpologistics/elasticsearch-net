@@ -1,20 +1,24 @@
 ﻿using System;
+using System.Threading.Tasks;
 using BenchmarkDotNet.Running;
 using Elasticsearch.Net;
+using Nest;
+using Tests.Core.Client.Settings;
+using Tests.Core.ManagedElasticsearch.NodeSeeders;
+using Tests.Domain.Extensions;
 using Tests.ScratchPad.Runners.ApiCalls;
 
 namespace Tests.ScratchPad
 {
 	public class Program
 	{
-		private static void Main(string[] args)
+		private static async Task Main(string[] args)
 		{
-			var client = new ElasticLowLevelClient(new ConnectionConfiguration().EnableDebugMode());
-
-			var response =  client.Search<StringResponse>(PostData.Serializable(new {}));
-
-
-			Console.WriteLine(response.DebugInformation);
+			var client = new ElasticClient(new TestConnectionSettings().ApplyDomainSettings().EnableDebugMode());
+			var x = new DefaultSeeder(client);
+			
+			x.SeedNode();
+			Console.WriteLine("Done");
 		}
 
 		private static void Bench<TBenchmark>() where TBenchmark : RunBase => BenchmarkRunner.Run<TBenchmark>();

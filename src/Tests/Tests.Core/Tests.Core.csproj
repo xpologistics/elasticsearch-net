@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tests.Domain\Tests.Domain.csproj" />
-    <PackageReference Include="Elastic.Xunit" Version="0.1.0-ci20190320T170700" />
+    <PackageReference Include="Elastic.Xunit" Version="0.1.0-ci20190605T123730" />
     <PackageReference Include="Proc" Version="0.3.7" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
