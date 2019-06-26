@@ -26,6 +26,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Elasticsearch.Net.Utf8Json.Internal;
 using Elasticsearch.Net.Utf8Json.Resolvers;
 
@@ -88,7 +89,7 @@ namespace Elasticsearch.Net.Utf8Json
         public static byte[] Serialize<T>(T value, IJsonFormatterResolver resolver)
         {
             if (resolver == null) resolver = DefaultResolver;
-			var buffer = MemoryPool.Rent();
+			var buffer = SharedByteArrayPool.Rent();
 			try
 			{
 				var writer = new JsonWriter(buffer);
@@ -98,13 +99,13 @@ namespace Elasticsearch.Net.Utf8Json
 			}
 			finally
 			{
-				MemoryPool.Return(buffer);
+				SharedByteArrayPool.Return(buffer);
 			}
         }
 
         public static void Serialize<T>(ref JsonWriter writer, T value)
         {
-            Serialize<T>(ref writer, value, defaultResolver);
+            Serialize(ref writer, value, defaultResolver);
         }
 
         public static void Serialize<T>(ref JsonWriter writer, T value, IJsonFormatterResolver resolver)
@@ -139,19 +140,19 @@ namespace Elasticsearch.Net.Utf8Json
         /// <summary>
         /// Serialize to stream(write async).
         /// </summary>
-        public static System.Threading.Tasks.Task SerializeAsync<T>(Stream stream, T value)
+        public static Task SerializeAsync<T>(Stream stream, T value)
         {
-            return SerializeAsync<T>(stream, value, defaultResolver);
+            return SerializeAsync(stream, value, defaultResolver);
         }
 
         /// <summary>
         /// Serialize to stream(write async) with specified resolver.
         /// </summary>
-        public static async System.Threading.Tasks.Task SerializeAsync<T>(Stream stream, T value, IJsonFormatterResolver resolver)
+        public static async Task SerializeAsync<T>(Stream stream, T value, IJsonFormatterResolver resolver)
         {
             if (resolver == null) resolver = DefaultResolver;
 
-            var buf = MemoryPool.Rent();
+            var buf = SharedByteArrayPool.Rent();
             try
             {
                 var writer = new JsonWriter(buf);
@@ -162,7 +163,7 @@ namespace Elasticsearch.Net.Utf8Json
             }
             finally
             {
-                MemoryPool.Return(buf);
+                SharedByteArrayPool.Return(buf);
             }
         }
 
@@ -183,7 +184,7 @@ namespace Elasticsearch.Net.Utf8Json
         {
             if (resolver == null) resolver = DefaultResolver;
 
-			var buffer = MemoryPool.Rent();
+			var buffer = SharedByteArrayPool.Rent();
 			try
 			{
 				var writer = new JsonWriter(buffer);
@@ -194,7 +195,7 @@ namespace Elasticsearch.Net.Utf8Json
 			}
 			finally
 			{
-				MemoryPool.Return(buffer);
+				SharedByteArrayPool.Return(buffer);
 			}
         }
 
@@ -213,7 +214,7 @@ namespace Elasticsearch.Net.Utf8Json
         {
             if (resolver == null) resolver = DefaultResolver;
 
-			var buffer = MemoryPool.Rent();
+			var buffer = SharedByteArrayPool.Rent();
 			try
 			{
 				var writer = new JsonWriter(buffer);
@@ -223,7 +224,7 @@ namespace Elasticsearch.Net.Utf8Json
 			}
 			finally
 			{
-				MemoryPool.Return(buffer);
+				SharedByteArrayPool.Return(buffer);
 			}
         }
 
@@ -303,7 +304,7 @@ namespace Elasticsearch.Net.Utf8Json
             }
 #endif
             {
-				var buf = MemoryPool.Rent();
+				var buf = SharedByteArrayPool.Rent();
 				var poolBuf = buf;
 				try
 				{
@@ -320,23 +321,23 @@ namespace Elasticsearch.Net.Utf8Json
 				}
 				finally
 				{
-					MemoryPool.Return(poolBuf);
+					SharedByteArrayPool.Return(poolBuf);
 				}
             }
         }
 
 #if NETSTANDARD
 
-        public static System.Threading.Tasks.Task<T> DeserializeAsync<T>(Stream stream)
+        public static Task<T> DeserializeAsync<T>(Stream stream)
         {
             return DeserializeAsync<T>(stream, defaultResolver);
         }
 
-        public static async System.Threading.Tasks.Task<T> DeserializeAsync<T>(Stream stream, IJsonFormatterResolver resolver)
+        public static async Task<T> DeserializeAsync<T>(Stream stream, IJsonFormatterResolver resolver)
         {
             if (resolver == null) resolver = DefaultResolver;
 
-            var buffer = MemoryPool.Rent();
+            var buffer = SharedByteArrayPool.Rent();
             var buf = buffer;
             try
             {
@@ -362,7 +363,7 @@ namespace Elasticsearch.Net.Utf8Json
             }
             finally
             {
-                MemoryPool.Return(buffer);
+                SharedByteArrayPool.Return(buffer);
             }
         }
 
@@ -373,7 +374,7 @@ namespace Elasticsearch.Net.Utf8Json
 		public static string PrettyPrint(byte[] json, int offset)
         {
             var reader = new JsonReader(json, offset);
-			var buffer = MemoryPool.Rent();
+			var buffer = SharedByteArrayPool.Rent();
 			try
 			{
 				var writer = new JsonWriter(buffer);
@@ -382,14 +383,14 @@ namespace Elasticsearch.Net.Utf8Json
 			}
 			finally
 			{
-				MemoryPool.Return(buffer);
+				SharedByteArrayPool.Return(buffer);
 			}
         }
 
         public static string PrettyPrint(string json)
         {
             var reader = new JsonReader(Encoding.UTF8.GetBytes(json));
-			var buffer = MemoryPool.Rent();
+			var buffer = SharedByteArrayPool.Rent();
 
 			try
 			{
@@ -399,7 +400,7 @@ namespace Elasticsearch.Net.Utf8Json
 			}
 			finally
 			{
-				MemoryPool.Return(buffer);
+				SharedByteArrayPool.Return(buffer);
 			}
         }
 
@@ -411,7 +412,7 @@ namespace Elasticsearch.Net.Utf8Json
         public static byte[] PrettyPrintByteArray(byte[] json, int offset)
         {
             var reader = new JsonReader(json, offset);
-			var buffer = MemoryPool.Rent();
+			var buffer = SharedByteArrayPool.Rent();
 
 			try
 			{
@@ -421,14 +422,14 @@ namespace Elasticsearch.Net.Utf8Json
 			}
 			finally
 			{
-				MemoryPool.Return(buffer);
+				SharedByteArrayPool.Return(buffer);
 			}
         }
 
         public static byte[] PrettyPrintByteArray(string json)
         {
             var reader = new JsonReader(Encoding.UTF8.GetBytes(json));
-			var buffer = MemoryPool.Rent();
+			var buffer = SharedByteArrayPool.Rent();
 			try
 			{
 				var writer = new JsonWriter(buffer);
@@ -437,7 +438,7 @@ namespace Elasticsearch.Net.Utf8Json
 			}
 			finally
 			{
-				MemoryPool.Return(buffer);
+				SharedByteArrayPool.Return(buffer);
 			}
         }
 
@@ -536,18 +537,5 @@ namespace Elasticsearch.Net.Utf8Json
 
             return length;
         }
-
-		internal static class MemoryPool
-		{
-			public static byte[] Rent(int minLength = 65535)
-			{
-				return System.Buffers.ArrayPool<byte>.Shared.Rent(minLength);
-			}
-
-			public static void Return(byte[] bytes)
-			{
-				System.Buffers.ArrayPool<byte>.Shared.Return(bytes);
-			}
-		}
     }
 }

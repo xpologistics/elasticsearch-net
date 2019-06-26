@@ -21,7 +21,7 @@ namespace Nest.JsonNetSerializer.Converters
 		};
 
 		private readonly IElasticsearchSerializer _builtInSerializer;
-		private IMemoryStreamFactory _memoryStreamFactory;
+		private readonly IMemoryStreamFactory _memoryStreamFactory;
 
 		public HandleNestTypesOnSourceJsonConverter(IElasticsearchSerializer builtInSerializer, IMemoryStreamFactory memoryStreamFactory
 		) => (_builtInSerializer, _memoryStreamFactory) = (builtInSerializer, memoryStreamFactory);

@@ -13,8 +13,6 @@ namespace Nest.JsonNetSerializer
 		// Default buffer size of StreamWriter, which is private :(
 		internal const int DefaultBufferSize = 1024;
 
-		private static readonly Task CompletedTask = Task.CompletedTask;
-
 		internal static readonly Encoding ExpectedEncoding = new UTF8Encoding(false);
 		private readonly JsonSerializer _collapsedSerializer;
 
@@ -72,7 +70,7 @@ namespace Nest.JsonNetSerializer
 			//This makes no sense now but we need the async method on the interface in 6.x so we can start swapping this out
 			//for an implementation that does make sense without having to wait for 7.x
 			Serialize(data, stream, formatting);
-			return CompletedTask;
+			return Task.CompletedTask;
 		}
 	}
 }

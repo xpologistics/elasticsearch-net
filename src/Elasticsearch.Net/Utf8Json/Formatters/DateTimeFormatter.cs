@@ -916,7 +916,7 @@ namespace Elasticsearch.Net.Utf8Json.Formatters
             var day = 0;
             if (hasDay)
             {
-                var poolArray = JsonSerializer.MemoryPool.Rent();
+                var poolArray = SharedByteArrayPool.Rent(len);
                 try
                 {
                     for (; array[i] != '.'; i++)
@@ -928,7 +928,7 @@ namespace Elasticsearch.Net.Utf8Json.Formatters
                 }
                 finally
                 {
-					JsonSerializer.MemoryPool.Return(poolArray);
+					SharedByteArrayPool.Return(poolArray);
                 }
             }
 

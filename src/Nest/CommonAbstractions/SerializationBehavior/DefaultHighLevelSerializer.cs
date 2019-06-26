@@ -10,24 +10,14 @@ namespace Nest
 	/// <summary>The built in internal serializer that the high level client NEST uses.</summary>
 	internal class DefaultHighLevelSerializer : IElasticsearchSerializer, IInternalSerializerWithFormatter
 	{
-		internal const int DefaultBufferSize = 1024;
 
 		public DefaultHighLevelSerializer(IJsonFormatterResolver formatterResolver) => FormatterResolver = formatterResolver;
 
 		public IJsonFormatterResolver FormatterResolver { get; }
 
-		/// <summary>
-		/// The size of the buffer to use when writing the serialized request
-		/// to the request stream
-		/// </summary>
-		// Performance tests as part of https://github.com/elastic/elasticsearch-net/issues/1899 indicate this
-		// to be a good compromise buffer size for performance throughput and bytes allocated.
-		protected virtual int BufferSize => DefaultBufferSize;
-
 		public T Deserialize<T>(Stream stream)
 		{
 			if (stream == null || stream.CanSeek && stream.Length == 0) return default;
-
 			return JsonSerializer.Deserialize<T>(stream, FormatterResolver);
 		}
 
@@ -41,21 +31,19 @@ namespace Nest
 		public Task<T> DeserializeAsync<T>(Stream stream, CancellationToken cancellationToken = default)
 		{
 			if (stream == null || stream.CanSeek && stream.Length == 0) return Task.FromResult(default(T));
-
 			return JsonSerializer.DeserializeAsync<T>(stream, FormatterResolver);
 		}
 
 		public Task<object> DeserializeAsync(Type type, Stream stream, CancellationToken cancellationToken = default)
 		{
 			if (stream == null || stream.CanSeek && stream.Length == 0) return Task.FromResult(type.DefaultValue());
-
 			return JsonSerializer.NonGeneric.DeserializeAsync(type, stream, FormatterResolver);
 		}
 
-		public virtual void Serialize<T>(T data, Stream writableStream, SerializationFormatting formatting = SerializationFormatting.Indented) =>
-			JsonSerializer.Serialize(writableStream, data, FormatterResolver);
+		public void Serialize<T>(T data, Stream stream, SerializationFormatting formatting = SerializationFormatting.None) =>
+			JsonSerializer.Serialize(stream, data, FormatterResolver);
 
-		public Task SerializeAsync<T>(T data, Stream stream, SerializationFormatting formatting = SerializationFormatting.Indented,
+		public Task SerializeAsync<T>(T data, Stream stream, SerializationFormatting formatting = SerializationFormatting.None,
 			CancellationToken cancellationToken = default
 		) => JsonSerializer.SerializeAsync(stream, data, FormatterResolver);
 	}

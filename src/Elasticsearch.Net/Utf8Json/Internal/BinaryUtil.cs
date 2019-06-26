@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Net;
 using System.Runtime.CompilerServices;
 
 namespace Elasticsearch.Net.Utf8Json.Internal
@@ -38,7 +39,7 @@ namespace Elasticsearch.Net.Utf8Json.Internal
         {
             var newLength = offset + appendLength;
 
-            // If null(most case fisrt time) fill byte.
+            // If null(most case first time) fill byte.
             if (bytes == null)
             {
                 bytes = new byte[newLength];
@@ -90,15 +91,18 @@ namespace Elasticsearch.Net.Utf8Json.Internal
             byte[] array2 = array;
             if (array2 == null)
 			{
-				array = JsonSerializer.MemoryPool.Rent(newSize);
+				array = SharedByteArrayPool.Rent(newSize);
                 return;
             }
 
             if (array2.Length != newSize)
             {
-                byte[] array3 = JsonSerializer.MemoryPool.Rent(newSize);
+                byte[] array3 = SharedByteArrayPool.Rent(newSize);
                 Buffer.BlockCopy(array2, 0, array3, 0, (array2.Length > newSize) ? newSize : array2.Length);
                 array = array3;
+
+				// TODO: return original array to array pool?
+				//SharedByteArrayPool.Return(array2);
             }
         }
 
@@ -113,8 +117,6 @@ namespace Elasticsearch.Net.Utf8Json.Internal
         {
             if (newSize < 0) throw new ArgumentOutOfRangeException("newSize");
             if (src.Length < newSize) throw new ArgumentException("length < newSize");
-
-            if (src == null) return new byte[newSize];
 
             byte[] dst = new byte[newSize];
 
