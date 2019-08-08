@@ -22,8 +22,9 @@
 // SOFTWARE.
 #endregion
 
-#if NETSTANDARD
 
+using System.Diagnostics.CodeAnalysis;
+#if NETSTANDARD
 using System;
 // ReSharper disable All
 
