@@ -146,6 +146,20 @@ namespace Elasticsearch.Net.Specification.MachineLearningApi
 		public override bool SupportsBody => false;
 	}
 
+	///<summary>Request options for DeleteTrainedModel <para>https://www.elastic.co/guide/en/elasticsearch/reference/current/delete-inference.html</para></summary>
+	public class DeleteTrainedModelRequestParameters : RequestParameters<DeleteTrainedModelRequestParameters>
+	{
+		public override HttpMethod DefaultHttpMethod => HttpMethod.DELETE;
+		public override bool SupportsBody => false;
+	}
+
+	///<summary>Request options for ExplainDataFrameAnalytics <para>http://www.elastic.co/guide/en/elasticsearch/reference/current/explain-dfanalytics.html</para></summary>
+	public class ExplainDataFrameAnalyticsRequestParameters : RequestParameters<ExplainDataFrameAnalyticsRequestParameters>
+	{
+		public override HttpMethod DefaultHttpMethod => HttpMethod.POST;
+		public override bool SupportsBody => true;
+	}
+
 	///<summary>Request options for FlushJob <para>http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-flush-job.html</para></summary>
 	public class FlushJobRequestParameters : RequestParameters<FlushJobRequestParameters>
 	{
@@ -314,6 +328,83 @@ namespace Elasticsearch.Net.Specification.MachineLearningApi
 		public override bool SupportsBody => true;
 	}
 
+	///<summary>Request options for GetTrainedModels <para>https://www.elastic.co/guide/en/elasticsearch/reference/current/get-inference.html</para></summary>
+	public class GetTrainedModelsRequestParameters : RequestParameters<GetTrainedModelsRequestParameters>
+	{
+		public override HttpMethod DefaultHttpMethod => HttpMethod.GET;
+		public override bool SupportsBody => false;
+		///<summary>
+		/// Whether to ignore if a wildcard expression matches no trained models. (This includes `_all` string or when no trained models have been
+		/// specified)
+		///</summary>
+		public bool? AllowNoMatch
+		{
+			get => Q<bool? >("allow_no_match");
+			set => Q("allow_no_match", value);
+		}
+
+		///<summary>Should the model definition be decompressed into valid JSON or returned in a custom compressed format. Defaults to true.</summary>
+		public bool? DecompressDefinition
+		{
+			get => Q<bool? >("decompress_definition");
+			set => Q("decompress_definition", value);
+		}
+
+		///<summary>skips a number of trained models</summary>
+		public int? From
+		{
+			get => Q<int? >("from");
+			set => Q("from", value);
+		}
+
+		///<summary>
+		/// Should the full model definition be included in the results. These definitions can be large. So be cautious when including them. Defaults
+		/// to false.
+		///</summary>
+		public bool? IncludeModelDefinition
+		{
+			get => Q<bool? >("include_model_definition");
+			set => Q("include_model_definition", value);
+		}
+
+		///<summary>specifies a max number of trained models to get</summary>
+		public int? Size
+		{
+			get => Q<int? >("size");
+			set => Q("size", value);
+		}
+	}
+
+	///<summary>Request options for GetTrainedModelsStats <para>https://www.elastic.co/guide/en/elasticsearch/reference/current/get-inference-stats.html</para></summary>
+	public class GetTrainedModelsStatsRequestParameters : RequestParameters<GetTrainedModelsStatsRequestParameters>
+	{
+		public override HttpMethod DefaultHttpMethod => HttpMethod.GET;
+		public override bool SupportsBody => false;
+		///<summary>
+		/// Whether to ignore if a wildcard expression matches no trained models. (This includes `_all` string or when no trained models have been
+		/// specified)
+		///</summary>
+		public bool? AllowNoMatch
+		{
+			get => Q<bool? >("allow_no_match");
+			set => Q("allow_no_match", value);
+		}
+
+		///<summary>skips a number of trained models</summary>
+		public int? From
+		{
+			get => Q<int? >("from");
+			set => Q("from", value);
+		}
+
+		///<summary>specifies a max number of trained models to get</summary>
+		public int? Size
+		{
+			get => Q<int? >("size");
+			set => Q("size", value);
+		}
+	}
+
 	///<summary>Request options for Info</summary>
 	public class MachineLearningInfoRequestParameters : RequestParameters<MachineLearningInfoRequestParameters>
 	{
@@ -392,6 +483,13 @@ namespace Elasticsearch.Net.Specification.MachineLearningApi
 
 	///<summary>Request options for PutJob <para>http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-job.html</para></summary>
 	public class PutJobRequestParameters : RequestParameters<PutJobRequestParameters>
+	{
+		public override HttpMethod DefaultHttpMethod => HttpMethod.PUT;
+		public override bool SupportsBody => true;
+	}
+
+	///<summary>Request options for PutTrainedModel <para>TODO</para></summary>
+	public class PutTrainedModelRequestParameters : RequestParameters<PutTrainedModelRequestParameters>
 	{
 		public override HttpMethod DefaultHttpMethod => HttpMethod.PUT;
 		public override bool SupportsBody => true;
