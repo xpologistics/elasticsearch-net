@@ -16,36 +16,33 @@ namespace ApiGenerator.Generator
 	{
 		public static List<string> Warnings { get; private set; }
 
-		public static async Task Generate(string downloadBranch, params string[] folders)
+		public static async Task Generate(string downloadBranch, bool lowLevelOnly, params string[] folders)
 		{
 			Warnings = new List<string>();
 			var spec = CreateRestApiSpecModel(downloadBranch, folders);
 			var generators = new List<RazorGeneratorBase>
 			{
-
 				//low level client
 				new LowLevelClientInterfaceGenerator(),
 				new LowLevelClientImplementationGenerator(),
 				new RequestParametersGenerator(),
 				new EnumsGenerator(),
-
-
-				//high level client
-				new HighLevelClientInterfaceGenerator(),
-				new HighLevelClientImplementationGenerator(),
-				new DescriptorsGenerator(),
-				new RequestsGenerator(),
-				new ApiUrlsLookupsGenerator(),
 			};
 
-			using (var pbar = new ProgressBar(generators.Count, "Generating code", new ProgressBarOptions { BackgroundColor = ConsoleColor.DarkGray }))
-			{
-				foreach (var generator in generators)
+			if (!lowLevelOnly)
+				generators.AddRange(new RazorGeneratorBase[]
 				{
-					pbar.Message = "Generating " + generator.Title;
-					await generator.Generate(spec, pbar);
-					pbar.Tick("Generated " + generator.Title);
-				}
+					//high level client
+					new HighLevelClientInterfaceGenerator(), new HighLevelClientImplementationGenerator(), new DescriptorsGenerator(),
+					new RequestsGenerator(), new ApiUrlsLookupsGenerator(),
+				});
+
+			using var pbar = new ProgressBar(generators.Count, "Generating code", new ProgressBarOptions { BackgroundColor = ConsoleColor.DarkGray });
+			foreach (var generator in generators)
+			{
+				pbar.Message = "Generating " + generator.Title;
+				await generator.Generate(spec, pbar);
+				pbar.Tick("Generated " + generator.Title);
 			}
 
 			// Check if there are any non-Stable endpoints present.
@@ -69,7 +66,7 @@ namespace ApiGenerator.Generator
 		{
 			var directories = Directory.GetDirectories(GeneratorLocations.RestSpecificationFolder, "*", SearchOption.AllDirectories)
 				.Where(f => folders == null || folders.Length == 0 || folders.Contains(new DirectoryInfo(f).Name))
-				.OrderBy(f=>new FileInfo(f).Name)
+				.OrderBy(f => new FileInfo(f).Name)
 				.ToList();
 
 			var endpoints = new SortedDictionary<string, ApiEndpoint>();
@@ -109,11 +106,12 @@ namespace ApiGenerator.Generator
 					pbar.Tick();
 				}
 			}
-			var wrongMapsApi = CodeConfiguration.ApiNameMapping.Where(k =>!string.IsNullOrWhiteSpace(k.Key) && !seenFiles.Contains(k.Key));
+			var wrongMapsApi = CodeConfiguration.ApiNameMapping.Where(k => !string.IsNullOrWhiteSpace(k.Key) && !seenFiles.Contains(k.Key));
 			foreach (var (key, value) in wrongMapsApi)
 			{
 				var isIgnored = CodeConfiguration.IgnoredApis.Contains($"{value}.json");
-				if (isIgnored) Warnings.Add($"{value} uses MapsApi: {key} ignored in ${nameof(CodeConfiguration)}.{nameof(CodeConfiguration.IgnoredApis)}");
+				if (isIgnored)
+					Warnings.Add($"{value} uses MapsApi: {key} ignored in ${nameof(CodeConfiguration)}.{nameof(CodeConfiguration.IgnoredApis)}");
 				else Warnings.Add($"{value} uses MapsApi: {key} which does not exist");
 			}
 
