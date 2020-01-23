@@ -198,8 +198,11 @@ type OperationExecutor(client:IElasticLowLevelClient) =
             return Succeeded op
         | Skip s ->
             let skip reason = Skipped (op, s.Reason |> Option.defaultValue reason)
-            let versionRangeCheck (v:SemVer.Range) = 
-                match v.IsSatisfied(op.Version) with
+            let versionRangeCheck (v:SemVer.Range) =
+                let anchoredVersion =
+                    let x = SemVer.Version(op.Version)
+                    sprintf "%i.%i.%i" x.Major x.Minor x.Patch
+                match v.IsSatisfied(op.Version) || v.IsSatisfied(anchoredVersion) with
                 | true -> skip (sprintf "version:%s in range:%O" op.Version v)
                 | false -> NotSkipped op
             let featureCheck (features:Feature list) =

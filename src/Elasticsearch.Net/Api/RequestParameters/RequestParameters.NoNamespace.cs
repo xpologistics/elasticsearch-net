@@ -976,6 +976,13 @@ namespace Elasticsearch.Net
 		}
 	}
 
+	///<summary>Request options for GetScriptContext</summary>
+	public class GetScriptContextRequestParameters : RequestParameters<GetScriptContextRequestParameters>
+	{
+		public override HttpMethod DefaultHttpMethod => HttpMethod.GET;
+		public override bool SupportsBody => false;
+	}
+
 	///<summary>Request options for GetScriptLanguages</summary>
 	public class GetScriptLanguagesRequestParameters : RequestParameters<GetScriptLanguagesRequestParameters>
 	{

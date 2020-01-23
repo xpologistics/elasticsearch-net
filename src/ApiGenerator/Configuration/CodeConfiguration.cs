@@ -45,7 +45,6 @@ namespace ApiGenerator.Configuration
 			"monitoring.bulk.json",
 			"ml.estimate_memory_usage.json",
 
-			"get_script_context.json",
 			"indices.exists_type.json",
 			"data_frame_transform_deprecated.delete_transform.json",
 			"data_frame_transform_deprecated.get_transform.json",

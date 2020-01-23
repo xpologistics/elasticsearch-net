@@ -57,7 +57,7 @@ let private mapSkip (operation:YamlMap) =
     let versionRange =
         match version with
         | Some "all"
-        | Some "All" -> Some <| SemVer.Range(">0.0.0")
+        | Some "All" -> Some <| SemVer.Range("0.0.0 - 100.0.0")
         | Some v ->
             let range =
                 let range = Regex.Replace(v, @"^\s*?-", "0.0.0 -")

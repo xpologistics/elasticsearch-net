@@ -30,9 +30,9 @@ namespace ApiGenerator.Configuration
 				var runningAsDnx =
 					directoryInfo.Name == "ApiGenerator" &&
 					directoryInfo.Parent != null &&
-					directoryInfo.Parent.Name == "CodeGeneration";
+					directoryInfo.Parent.Name == "src";
 
-				_root = runningAsDnx ? "" : @"../../../";
+				_root = runningAsDnx ? "" : @"../../";
 				return _root;
 			}
 		}
