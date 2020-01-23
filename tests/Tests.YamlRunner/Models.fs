@@ -23,7 +23,7 @@ type DoCatch =
     | Unavailable//unavailable a 503 response from ES
     | UnknownParameter //param a client-side error indicating an unknown parameter has been passed to the method
     | OtherBadResponse //request 4xx-5xx error response from ES, not equal to any named response above
-    | CatchRegex // /foo bar/ the text of the error message matches this regular expression
+    | CatchRegex of string // /foo bar/ the text of the error message matches this regular expression
     
 let (|IsDoCatch|_|) (s:string) =
     match s with
@@ -36,8 +36,7 @@ let (|IsDoCatch|_|) (s:string) =
     | "unavailable" -> Some Unavailable
     | "param" -> Some UnknownParameter
     | "request" -> Some OtherBadResponse 
-    | "regex" -> Some CatchRegex
-    | _ -> None
+    | s -> Some <| CatchRegex (s.Trim('/'))
     
 type NodeSelector =
     | NodeVersionSelector of string
@@ -73,6 +72,7 @@ let (|ResponsePath|WholeResponse|) input =
 
 type Set = Map<ResponseProperty, StashedId>
 type TransformAndSet = Map<StashedId, SetTransformation>
+type Headers = Map<string, string>
 type RegexAssertion = { Regex:Regex }
 type AssertValue =
     Id of StashedId | Value of Object | RegexAssertion of RegexAssertion
@@ -102,24 +102,27 @@ type Do = {
     Catch:DoCatch option
     Warnings:option<string list>
     NodeSelector:NodeSelector option
+    Headers: Headers option
 }
     with member this.Log () = sprintf "Api %s" <| fst this.ApiCall
 
 type Feature =
-    | CatchUnauthorized // "catch_unauthorized",
-    | DefaultShards // "default_shards",
-    | EmbeddedStashKey // "embedded_stash_key",
-    | Headers // "headers",
-    | NodeSelector // "node_selector",
-    | StashInKey // "stash_in_key",
+    | CatchUnauthorized // "catch_unauthorized", //NOT seen in master
+    | DefaultShards // "default_shards", //NOT seen in master
+    | EmbeddedStashKey // "embedded_stash_key", //NOT seen in master
+    | Headers // "headers", //TODO parsed but skipped and not support because client does not expose this
+    | NodeSelector // "node_selector", //TODO support
+    | StashInKey // "stash_in_key", //NOT seen in master
     | StashInPath // "stash_in_path",
-    | StashPathReplace // "stash_path_replace",
-    | Warnings // "warnings",
-    | Yaml // "yaml",
-    | Contains // "contains",
-    | TransformAndSet // "transform_and_set",
+    | StashPathReplace // "stash_path_replace", //NOT seen in master
+    | Warnings // "warnings", 
+    | Yaml // "yaml", 
+    | Contains // "contains", //NOT seen in master
+    | TransformAndSet // "transform_and_set", //TODO support
     | ArbitraryKey // "arbitrary_key"
     | Unsupported of string
+
+let SupportedFeatures = [EmbeddedStashKey; StashInPath; Yaml; TransformAndSet; ArbitraryKey; Warnings]
     
 let (|ToFeature|) (s:string) =
     match s with
@@ -138,7 +141,7 @@ let (|ToFeature|) (s:string) =
     | "arbitrary_key" -> ArbitraryKey
     | s -> Unsupported s
 
-type Skip = { Version:string option; Reason:string option; Features: Feature list option }
+type Skip = { Version:SemVer.Range option; Reason:string option; Features: Feature list option }
     with member this.Log = sprintf "Version %A Features:%A Reason: %A" this.Version this.Features this.Reason
 
 type NumericAssert = 
@@ -204,8 +207,10 @@ type Operation =
 let (|IsOperation|_|) (s:string) =
     match s with
     | "skip" 
+    | "warnings" 
     | "set" 
     | "transform_and_set" 
+    | "headers" 
     | "do" 
     | "match" 
     | "is_false" 

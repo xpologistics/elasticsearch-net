@@ -13,6 +13,7 @@ open Newtonsoft.Json.Linq
 open System.Collections.Generic
 
 type ExecutionContext = {
+    Version: string
     Suite: TestSuite
     Folder: DirectoryInfo
     File: FileInfo
@@ -38,11 +39,13 @@ type Fail =
 
 type ExecutionResult =
     | Succeeded of ExecutionContext
-    | Skipped of ExecutionContext 
+    | Skipped of ExecutionContext * string
+    | NotSkipped of ExecutionContext
     | Failed of Fail
     with
         member this.Name = match FSharpValue.GetUnionFields(this, this.GetType()) with | (case, _) -> case.Name
-        member this.Context = match this with | Succeeded c -> c | Skipped c -> c | Failed f -> f.Context
+        member this.Context =
+            match this with | Succeeded c -> c | NotSkipped c -> c | Skipped (c, _) -> c | Failed f -> f.Context
 
 
 type OperationExecutor(client:IElasticLowLevelClient) =
@@ -80,8 +83,17 @@ type OperationExecutor(client:IElasticLowLevelClient) =
             
             op.Stashes.ResponseOption <- Some r
             
+            let result = 
+                match d.Catch with
+                | Some (CatchRegex regexp) ->
+                    let body = System.Text.Encoding.UTF8.GetString(r.ApiCall.ResponseBodyInBytes)
+                    match System.Text.RegularExpressions.Regex.IsMatch(body, regexp) with
+                    | true -> Succeeded op
+                    | false -> Failed <| Fail.Create op "Catching error failed: %O on server error" d.Catch 
+                | _ -> Succeeded op
+            
             //progress.WriteLine <| sprintf "%s %s" (r.ApiCall.HttpMethod.ToString()) (r.Uri.PathAndQuery)
-            return Succeeded op
+            return result
         with
         | ParamException e ->
             match d.Catch with
@@ -115,7 +127,8 @@ type OperationExecutor(client:IElasticLowLevelClient) =
     static member IsFalse op (t:AssertOn) progress =
         let isTrue = OperationExecutor.IsTrue op t progress
         match isTrue with
-        | Skipped op -> Skipped op
+        | Skipped (op, r) -> Skipped (op, r)
+        | NotSkipped c -> NotSkipped c
         | Failed f -> Succeeded f.Context
         | Succeeded op ->
             Failed <| Fail.Create op "Expected is_false but got is_true behavior"
@@ -172,20 +185,48 @@ type OperationExecutor(client:IElasticLowLevelClient) =
             matchOp
             |> Map.toList
             |> Seq.map (fun (k, v) -> doMatch k v)
-            |> Seq.sortBy (fun ex -> match ex with | Succeeded o -> 3 | Skipped o -> 2 | Failed o -> 1)
+            |> Seq.sortBy (fun ex -> match ex with | Succeeded o -> 4 | Skipped (o, s) -> 3 | NotSkipped s -> 2 | Failed o -> 1)
             |> Seq.toList
             
         asserts |> Seq.head
 
     member this.Execute (op:ExecutionContext) (progress:IProgressBar) = async {
         match op.Operation with
-        | Unknown u -> return Skipped op
+        | Unknown u -> return Skipped (op, sprintf "Unknown operation: %s" u)
         | Actions (s, a) ->
-            // TODO try with
             a client
             return Succeeded op
+        | Skip s ->
+            let skip reason = Skipped (op, s.Reason |> Option.defaultValue reason)
+            let versionRangeCheck (v:SemVer.Range) = 
+                match v.IsSatisfied(op.Version) with
+                | true -> skip (sprintf "version:%s in range:%O" op.Version v)
+                | false -> NotSkipped op
+            let featureCheck (features:Feature list) =
+                let unsupportedFeatures =
+                    features
+                    |> Seq.filter (fun feature -> not (SupportedFeatures |> List.contains feature))
+                    |> Seq.toList
+                
+                match unsupportedFeatures with
+                | [] -> NotSkipped op
+                | _ -> skip (sprintf "feature %O not support" features)
             
-        | Skip s -> return Skipped op
+            let result =
+                match (s.Version, s.Features) with
+                | (Some v, Some features) ->
+                    match (versionRangeCheck v) with
+                    | Skipped (op, r) -> Skipped (op, r)
+                    | _ ->
+                        featureCheck features
+                | (Some v, None) -> 
+                    versionRangeCheck v
+                | (None, Some features) ->
+                    featureCheck features
+                | _  ->
+                    NotSkipped op
+    
+            return result
         | Do d ->
             let (name, _) = d.ApiCall
             let found, lookup = this.OpMap.TryGetValue name
@@ -194,13 +235,13 @@ type OperationExecutor(client:IElasticLowLevelClient) =
             else 
                 return Failed <| Fail.Create op "Api: %s not found on client" name 
         | Set s -> return OperationExecutor.Set op s progress
-        | TransformAndSet ts -> return Skipped op
+        | TransformAndSet ts -> return Skipped (op, "TODO transform_and_set")
         | Assert a ->
             return
                 match a with
                 | IsTrue t -> OperationExecutor.IsTrue op t progress
                 | IsFalse t -> OperationExecutor.IsFalse op t progress
                 | Match m -> OperationExecutor.IsMatch op m progress
-                | NumericAssert (a, m) -> Skipped op
+                | NumericAssert (a, m) -> Skipped (op, "numeric_assert")
               
     }

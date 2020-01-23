@@ -9,12 +9,13 @@ open Tests.YamlRunner.OperationExecutor
 open Tests.YamlRunner.Stashes
 open Elasticsearch.Net
 
-type TestRunner(client:IElasticLowLevelClient, progress:IProgressBar, barOptions:ProgressBarOptions) =
+type TestRunner(client:IElasticLowLevelClient, version: string, progress:IProgressBar, barOptions:ProgressBarOptions) =
     
     member this.OperationExecutor = OperationExecutor(client)
     
     member private this.RunOperation file section operation nth stashes (subProgressBar:IProgressBar) = async {
         let executionContext = {
+            Version = version
             Suite= OpenSource
             File= file
             Folder= file.Directory
@@ -52,14 +53,17 @@ type TestRunner(client:IElasticLowLevelClient, progress:IProgressBar, barOptions
         let m section ops = this.CreateOperations section file.FileInfo ops subProgressbar
         let bootstrap section operations =
             let ops = operations |> Option.map (m section) |> Option.toList |> List.collect (fun (s, ops) -> ops)
-            (section, ops)
+            ops
         
         let setup =  bootstrap "Setup" file.Setup 
         let teardown = bootstrap "Teardown" file.Teardown 
         let sections =
             file.Tests
             |> List.map (fun s -> s.Operations |> m s.Name)
-            |> List.collect (fun s -> [setup; s; teardown])
+            |> List.collect (fun s ->
+                let (name, ops) = s
+                [(name, setup @ ops)]
+            )
         
         let l = sections.Length
         let ops = sections |> List.sumBy (fun (_, i) -> i.Length)
@@ -78,7 +82,8 @@ type TestRunner(client:IElasticLowLevelClient, progress:IProgressBar, barOptions
                         let r = Async.RunSynchronously op
                         match r with
                         | Succeeded context -> Some (r, tl)
-                        | Skipped context -> Some (r, tl)
+                        | NotSkipped context -> Some (r, tl)
+                        | Skipped (context, reason) -> Some (r, [])
                         | Failed context -> Some (r, [])
                     | [] -> None
                 )
@@ -89,10 +94,17 @@ type TestRunner(client:IElasticLowLevelClient, progress:IProgressBar, barOptions
         let runAllSections =
             sections
             |> Seq.indexed
-            |> Seq.map (fun (i, suite) -> 
-                let progressHeader = sprintf "[%i/%i] sections" (i+1) l
-                let (sectionHeader, ops) = suite
-                runSection progressHeader sectionHeader ops 
+            |> Seq.collect (fun (i, suite) ->
+                let run section =
+                    let progressHeader = sprintf "[%i/%i] sections" (i+1) l
+                    let (sectionHeader, ops) = section
+                    runSection progressHeader sectionHeader ops;
+                [
+                    // setup run as part of the suite, unfold will stop if setup fails or skips
+                    run suite;
+                    //always run teardown
+                    run ("Teardown", teardown)
+                ]
             )
             |> Seq.map Async.RunSynchronously
         

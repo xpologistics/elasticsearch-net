@@ -6,7 +6,9 @@ open System.Text.RegularExpressions
 open System.Linq
 
 open Elasticsearch.Net
+open Elasticsearch.Net.Specification.CatApi
 open System.IO
+open Tests.YamlRunner
 open Tests.YamlRunner.Models
 open Tests.YamlRunner.Models
 open Tests.YamlRunner.TestsLocator
@@ -52,9 +54,18 @@ let private mapSkip (operation:YamlMap) =
             | :? List<Object> -> tryPickList<string, Feature> operation "features" parseFeature
             | :? String as feature -> Some [parseFeature feature]
             | _ -> None
+    let versionRange =
+        match version with
+        | Some "all"
+        | Some "All" -> Some <| SemVer.Range(">0.0.0")
+        | Some v ->
+            let range =
+                let range = Regex.Replace(v, @"^\s*?-", "0.0.0 -")
+                Regex.Replace(range, @"-\s*?$", "- 100.0.0")
+            Some <| SemVer.Range(range)
+        | None -> None
         
-        
-    Skip { Version=version; Reason=reason; Features=features }
+    Skip { Version=versionRange; Reason=reason; Features=features }
     
 let private mapNumericAssert (operation:YamlMap) =
     operation
@@ -116,6 +127,14 @@ let private mapDo (operation:YamlMap) =
             match s with | IsDoCatch s -> Some s | _ -> None
         | _ -> None
         
+    let headers =
+        match tryPick<YamlMap> operation "headers" with
+        | Some map ->
+            Some <| (map
+                |> Seq.map (fun (kv) -> kv.Key :?> string, kv.Value :?> string)
+                |> Map.ofSeq)
+        | None -> None
+    
     let warnings = tryPickList<string, string> operation "warnings" id
     let nodeSelector = mapNodeSelector operation
     Do {
@@ -123,6 +142,7 @@ let private mapDo (operation:YamlMap) =
         Catch = catch
         Warnings = warnings
         NodeSelector = nodeSelector
+        Headers =  headers
     }
     
 let private mapOperation (operation:YamlMap) =
@@ -174,8 +194,14 @@ type YamlTestDocument = {
 }
 
 let private DefaultSetup : Operation list = [Actions("Setup", fun client ->
-    let x = client.Indices.Delete<VoidResponse>("*") 
-    let x = client.Indices.DeleteTemplateForAll<VoidResponse>("*")
+    let x = client.Indices.Delete<VoidResponse>("*")
+    let templates =
+        client.Cat.Templates<StringResponse>("*", CatTemplatesRequestParameters(Headers=["name"].ToArray()))
+            .Body.Split("\n")
+            |> Seq.filter(fun f -> not(String.IsNullOrWhiteSpace(f)) && not(f.StartsWith(".")) && f <> "security-audit-log")
+            //TODO template does not accept comma separated list but is documented as such
+            |> Seq.iter(fun template -> client.Indices.DeleteTemplateForAll<VoidResponse>(template) |> ignore)
+    
     ignore()
 )]
 
@@ -194,7 +220,7 @@ let ReadYamlFile (yamlInfo:YamlFileInfo) =
 
     let serializer = SharpYaml.Serialization.Serializer()
     let sections =
-        let r e message = raise <| new Exception(message, e)
+        let r e message = raise <| Exception(message, e)
         Regex.Split(yamlInfo.Yaml, @"---\s*?\r?\n")
         |> Seq.filter (fun s -> not <| String.IsNullOrWhiteSpace s)
         |> Seq.map (fun sectionString ->

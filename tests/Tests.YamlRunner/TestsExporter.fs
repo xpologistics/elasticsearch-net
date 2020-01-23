@@ -17,7 +17,8 @@ let XAttribute(name, value) = new XAttribute(XName.Get name, value)
 
 let mapExecutionResult result =
     match result with
-    | ExecutionResult.Succeeded f -> None
+    | ExecutionResult.NotSkipped c 
+    | ExecutionResult.Succeeded c -> None
     | ExecutionResult.Failed f ->
         let c = f.Context
         let message =
@@ -34,14 +35,15 @@ let mapExecutionResult result =
             | Some r -> failure.Value <- r.DebugInformation
             | None -> failure.Value <- "Could not access response!"
             Some failure
-    | ExecutionResult.Skipped s ->
-        Some <| XElement("skipped", [])
+    | ExecutionResult.Skipped (c, reason) ->
+        Some <| XElement("skipped", [XAttribute("message", reason)])
         
 let private timeOf result =
     match result with
-    | ExecutionResult.Succeeded f -> !f.Elapsed
+    | ExecutionResult.Succeeded c -> !c.Elapsed
+    | ExecutionResult.NotSkipped c -> !c.Elapsed
     | ExecutionResult.Failed f -> !f.Context.Elapsed
-    | ExecutionResult.Skipped s -> !s.Elapsed
+    | ExecutionResult.Skipped (c, reason) -> !c.Elapsed
 
 let testCasesSection document (results: FileResults) =
     results

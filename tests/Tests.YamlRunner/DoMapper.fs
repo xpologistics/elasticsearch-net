@@ -95,7 +95,7 @@ type FastApiInvoke(instance: Object, restName:string, pathParams:KeyedCollection
             |> Seq.cast<Object>
             |> Seq.toArray
         
-        let requestParameters = this.CreateRequestParameters.Invoke();
+        let requestParameters = this.CreateRequestParameters.Invoke()
         o
         |> Map.toSeq
         |> Seq.filter (fun (k, v) -> not <| this.PathParameters.Contains(k))
