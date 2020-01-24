@@ -3,6 +3,7 @@ module Tests.YamlRunner.Models
 open Elasticsearch.Net
 open System
 open System.Collections.Generic
+open System.Collections.Specialized
 open System.Text.RegularExpressions
 open Microsoft.FSharp.Reflection
 
@@ -72,7 +73,7 @@ let (|ResponsePath|WholeResponse|) input =
 
 type Set = Map<ResponseProperty, StashedId>
 type TransformAndSet = Map<StashedId, SetTransformation>
-type Headers = Map<string, string>
+type Headers = NameValueCollection
 type RegexAssertion = { Regex:Regex }
 type AssertValue =
     Id of StashedId | Value of Object | RegexAssertion of RegexAssertion
@@ -110,7 +111,7 @@ type Feature =
     | CatchUnauthorized // "catch_unauthorized", //NOT seen in master
     | DefaultShards // "default_shards", //NOT seen in master
     | EmbeddedStashKey // "embedded_stash_key", //NOT seen in master
-    | Headers // "headers", //TODO parsed but skipped and not support because client does not expose this
+    | Headers // "headers", 
     | NodeSelector // "node_selector", //TODO support
     | StashInKey // "stash_in_key", //NOT seen in master
     | StashInPath // "stash_in_path",
@@ -122,7 +123,7 @@ type Feature =
     | ArbitraryKey // "arbitrary_key"
     | Unsupported of string
 
-let SupportedFeatures = [EmbeddedStashKey; StashInPath; Yaml; TransformAndSet; ArbitraryKey; Warnings]
+let SupportedFeatures = [EmbeddedStashKey; StashInPath; Yaml; TransformAndSet; ArbitraryKey; Warnings; Headers]
     
 let (|ToFeature|) (s:string) =
     match s with

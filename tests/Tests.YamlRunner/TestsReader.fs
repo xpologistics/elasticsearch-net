@@ -5,6 +5,7 @@ open System.Collections.Generic
 open System.Text.RegularExpressions
 open System.Linq
 
+open System.Collections.Specialized
 open Elasticsearch.Net
 open Elasticsearch.Net.Specification.CatApi
 open System.IO
@@ -126,7 +127,14 @@ let private mapDo (operation:YamlMap) =
         | Some map ->
             Some <| (map
                 |> Seq.map (fun (kv) -> kv.Key :?> string, kv.Value :?> string)
-                |> Map.ofSeq)
+                |> Map.ofSeq
+                |> Map.fold
+                  (fun (nv:NameValueCollection) k v ->
+                    (nv.[k] <- v)
+                    nv
+                  )
+                  (NameValueCollection())
+           )
         | None -> None
     
     let warnings = tryPickList<string, string> operation "warnings" id
@@ -142,7 +150,7 @@ let private mapDo (operation:YamlMap) =
         Catch = catch
         Warnings = warnings
         NodeSelector = nodeSelector
-        Headers =  headers
+        Headers = headers
     }
     
 let private mapOperation (operation:YamlMap) =

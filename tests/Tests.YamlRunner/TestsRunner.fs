@@ -8,6 +8,7 @@ open Tests.YamlRunner.TestsReader
 open Tests.YamlRunner.OperationExecutor
 open Tests.YamlRunner.Stashes
 open Elasticsearch.Net
+open Skips
 
 type TestRunner(client:IElasticLowLevelClient, version: string, progress:IProgressBar, barOptions:ProgressBarOptions) =
     
@@ -95,16 +96,30 @@ type TestRunner(client:IElasticLowLevelClient, version: string, progress:IProgre
             sections
             |> Seq.indexed
             |> Seq.collect (fun (i, suite) ->
-                let run section =
-                    let progressHeader = sprintf "[%i/%i] sections" (i+1) l
-                    let (sectionHeader, ops) = section
-                    runSection progressHeader sectionHeader ops;
-                [
-                    // setup run as part of the suite, unfold will stop if setup fails or skips
-                    run suite;
-                    //always run teardown
-                    run ("Teardown", teardown)
-                ]
+                let runTests () =
+                    let run section =
+                        let progressHeader = sprintf "[%i/%i] sections" (i+1) l
+                        let (sectionHeader, ops) = section
+                        runSection progressHeader sectionHeader ops;
+                    [
+                        // setup run as part of the suite, unfold will stop if setup fails or skips
+                        run suite;
+                        //always run teardown
+                        run ("Teardown", teardown)
+                    ]
+                let file =
+                    let fi = file.FileInfo
+                    let di = file.FileInfo.Directory
+                    sprintf "%s/%s" di.Name fi.Name
+                match Skips.SkipList.TryGetValue <| SkipFile(file) with
+                | (true, s) ->
+                    let (sectionHeader, _) = suite
+                    match s with
+                    | All -> []
+                    | Section s when s = sectionHeader -> []
+                    | Sections s when s |> List.exists (fun s -> s = sectionHeader) -> []
+                    | _ -> runTests()
+                | (false, _) -> runTests()
             )
             |> Seq.map Async.RunSynchronously
         

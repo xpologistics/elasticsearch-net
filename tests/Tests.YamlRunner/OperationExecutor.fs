@@ -1,6 +1,8 @@
 module Tests.YamlRunner.OperationExecutor
 
 open System
+open System
+open System
 open System.IO
 open Microsoft.FSharp.Reflection
 open Tests.YamlRunner.DoMapper
@@ -11,6 +13,7 @@ open Elasticsearch.Net
 open Newtonsoft.Json
 open Newtonsoft.Json.Linq
 open System.Collections.Generic
+open System.Runtime.ExceptionServices
 
 type ExecutionContext = {
     Version: string
@@ -73,7 +76,7 @@ type OperationExecutor(client:IElasticLowLevelClient) =
         try
             let invoke = lookup data
             let resolvedData = stashes.Resolve progress data
-            let! r = Async.AwaitTask <| invoke.Invoke resolvedData
+            let! r = Async.AwaitTask <| invoke.Invoke resolvedData d.Headers
             
             let responseMimeType = r.ApiCall.ResponseMimeType
             match responseMimeType with

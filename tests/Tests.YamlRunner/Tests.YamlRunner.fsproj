@@ -13,6 +13,8 @@
     <ProjectReference Include="$(SolutionRoot)\src\Elasticsearch.Net\Elasticsearch.Net.csproj" />
     
     <Compile Include="AsyncExtensions.fs" />
+    
+    <Compile Include="SkipList.fs" />
     <Compile Include="Models.fs" />
     <Compile Include="Stashes.fs" />
     <Compile Include="DoMapper.fs" />
