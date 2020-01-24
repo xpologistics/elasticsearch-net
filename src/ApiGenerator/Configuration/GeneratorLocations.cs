@@ -27,12 +27,12 @@ namespace ApiGenerator.Configuration
 
 				var directoryInfo = new DirectoryInfo(Directory.GetCurrentDirectory());
 
-				var runningAsDnx =
+				var dotnetRun =
 					directoryInfo.Name == "ApiGenerator" &&
 					directoryInfo.Parent != null &&
 					directoryInfo.Parent.Name == "src";
 
-				_root = runningAsDnx ? "" : @"../../";
+				_root = dotnetRun ? "" : @"../../../";
 				return _root;
 			}
 		}

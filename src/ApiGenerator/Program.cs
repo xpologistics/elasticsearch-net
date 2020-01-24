@@ -45,7 +45,7 @@ namespace ApiGenerator
 		private static bool Ask(string question, bool defaultAnswer = true)
 		{
 			var answer = "invalid";
-			var defaultResponse = defaultAnswer ? "y" : "N";
+			var defaultResponse = defaultAnswer ? "y" : "n";
 
 			while (answer != "y" && answer != "n" && answer != "")
 			{

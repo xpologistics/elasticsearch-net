@@ -18,9 +18,22 @@ namespace ApiGenerator.Generator
 
 		public static async Task Generate(string downloadBranch, bool lowLevelOnly, params string[] folders)
 		{
+			async Task Generate(IList<RazorGeneratorBase> generators, RestApiSpec restApiSpec, bool highLevel)
+			{
+				var pbarOpts = new ProgressBarOptions { BackgroundColor = ConsoleColor.DarkGray };
+				var message = $"Generating {(highLevel ? "high" : "low")} level code";
+				using var pbar = new ProgressBar(generators.Count, message, pbarOpts);
+				foreach (var generator in generators)
+				{
+					pbar.Message = "Generating " + generator.Title;
+					await generator.Generate(restApiSpec, pbar);
+					pbar.Tick("Generated " + generator.Title);
+				}
+			}
+
 			Warnings = new List<string>();
 			var spec = CreateRestApiSpecModel(downloadBranch, folders);
-			var generators = new List<RazorGeneratorBase>
+			var lowLevelGenerators = new List<RazorGeneratorBase>
 			{
 				//low level client
 				new LowLevelClientInterfaceGenerator(),
@@ -29,21 +42,19 @@ namespace ApiGenerator.Generator
 				new EnumsGenerator(),
 			};
 
-			if (!lowLevelOnly)
-				generators.AddRange(new RazorGeneratorBase[]
-				{
-					//high level client
-					new HighLevelClientInterfaceGenerator(), new HighLevelClientImplementationGenerator(), new DescriptorsGenerator(),
-					new RequestsGenerator(), new ApiUrlsLookupsGenerator(),
-				});
-
-			using var pbar = new ProgressBar(generators.Count, "Generating code", new ProgressBarOptions { BackgroundColor = ConsoleColor.DarkGray });
-			foreach (var generator in generators)
+			var highLevelGenerators = new List<RazorGeneratorBase>
 			{
-				pbar.Message = "Generating " + generator.Title;
-				await generator.Generate(spec, pbar);
-				pbar.Tick("Generated " + generator.Title);
-			}
+				//high level client
+				new HighLevelClientInterfaceGenerator(),
+				new HighLevelClientImplementationGenerator(),
+				new DescriptorsGenerator(),
+				new RequestsGenerator(),
+				new ApiUrlsLookupsGenerator(),
+			};
+
+			await Generate(lowLevelGenerators, spec, highLevel: false);
+			if (!lowLevelOnly)
+				await Generate(highLevelGenerators, spec, highLevel: true);
 
 			// Check if there are any non-Stable endpoints present.
 			foreach (var endpoint in spec.Endpoints)
