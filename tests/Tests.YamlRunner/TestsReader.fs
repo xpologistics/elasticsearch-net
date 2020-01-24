@@ -115,12 +115,6 @@ let private mapNodeSelector (operation:YamlMap) =
     
 let private mapDo (operation:YamlMap) =
     
-    let last = operation.Last()
-    //Todo should be map.First after picking the others
-    let lastKey = last.Key :?> string
-    let lastValue =
-        last.Value :?> YamlMap
-    
     let catch =
         match tryPick<string> operation "catch" with
         | Some s ->
@@ -137,6 +131,12 @@ let private mapDo (operation:YamlMap) =
     
     let warnings = tryPickList<string, string> operation "warnings" id
     let nodeSelector = mapNodeSelector operation
+    
+    let last = operation.Last()
+    let lastKey = last.Key :?> string
+    let lastValue =
+        last.Value :?> YamlMap
+    
     Do {
         ApiCall = (lastKey, lastValue)
         Catch = catch
