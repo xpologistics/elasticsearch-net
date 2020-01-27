@@ -49,7 +49,7 @@ type ExecutionResult =
         member this.Context =
             match this with | Succeeded c -> c | NotSkipped c -> c | Skipped (c, _) -> c | Failed f -> f.Context
             
-type JTokenOrFailure = JTok of JToken | Fail of Fail
+type JTokenOrFailure = Token of JToken | Fail of Fail
 
 type OperationExecutor(client:IElasticLowLevelClient) =
 
@@ -166,16 +166,16 @@ type OperationExecutor(client:IElasticLowLevelClient) =
             | WholeResponse ->
                 Failed <| Fail.Create op "Can not do numeric asserts on whole responses" 
             | ResponsePath path ->
-                let actual = OperationExecutor.ToJToken <| (stashes.GetResponseValue progress path :> Object)
                 let expected =
                     match assertValue with
-                    | Long l -> JTok(JValue(Convert.ToDouble(l)))
-                    | Double d -> JTok(JValue(d))
+                    | Long l -> Token(JValue(Convert.ToDouble(l)))
+                    | Double d -> Token(JValue(d))
                     | NumericId id ->
                         let found, expected = stashes.TryGetValue id
                         match found with
-                        | true -> JTok(OperationExecutor.ToJToken expected)
+                        | true -> Token(OperationExecutor.ToJToken expected)
                         | false -> Fail(Fail.Create op "%A not stashed at this point" id)
+                        
                 let expectedValue (value:JToken) =
                     match value with
                     | :? JValue as v -> Some(Convert.ChangeType(v.Value, typeof<double>) :?> double)
@@ -183,41 +183,26 @@ type OperationExecutor(client:IElasticLowLevelClient) =
                     | :? JObject as o -> Some <| Convert.ToDouble(o.Properties().Count())
                     | _ -> None
                         
-                let a = expectedValue actual
-                match (assertion, a, expected) with
+                let actual =
+                    let a = OperationExecutor.ToJToken <| (stashes.GetResponseValue progress path :> Object)
+                    expectedValue a
+                
+                let numMatch a e s c = 
+                    let e = expectedValue e
+                    match e with
+                    | None -> Failed <| Fail.Create op "Can not get numeric value from expected %O" e
+                    | Some e when c a e  -> Succeeded op 
+                    | Some e -> Failed <| Fail.Create op "Expected %f %s %f " e s a
+                
+                match (assertion, actual, expected) with
                 | (_, _, Fail f) -> Failed <| f
-                | (_, None, _) -> Failed <| Fail.Create op "Can not compute actual assertion value %O" actual
-                | (Equal, Some a, JTok e) -> OperationExecutor.JTokenDeepEquals op e actual 
-                | (Length, Some a, JTok e) ->
-                    let e = expectedValue e
-                    match e with
-                    | None -> Failed <| Fail.Create op "Can not compute length over %O" e
-                    | Some d when d = a -> Succeeded op 
-                    | Some d -> Failed <| Fail.Create op "Expected length: %f actual: %f " d a
-                | (LowerThan, Some a, JTok e) ->
-                    let e = expectedValue e
-                    match e with
-                    | None -> Failed <| Fail.Create op "Can not compute numeric value over %O" e
-                    | Some d when a < d -> Succeeded op 
-                    | Some d -> Failed <| Fail.Create op "Expected %f to be lower than %f " d a
-                | (GreaterThan, Some a, JTok e)  -> 
-                    let e = expectedValue e
-                    match e with
-                    | None -> Failed <| Fail.Create op "Can not compute numeric value over %O" e
-                    | Some d when a > d -> Succeeded op 
-                    | Some d -> Failed <| Fail.Create op "Expected %f to greater than %f " d a
-                | (GreaterThanOrEqual, Some a, JTok e) -> 
-                    let e = expectedValue e
-                    match e with
-                    | None -> Failed <| Fail.Create op "Can not compute numeric value over %O" e
-                    | Some d when a >= d -> Succeeded op 
-                    | Some d -> Failed <| Fail.Create op "Expected %f >= %f " d a
-                | (LowerThanOrEqual, Some a, JTok e)  -> 
-                    let e = expectedValue e
-                    match e with
-                    | None -> Failed <| Fail.Create op "Can not compute numeric value over %O" e
-                    | Some d when a <= d -> Succeeded op 
-                    | Some d -> Failed <| Fail.Create op "Expected %f <= %f " d a
+                | (_, None, _) -> Failed <| Fail.Create op "Can not get numeric value from actual %O" actual
+                | (Equal, Some a, Token e) -> OperationExecutor.JTokenDeepEquals op e a 
+                | (Length, Some a, Token e) -> numMatch a e "=" <| (fun a e -> a = e)
+                | (LowerThan, Some a, Token e) -> numMatch a e "<" <| (fun a e -> a < e)
+                | (GreaterThan, Some a, Token e)  -> numMatch a e ">" <| (fun a e -> a > e)
+                | (GreaterThanOrEqual, Some a, Token e) -> numMatch a e ">=" <| (fun a e -> a >= e)
+                | (LowerThanOrEqual, Some a, Token e)  -> numMatch a e "<=" <| (fun a e -> a <= e)
     
         let asserts =
             m
