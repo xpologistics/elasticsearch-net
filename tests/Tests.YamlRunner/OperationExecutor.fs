@@ -1,8 +1,7 @@
 module Tests.YamlRunner.OperationExecutor
 
 open System
-open System
-open System
+open System.Linq
 open System.IO
 open Microsoft.FSharp.Reflection
 open Tests.YamlRunner.DoMapper
@@ -39,7 +38,7 @@ type Fail =
             | ValidationFailure (_, r) -> sprintf "Reason: %s" r 
         static member private FormatFailure op fmt = ValidationFailure (op, sprintf "%s" fmt)
         static member Create op fmt = Printf.kprintf (fun x -> Fail.FormatFailure op x) fmt
-
+        
 type ExecutionResult =
     | Succeeded of ExecutionContext
     | Skipped of ExecutionContext * string
@@ -49,7 +48,8 @@ type ExecutionResult =
         member this.Name = match FSharpValue.GetUnionFields(this, this.GetType()) with | (case, _) -> case.Name
         member this.Context =
             match this with | Succeeded c -> c | NotSkipped c -> c | Skipped (c, _) -> c | Failed f -> f.Context
-
+            
+type JTokenOrFailure = JTok of JToken | Fail of Fail
 
 type OperationExecutor(client:IElasticLowLevelClient) =
 
@@ -135,23 +135,23 @@ type OperationExecutor(client:IElasticLowLevelClient) =
         | Failed f -> Succeeded f.Context
         | Succeeded op ->
             Failed <| Fail.Create op "Expected is_false but got is_true behavior"
-        
-    static member IsMatch op (matchOp:Match) progress =
-        let stashes = op.Stashes
-        let isMatch expected actual =
-            let toJtoken (t:Object) =
-                match t with
-                | null -> new JValue(t) :> JToken
-                // yaml test framework often compares ints with doubles, does not validate
-                // actual numeric types returned
-                | :? int 
-                | :? int64 -> new JValue(Convert.ToDouble(t)) :> JToken
-                | :? Dictionary<Object, Object> as d -> JObject.FromObject(d) :> JToken
-                | :? IDictionary<String, Object> as d -> JObject.FromObject(d) :> JToken
-                | _ -> JToken.FromObject t
-                
-            let expected = toJtoken expected
-            let actual = toJtoken actual
+    
+    
+    static member ToJToken (t:Object) =
+        match t with
+        | null -> new JValue(t) :> JToken
+        | :? JToken as j -> j 
+        // yaml test framework often compares ints with doubles, does not validate
+        // actual numeric types returned
+        | :? int 
+        | :? int64 -> new JValue(Convert.ToDouble(t)) :> JToken
+        | :? Dictionary<Object, Object> as d -> JObject.FromObject(d) :> JToken
+        | :? IDictionary<String, Object> as d -> JObject.FromObject(d) :> JToken
+        | _ -> JToken.FromObject t
+    
+    static member JTokenDeepEquals op expected actual =
+            let expected = OperationExecutor.ToJToken expected
+            let actual = OperationExecutor.ToJToken actual
             match JToken.DeepEquals (expected, actual) with
             | false ->
                 let a = actual.ToString(Formatting.None)
@@ -159,6 +159,77 @@ type OperationExecutor(client:IElasticLowLevelClient) =
                 Failed <| Fail.Create op "expected: %s actual: %s" e a
             | _ -> Succeeded op
         
+    static member IsNumericMatch op (assertion:NumericAssert) (m:NumericMatch) progress =
+        let stashes = op.Stashes
+        let doMatch assertOn assertValue = 
+            match assertOn with
+            | WholeResponse ->
+                Failed <| Fail.Create op "Can not do numeric asserts on whole responses" 
+            | ResponsePath path ->
+                let actual = OperationExecutor.ToJToken <| (stashes.GetResponseValue progress path :> Object)
+                let expected =
+                    match assertValue with
+                    | Long l -> JTok(JValue(Convert.ToDouble(l)))
+                    | Double d -> JTok(JValue(d))
+                    | NumericId id ->
+                        let found, expected = stashes.TryGetValue id
+                        match found with
+                        | true -> JTok(OperationExecutor.ToJToken expected)
+                        | false -> Fail(Fail.Create op "%A not stashed at this point" id)
+                let expectedValue (value:JToken) =
+                    match value with
+                    | :? JValue as v -> Some(Convert.ChangeType(v.Value, typeof<double>) :?> double)
+                    | :? JArray as a -> Some <| Convert.ToDouble(a.Count)
+                    | :? JObject as o -> Some <| Convert.ToDouble(o.Properties().Count())
+                    | _ -> None
+                        
+                let a = expectedValue actual
+                match (assertion, a, expected) with
+                | (_, _, Fail f) -> Failed <| f
+                | (_, None, _) -> Failed <| Fail.Create op "Can not compute actual assertion value %O" actual
+                | (Equal, Some a, JTok e) -> OperationExecutor.JTokenDeepEquals op e actual 
+                | (Length, Some a, JTok e) ->
+                    let e = expectedValue e
+                    match e with
+                    | None -> Failed <| Fail.Create op "Can not compute length over %O" e
+                    | Some d when d = a -> Succeeded op 
+                    | Some d -> Failed <| Fail.Create op "Expected length: %f actual: %f " d a
+                | (LowerThan, Some a, JTok e) ->
+                    let e = expectedValue e
+                    match e with
+                    | None -> Failed <| Fail.Create op "Can not compute numeric value over %O" e
+                    | Some d when a < d -> Succeeded op 
+                    | Some d -> Failed <| Fail.Create op "Expected %f to be lower than %f " d a
+                | (GreaterThan, Some a, JTok e)  -> 
+                    let e = expectedValue e
+                    match e with
+                    | None -> Failed <| Fail.Create op "Can not compute numeric value over %O" e
+                    | Some d when a > d -> Succeeded op 
+                    | Some d -> Failed <| Fail.Create op "Expected %f to greater than %f " d a
+                | (GreaterThanOrEqual, Some a, JTok e) -> 
+                    let e = expectedValue e
+                    match e with
+                    | None -> Failed <| Fail.Create op "Can not compute numeric value over %O" e
+                    | Some d when a >= d -> Succeeded op 
+                    | Some d -> Failed <| Fail.Create op "Expected %f >= %f " d a
+                | (LowerThanOrEqual, Some a, JTok e)  -> 
+                    let e = expectedValue e
+                    match e with
+                    | None -> Failed <| Fail.Create op "Can not compute numeric value over %O" e
+                    | Some d when a <= d -> Succeeded op 
+                    | Some d -> Failed <| Fail.Create op "Expected %f <= %f " d a
+    
+        let asserts =
+            m
+            |> Map.toList
+            |> Seq.map (fun (k, v) -> doMatch k v)
+            |> Seq.sortBy (fun ex -> match ex with | Succeeded o -> 4 | Skipped (o, s) -> 3 | NotSkipped s -> 2 | Failed o -> 1)
+            |> Seq.toList
+            
+        asserts |> Seq.head
+        
+    static member IsMatch op (matchOp:Match) progress =
+        let stashes = op.Stashes
         let doMatch assertOn assertValue = 
             let value =
                 match (assertOn, assertValue) with
@@ -167,11 +238,11 @@ type OperationExecutor(client:IElasticLowLevelClient) =
                 | (WholeResponse, _) -> stashes.Response().Dictionary.ToDictionary() :> Object
             
             match assertValue with
-            | Value o -> isMatch o value
+            | Value o -> OperationExecutor.JTokenDeepEquals op o value
             | Id id ->
                 let found, expected = stashes.TryGetValue id
                 match found with
-                | true -> isMatch expected value
+                | true -> OperationExecutor.JTokenDeepEquals op expected value
                 | false -> Failed <| Fail.Create op "%A not stashed at this point" id 
             | RegexAssertion re ->
                 match assertOn with
@@ -248,6 +319,6 @@ type OperationExecutor(client:IElasticLowLevelClient) =
                 | IsTrue t -> OperationExecutor.IsTrue op t progress
                 | IsFalse t -> OperationExecutor.IsFalse op t progress
                 | Match m -> OperationExecutor.IsMatch op m progress
-                | NumericAssert (a, m) -> Skipped (op, "numeric_assert")
+                | NumericAssert (a, m) -> OperationExecutor.IsNumericMatch op a m progress
               
     }
