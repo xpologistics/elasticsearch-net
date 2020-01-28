@@ -104,6 +104,7 @@ type Do = {
     Warnings:option<string list>
     NodeSelector:NodeSelector option
     Headers: Headers option
+    AutoFail: bool 
 }
     with member this.Log () = sprintf "Api %s" <| fst this.ApiCall
 
@@ -185,7 +186,7 @@ type Assert =
 
 type Operation =
     | Unknown of string
-    | Actions of string * (IElasticLowLevelClient -> unit)
+    | Actions of string * (IElasticLowLevelClient * TestSuite -> bool)
     | Skip of Skip
     | Do of Do
     | Set of Set

@@ -61,6 +61,26 @@ namespace Tests.ScratchPad
 
 		private static async Task Main(string[] args)
 		{
+			var bulkAll = Client.BulkAll(Projects, b => b
+				.MaxDegreeOfParallelism(4)
+				.Size(10_000)
+				.BackOffRetries(4)
+				.BackOffTime(TimeSpan.FromSeconds(20))
+				.RetryDocumentPredicate((r, p) => r.Status == 429 || r.Status == 500)
+				.DroppedDocumentCallback((item, project) =>
+				{
+					//item is the whole item, project is the document going in
+					//register in a DLQ
+				})
+			);
+			bulkAll.Wait(TimeSpan.FromHours(2), r =>
+			{
+				//called every time a partition completes
+				//show status progress
+			});
+
+
+
 			Console.Write($"Warmup...");
 			var response = Client.Bulk(b => b.IndexMany(Projects));
 			Console.WriteLine("\rWarmed up kicking off in 2 seconds!");

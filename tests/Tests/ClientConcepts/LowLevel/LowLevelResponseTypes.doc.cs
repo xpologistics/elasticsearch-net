@@ -29,7 +29,7 @@ namespace Tests.ClientConcepts.LowLevel
 		public static string Response()
 		{
 			return @"{
-			""boolean"" : true,	
+			""boolean"" : true,
 			""string"" : ""v"",
 			""number"" : 29,
 			""array"" : [1, 2, 3, 4],
@@ -42,12 +42,12 @@ namespace Tests.ClientConcepts.LowLevel
 				{
 					""first"" : ""value11"",
 					""second"" : ""value12"",
-					""nested"" : { ""x"" : ""value4"" }
+					""nested"" : { ""x"" : ""value4"", ""z"" : [{""id"": 1}] }
 				},
 				{
 					""first"" : ""value21"",
 					""second"" : ""value22"",
-					""nested"" : { ""x"" : ""value5"" },
+					""nested"" : { ""x"" : ""value5"", ""z"" : [{""id"": 3}, {""id"": 2}] },
 					""complex.nested"" : { ""x"" : ""value6"" }
 				}
 			]
@@ -94,6 +94,24 @@ namespace Tests.ClientConcepts.LowLevel
 			response.Get<string>("array_of_objects.1.complex\\.nested.x").Should()
 				.NotBeEmpty()
 				.And.Be("value6");
+
+			/**
+			 * You can project into arrays using the dot notation
+			 */
+			response.Get<string[]>("array_of_objects.first").Should()
+				.NotBeEmpty()
+				.And.HaveCount(2)
+				.And.BeEquivalentTo(new [] {"value11", "value21"});
+
+			/**
+			 * You can even peek into array of arrays
+			 */
+			var nestedZs = response.Get<int[][]>("array_of_objects.nested.z.id")
+				//.SelectMany(d=>d.Get<int[]>("id"))
+				.Should().NotBeEmpty()
+				.And.HaveCount(2)
+				.And.BeEquivalentTo(new [] { new [] {1}, new []{3,2}});
+
 
 		}
 

@@ -124,7 +124,7 @@ let runMain (parsed:ParseResults<Arguments>) = async {
         printf "Waiting for profiler to attach to pid: %O" <| Process.GetCurrentProcess().Id
         Console.ReadKey() |> ignore
         
-    let! runResults = Commands.RunTests readResults client version
+    let! runResults = Commands.RunTests readResults client version namedSuite
     let summary = Commands.ExportTests runResults outputFile
     
     Commands.PrettyPrintResults outputFile

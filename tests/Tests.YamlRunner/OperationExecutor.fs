@@ -28,13 +28,13 @@ type ExecutionContext = {
     with member __.Throw message = failwithf "%s" message
 
 type Fail =
-    | SeenException of ExecutionContext * Exception
+    | SeenException of ExecutionContext * Exception 
     | ValidationFailure of ExecutionContext * string
     with
         member this.Context = match this with | SeenException (c, _) -> c | ValidationFailure (c, _) -> c
         member this.Log () =
             match this with
-            | SeenException (_, e) -> sprintf "Exception: %O" e 
+            | SeenException (_, e) -> sprintf "Exception: %s" e.Message 
             | ValidationFailure (_, r) -> sprintf "Reason: %s" r 
         static member private FormatFailure op fmt = ValidationFailure (op, sprintf "%s" fmt)
         static member Create op fmt = Printf.kprintf (fun x -> Fail.FormatFailure op x) fmt
@@ -72,7 +72,7 @@ type OperationExecutor(client:IElasticLowLevelClient) =
 
     static member Do op d (lookup:YamlMap -> FastApiInvoke) progress = async {
         let stashes = op.Stashes
-        let (_, data) = d.ApiCall
+        let (api, data) = d.ApiCall
         try
             let invoke = lookup data
             let resolvedData = stashes.Resolve progress data
@@ -87,8 +87,9 @@ type OperationExecutor(client:IElasticLowLevelClient) =
             op.Stashes.ResponseOption <- Some r
             
             let result = 
-                match d.Catch with
-                | Some (CatchRegex regexp) ->
+                match ((d.AutoFail && not r.Success), d.Catch) with
+                | true, _ -> Failed <| Fail.Create op "AutoFail triggered on api: %s" api
+                | _, Some (CatchRegex regexp) ->
                     let body = System.Text.Encoding.UTF8.GetString(r.ApiCall.ResponseBodyInBytes)
                     match System.Text.RegularExpressions.Regex.IsMatch(body, regexp) with
                     | true -> Succeeded op
@@ -184,8 +185,13 @@ type OperationExecutor(client:IElasticLowLevelClient) =
                     | _ -> None
                         
                 let actual =
-                    let a = OperationExecutor.ToJToken <| (stashes.GetResponseValue progress path :> Object)
-                    expectedValue a
+                    match path with 
+                    | "$body" ->
+                        let dictOrArray = stashes.Response().Dictionary.Count
+                        Some <| Convert.ToDouble(dictOrArray)
+                    | _ -> 
+                        let a = OperationExecutor.ToJToken <| (stashes.GetResponseValue progress path :> Object)
+                        expectedValue a
                 
                 let numMatch a e s c = 
                     let e = expectedValue e
@@ -253,8 +259,9 @@ type OperationExecutor(client:IElasticLowLevelClient) =
         match op.Operation with
         | Unknown u -> return Skipped (op, sprintf "Unknown operation: %s" u)
         | Actions (s, a) ->
-            a client
-            return Succeeded op
+            match a (client, op.Suite) with
+            | true -> return Succeeded op
+            | false -> return Failed <| Fail.Create op "Actions:%s failed" s 
         | Skip s ->
             let skip reason = Skipped (op, s.Reason |> Option.defaultValue reason)
             let versionRangeCheck (v:SemVer.Range) =

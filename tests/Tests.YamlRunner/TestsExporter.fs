@@ -47,6 +47,7 @@ let private timeOf result =
 
 let testCasesSection document (results: FileResults) =
     results
+    |> List.filter (fun (section, _) -> section <> "TEARDOWN")
     |> List.map (fun (section, results) ->
        let name = sprintf "%s - %s" document.FileInfo.Name section
        let time =
@@ -75,7 +76,7 @@ let countTests (xElement:XElement) =
     let xp = xElement.XPathSelectElements 
     let x s = xp s |> Seq.length
     let testCases = x "//testcase" 
-    let errors = x "//testcase[errors]"
+    let errors = x "//testcase[error]"
     let failed = x "//testcase[failure]"
     let skipped = x "//testcase[skipped]"
     let time =

@@ -7,7 +7,9 @@ open System.Linq
 
 open System.Collections.Specialized
 open Elasticsearch.Net
+open Elasticsearch.Net
 open Elasticsearch.Net.Specification.CatApi
+open Elasticsearch.Net.Specification.MachineLearningApi
 open System.IO
 open Tests.YamlRunner
 open Tests.YamlRunner.Models
@@ -114,7 +116,7 @@ let private mapNodeSelector (operation:YamlMap) =
     | _ -> None
             
     
-let private mapDo (operation:YamlMap) =
+let private mapDo section (operation:YamlMap) =
     
     let catch =
         match tryPick<string> operation "catch" with
@@ -151,9 +153,10 @@ let private mapDo (operation:YamlMap) =
         Warnings = warnings
         NodeSelector = nodeSelector
         Headers = headers
+        AutoFail = match section with | "setup" | "teardown" -> true | _ -> false
     }
     
-let private mapOperation (operation:YamlMap) =
+let private mapOperation section (operation:YamlMap) =
     let kv = operation.First();
     let key = kv.Key :?> string
     let yamlValue : YamlValue =
@@ -168,7 +171,7 @@ let private mapOperation (operation:YamlMap) =
         | ("skip", YamlDictionary map) -> mapSkip map
         | ("set", YamlDictionary map) -> Set <| mapSet map
         | ("transform_and_set", YamlDictionary map) -> TransformAndSet <| mapTransformAndSet map
-        | ("do", YamlDictionary map) -> mapDo map
+        | ("do", YamlDictionary map) -> mapDo section map
         | ("match", YamlDictionary map) ->  Assert <| Match (mapMatch map)
         | ("is_false", YamlDictionary map) -> Assert <| IsFalse (firstValueAsPath map)
         | ("is_true", YamlDictionary map) -> Assert <| IsTrue (firstValueAsPath map)
@@ -178,8 +181,8 @@ let private mapOperation (operation:YamlMap) =
         | (k, v) -> failwithf "%s does not support %s" k (v.GetType().Name)
     | unknownOperation -> Unknown unknownOperation
     
-let private mapOperations (operations:YamlMap list) =
-    operations |> List.map mapOperation
+let private mapOperations section (operations:YamlMap list) =
+    operations |> List.map (mapOperation section)
     
 let private mapDocument (document:Dictionary<string, Object>) =
     
@@ -187,10 +190,10 @@ let private mapDocument (document:Dictionary<string, Object>) =
     let key = kv.Key
     let values = kv.Value :?> List<Object>
     
-    let operations = values |> Enumerable.Cast<YamlMap> |> Seq.toList |> mapOperations
+    let operations = values |> Enumerable.Cast<YamlMap> |> Seq.toList |> mapOperations key
     
     match key with
-    | "setup" -> Setup operations
+    | "setup" -> Setup operations 
     | "teardown" -> Teardown operations
     | name -> YamlTest { Name=name; Operations=operations }
 
@@ -201,16 +204,31 @@ type YamlTestDocument = {
     Tests: YamlTest list
 }
 
-let private DefaultSetup : Operation list = [Actions("Setup", fun client ->
-    let x = client.Indices.Delete<VoidResponse>("*")
-    let templates =
-        client.Cat.Templates<StringResponse>("*", CatTemplatesRequestParameters(Headers=["name"].ToArray()))
-            .Body.Split("\n")
-            |> Seq.filter(fun f -> not(String.IsNullOrWhiteSpace(f)) && not(f.StartsWith(".")) && f <> "security-audit-log")
-            //TODO template does not accept comma separated list but is documented as such
-            |> Seq.iter(fun template -> client.Indices.DeleteTemplateForAll<VoidResponse>(template) |> ignore)
-    
-    ignore()
+let private DefaultSetup : Operation list = [Actions("Setup", fun (client, suite) ->
+    match suite with
+    | OpenSource ->
+        let x = client.Indices.Delete<VoidResponse>("*")
+        let templates =
+            client.Cat.Templates<StringResponse>("*", CatTemplatesRequestParameters(Headers=["name"].ToArray()))
+                .Body.Split("\n")
+                |> Seq.filter(fun f -> not(String.IsNullOrWhiteSpace(f)) && not(f.StartsWith(".")) && f <> "security-audit-log")
+                //TODO template does not accept comma separated list but is documented as such
+                |> Seq.map(fun template -> client.Indices.DeleteTemplateForAll<VoidResponse>(template).Success)
+                |> Seq.fold (fun state b -> state && b) true
+        x.Success && templates
+    | XPack ->
+        let data = PostData.String @"{""password"":""x-pack-test-password"", ""roles"":[""superuser""]}"
+        let putUser = client.Security.PutUser<StringResponse>("x_pack_rest_user", data)
+        
+        let closeJobs = client.MachineLearning.CloseJob<StringResponse>("_all", PostData.Empty)
+        let getJobs = client.MachineLearning.GetJobs<DynamicResponse>("_all")
+        if (getJobs.Get<int64> "count" > 0L) then
+            let jobs = getJobs.Get<string[]> "jobs.job_id"
+            ignore()
+        
+        
+        client.Indices.Refresh<VoidResponse>("_all") |> ignore
+        putUser.Success
 )]
 
 let private toDocument (yamlInfo:YamlFileInfo) (sections:YamlTestSection list) =
