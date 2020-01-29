@@ -117,10 +117,16 @@ type FastApiInvoke(instance: Object, restName:string, pathParams:KeyedCollection
         
         let requestParameters = this.CreateRequestParameters.Invoke()
         requestParameters.RequestConfiguration <- RequestConfiguration(Headers=(headers |> Option.defaultValue null))
+                                                                         
+        match o.TryFind("ignore") with
+        | Some o -> requestParameters.RequestConfiguration.AllowedStatusCodes <- [Convert.ToInt32(o)]
+        | None -> ignore()
+        
         o
         |> Map.toSeq
         |> Seq.filter (fun (k, v) -> not <| this.PathParameters.Contains(k))
         |> Seq.filter (fun (k, v) -> k <> "body")
+        |> Seq.filter (fun (k, v) -> k <> "ignore")
         |> Seq.iter (fun (k, v) -> requestParameters.SetQueryString(k, v))
         
         let post =

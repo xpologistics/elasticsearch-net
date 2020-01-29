@@ -49,6 +49,7 @@ type ResponseProperty = ResponseProperty of string
 type StashedId = private StashedId of string with
     static member Create (s:String) =
         match s with
+        | s when s.StartsWith "${" -> StashedId.Create <| s.Trim('$', '{', '}')
         | s when s.StartsWith "$" -> StashedId s
         | s -> StashedId <| sprintf "$%s" s
     static member Body = StashedId.Create "body"
@@ -124,7 +125,7 @@ type Feature =
     | ArbitraryKey // "arbitrary_key"
     | Unsupported of string
 
-let SupportedFeatures = [EmbeddedStashKey; StashInPath; Yaml; TransformAndSet; ArbitraryKey; Warnings; Headers]
+let SupportedFeatures = [EmbeddedStashKey; StashInPath; Yaml; ArbitraryKey; Warnings; Headers]
     
 let (|ToFeature|) (s:string) =
     match s with
@@ -186,7 +187,7 @@ type Assert =
 
 type Operation =
     | Unknown of string
-    | Actions of string * (IElasticLowLevelClient * TestSuite -> bool)
+    | Actions of string * (IElasticLowLevelClient * TestSuite -> DynamicResponse option)
     | Skip of Skip
     | Do of Do
     | Set of Set

@@ -48,6 +48,17 @@ namespace Elasticsearch.Net
 			}
 		}
 
+		public T Get<T>(string path)
+		{
+			var dynamicDictionary = Value switch
+			{
+				DynamicDictionary v => v,
+				IDictionary<string, object> v => DynamicDictionary.Create(v),
+				_ => null
+			};
+			return dynamicDictionary == null ? default : dynamicDictionary.Get<T>(path);
+		}
+
 		public static DynamicValue NullValue { get; } = new DynamicValue(null);
 		public static DynamicValue SelfOrNew(object v) => v is DynamicValue av ? av : new DynamicValue(v);
 

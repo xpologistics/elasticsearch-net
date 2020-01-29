@@ -260,8 +260,10 @@ type OperationExecutor(client:IElasticLowLevelClient) =
         | Unknown u -> return Skipped (op, sprintf "Unknown operation: %s" u)
         | Actions (s, a) ->
             match a (client, op.Suite) with
-            | true -> return Succeeded op
-            | false -> return Failed <| Fail.Create op "Actions:%s failed" s 
+            | None -> return Succeeded op
+            | r ->
+                op.Stashes.ResponseOption <- r
+                return Failed <| Fail.Create op "%s" op.Section
         | Skip s ->
             let skip reason = Skipped (op, s.Reason |> Option.defaultValue reason)
             let versionRangeCheck (v:SemVer.Range) =

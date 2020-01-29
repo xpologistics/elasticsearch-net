@@ -28,30 +28,30 @@ namespace Tests.ClientConcepts.LowLevel
 
 		public static string Response()
 		{
-			return @"{
+			return $@"{{
 			""boolean"" : true,
 			""string"" : ""v"",
 			""number"" : 29,
 			""array"" : [1, 2, 3, 4],
-			""object"" : {
+			""object"" : {{
 				""first"" : ""value1"",
 				""second"" : ""value2"",
-				""nested"" : { ""x"" : ""value3"" }
-			},
+				""nested"" : {{ ""x"" : ""value3"" }}
+			}},
 			""array_of_objects"" : [
-				{
+				{{
 					""first"" : ""value11"",
 					""second"" : ""value12"",
-					""nested"" : { ""x"" : ""value4"", ""z"" : [{""id"": 1}] }
-				},
-				{
+					""nested"" : {{ ""x"" : ""value4"", ""z"" : [{{""id"": 1}}] }}
+				}},
+				{{
 					""first"" : ""value21"",
 					""second"" : ""value22"",
-					""nested"" : { ""x"" : ""value5"", ""z"" : [{""id"": 3}, {""id"": 2}] },
-					""complex.nested"" : { ""x"" : ""value6"" }
-				}
+					""nested"" : {{ ""x"" : ""value5"", ""z"" : [{{""id"": 3}}, {{""id"": 2}}] }},
+					""complex.nested"" : {{ ""x"" : ""value6"" }}
+				}}
 			]
-		}";
+		}}";
 		}
 
 		public LowLevelResponseTypes()
