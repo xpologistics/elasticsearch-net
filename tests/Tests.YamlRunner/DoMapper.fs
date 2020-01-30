@@ -119,7 +119,10 @@ type FastApiInvoke(instance: Object, restName:string, pathParams:KeyedCollection
         requestParameters.RequestConfiguration <- RequestConfiguration(Headers=(headers |> Option.defaultValue null))
                                                                          
         match o.TryFind("ignore") with
-        | Some o -> requestParameters.RequestConfiguration.AllowedStatusCodes <- [Convert.ToInt32(o)]
+        | Some o  ->
+               match o with
+               | :? List<Object> as o -> requestParameters.RequestConfiguration.AllowedStatusCodes <- o.Select(fun i -> Convert.ToInt32(i)).ToArray()
+               | _ -> requestParameters.RequestConfiguration.AllowedStatusCodes <- [Convert.ToInt32(o)]
         | None -> ignore()
         
         o

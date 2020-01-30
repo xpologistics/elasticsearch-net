@@ -9,9 +9,12 @@ let SkipList = dict<SkipFile,SkipSection> [
     // TODO i THINK this is now supported
     SkipFile "ml/explain_data_frame_analytics.yml", Section "Test neither job id nor body"
     
-    SkipFile "privileges/10_basic.yml ", Section "Test put and delete privileges"
-
-
+    // funny looking dispatch /_security/privilege/app?name
+    SkipFile "privileges/10_basic.yml ", Sections [
+        "Test put and delete privileges"
+        "Test put and get privileges"
+    ]
+    
     // - Failed: Assert operation NumericAssert Length invalidated_api_keys "Long" Reason: Expected 2.000000 = 3.000000        
     SkipFile "api_key/11_invalidation.yml", Section "Test invalidate api key by realm name"
 
@@ -20,6 +23,12 @@ let SkipList = dict<SkipFile,SkipSection> [
 
     // Test looks for "testnode.crt", but "ca.crt" is returned first
     SkipFile "ssl/10_basic.yml", Section "Test get SSL certificates"
+    
+    // Uses variables in strings e.g Bearer ${token} we can not due variable substitution in string yet
+    SkipFile "token/10_basic.yml", All
+    
+    // We don't expose the overload with just id, warrants investigation in the code generator
+    SkipFile "ml/delete_forecast.yml", Section "Test delete all where no forecast_id is set"
 
     // Leaves .ml-state index closed after running
     (SkipFile "ml/jobs_crud.yml", Sections [
@@ -28,14 +37,24 @@ let SkipList = dict<SkipFile,SkipSection> [
     ])
 
     SkipFile "rollup/put_job.yml", Section "Test put job with templates"
-    // Changing password locks out tests
-    SkipFile "change_password/10_basic.yml", Section "Test user changing their own password"
+    SkipFile "change_password/10_basic.yml", Sections [
+        // Changing password locks out tests
+        "Test user changing their own password"
+        // Uses variables in strings e.g Bearer ${token} we can not due variable substitution in string yet
+        "Test user changing their password authenticating with token not allowed"
+    ] 
     
     // Missing refreshes in the test
     SkipFile "data_frame/transforms_start_stop.yml", All
     SkipFile "ml/index_layout.yml", All
-    SkipFile "transform/transforms_start_stop.yml", Section "Verify start transform reuses destination index"
-    SkipFile "transform/transforms_start_stop.yml", Section "Test get multiple transform stats"
+    
+    // Todo investigate
+    SkipFile "transform/transforms_start_stop.yml", Sections [
+        "Verify start transform reuses destination index"
+        "Test get multiple transform stats"
+    ]
+    SkipFile "privileges/10_basic.yml", Section "Test put and delete privileges"
+    
     SkipFile "transform/transforms_stats.yml", Sections [
         "Test get multiple transform stats"
         "Test get multiple transform stats where one does not have a task"

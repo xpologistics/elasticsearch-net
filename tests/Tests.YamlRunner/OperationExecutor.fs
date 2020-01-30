@@ -86,15 +86,36 @@ type OperationExecutor(client:IElasticLowLevelClient) =
             
             op.Stashes.ResponseOption <- Some r
             
-            let result = 
-                match ((d.AutoFail && not r.Success), d.Catch) with
-                | true, _ -> Failed <| Fail.Create op "AutoFail triggered on api: %s" api
-                | _, Some (CatchRegex regexp) ->
-                    let body = System.Text.Encoding.UTF8.GetString(r.ApiCall.ResponseBodyInBytes)
-                    match System.Text.RegularExpressions.Regex.IsMatch(body, regexp) with
-                    | true -> Succeeded op
-                    | false -> Failed <| Fail.Create op "Catching error failed: %O on server error" d.Catch 
-                | _ -> Succeeded op
+            let result =
+                let autoFailed = d.AutoFail && not r.Success
+                let statusCode = if r.HttpStatusCode.HasValue then Some r.HttpStatusCode.Value else None
+                match (autoFailed, d.Catch, statusCode) with
+                | true, _, _ -> Failed <| Fail.Create op "AutoFail triggered on api: %s" api
+                | false, None, _  -> Succeeded op
+                | _, Some catch, statusCode ->
+                    match (catch, statusCode) with
+                    | BadRequest, Some s when s <> 400 ->
+                        Failed <| Fail.Create op "Catch %A: expected 400 received %i" catch s
+                    | Unauthorized, Some s when s <> 401 ->
+                        Failed <| Fail.Create op "Catch %A: expected 401 received %i" catch s
+                    | Forbidden, Some s when s <> 403 ->
+                        Failed <| Fail.Create op "Catch %A: expected 403 received %i" catch s
+                    | Missing, Some s when s <> 404 ->
+                        Failed <| Fail.Create op "Catch %A: expected 403 received %i" catch s
+                    | RequestTimeout, Some s when s <> 408 ->
+                        Failed <| Fail.Create op "Catch %A: expected 408 received %i" catch s
+                    | Conflict, Some s when s <> 409 ->
+                        Failed <| Fail.Create op "Catch %A: expected 409 received %i" catch s
+                    | Unavailable, Some s when s <> 503 ->
+                        Failed <| Fail.Create op "Catch %A: expected 503 received %i" catch s
+                    | OtherBadResponse, Some s when s < 400 || s >= 600 ->
+                        Failed <| Fail.Create op "Catch %A: expected 4xx-5xx received %i" catch s
+                    | (CatchRegex regexp), _ -> 
+                        let body = System.Text.Encoding.UTF8.GetString(r.ApiCall.ResponseBodyInBytes)
+                        match System.Text.RegularExpressions.Regex.IsMatch(body, regexp) with
+                        | true -> Succeeded op
+                        | false -> Failed <| Fail.Create op "Catching error failed: %O on server error" d.Catch 
+                    | _ -> Succeeded op
             
             //progress.WriteLine <| sprintf "%s %s" (r.ApiCall.HttpMethod.ToString()) (r.Uri.PathAndQuery)
             return result

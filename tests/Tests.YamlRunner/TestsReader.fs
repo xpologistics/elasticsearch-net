@@ -312,6 +312,18 @@ let private DefaultSetup : Operation list = [Actions("Setup", fun (client, suite
                 
                 [getJobs] @ cancelJobs
             yield! tasks
+            
+            let transforms =
+                let transforms = client.Transform.Get<DynamicResponse> "_all"
+                let stopTransforms =
+                    transforms.Get<string[]> "transforms.id"
+                    |> Seq.collect (fun id -> [
+                         client.Transform.Stop<DynamicResponse> id
+                         client.Transform.Delete<DynamicResponse> id
+                    ])
+                    |> Seq.toList
+                [transforms] @ stopTransforms
+            yield! transforms
                 
             let yellowStatus = Nullable.op_Implicit WaitForStatus.Yellow
             yield client.Cluster.Health<DynamicResponse>(ClusterHealthRequestParameters(WaitForStatus=yellowStatus))
@@ -328,9 +340,6 @@ let private DefaultSetup : Operation list = [Actions("Setup", fun (client, suite
                        | s -> Some <| client.Indices.Delete<DynamicResponse>(s)
             
             match indices with Some r -> yield r | None -> ignore() 
-            
-            
-            yield! templates
             
             let data = PostData.String @"{""password"":""x-pack-test-password"", ""roles"":[""superuser""]}"
             yield client.Security.PutUser<DynamicResponse>("x_pack_rest_user", data)
