@@ -1,4 +1,5 @@
 ﻿using System;
+using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
 using FluentAssertions;
 using Nest;
@@ -11,6 +12,7 @@ using Tests.Framework.EndpointTests.TestState;
 
 namespace Tests.Ingest.PutPipeline
 {
+	[SkipVersion(">=7.5.0", "https://github.com/elastic/elasticsearch/issues/52474")]
 	public class PutPipelineApiTests
 		: ApiIntegrationTestBase<WritableCluster, PutPipelineResponse, IPutPipelineRequest, PutPipelineDescriptor, PutPipelineRequest>
 	{
