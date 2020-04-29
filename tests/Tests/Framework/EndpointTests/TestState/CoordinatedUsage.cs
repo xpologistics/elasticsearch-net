@@ -15,12 +15,11 @@ namespace Tests.Framework.EndpointTests.TestState
 		public static readonly IResponse VoidResponse = new PingResponse();
 
 		private readonly INestTestCluster _cluster;
-		private readonly EndpointUsage _usage;
 
 		public CoordinatedUsage(INestTestCluster cluster, EndpointUsage usage, string prefix = null)
 		{
 			_cluster = cluster;
-			_usage = usage;
+			Usage = usage;
 			Prefix = prefix;
 			_values = new Dictionary<ClientMethod, string>
 			{
@@ -40,6 +39,8 @@ namespace Tests.Framework.EndpointTests.TestState
 
 		private readonly Dictionary<ClientMethod, string> _values;
 		public IReadOnlyDictionary<ClientMethod, string> MethodIsolatedValues => _values;
+
+		public EndpointUsage Usage { get; }
 
 		private readonly Dictionary<string, string> _callsNotInRange = new Dictionary<string, string>();
 
@@ -79,7 +80,7 @@ namespace Tests.Framework.EndpointTests.TestState
 			where TInterface : class
 		{
 			var client = Client;
-			return k => _usage.CallOnce(
+			return k => Usage.CallOnce(
 				() => new LazyResponses(k,
 					async () => await CallAllClientMethodsOverloads(initializerBody, fluentBody, fluent, fluentAsync, request, requestAsync, client))
 				, k);
@@ -96,7 +97,7 @@ namespace Tests.Framework.EndpointTests.TestState
 		public Func<string, LazyResponses> Call<TResponse>(Func<string, IElasticClient, Task<TResponse>> call) where TResponse : IResponse
 		{
 			var client = Client;
-			return k => _usage.CallOnce(
+			return k => Usage.CallOnce(
 				() => new LazyResponses(k, async () =>
 				{
 					var dict = new Dictionary<ClientMethod, IResponse>();
