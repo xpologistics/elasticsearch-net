@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	//TODO 6.0 completely revisit how we mapped highlighters
 	//this is used in tophits/percolator AND in search highligher as the root

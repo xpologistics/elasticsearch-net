@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[MapsApi("xpack.sql.clear_cursor.json")]
 	[ContractJsonConverter(typeof(ReadAsTypeJsonConverter<ClearSqlCursorRequest>))]

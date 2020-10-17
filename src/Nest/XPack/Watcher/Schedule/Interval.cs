@@ -6,7 +6,7 @@ using Elasticsearch.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Nest
+namespace Nest6
 {
 	[JsonConverter(typeof(StringEnumConverter))]
 	public enum IntervalUnit

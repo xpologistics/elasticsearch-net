@@ -9,7 +9,7 @@ using AsciiDocNet;
 using DocGenerator.XmlDocs;
 using Elasticsearch.Net;
 using Microsoft.CodeAnalysis;
-using Nest;
+using Nest6;
 using NuDoq;
 using Container = AsciiDocNet.Container;
 using Document = AsciiDocNet.Document;

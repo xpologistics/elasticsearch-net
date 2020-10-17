@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Collations are used for sorting documents in a language-specific word order. The icu_collation token filter is available to all indices and

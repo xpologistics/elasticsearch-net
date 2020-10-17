@@ -1,4 +1,4 @@
-namespace Nest
+namespace Nest6
 {
 	public abstract class IsADictionaryDescriptorBase<TDescriptor, TInterface, TKey, TValue>
 		: DescriptorPromiseBase<TDescriptor, TInterface>

@@ -3,7 +3,7 @@ using System.Text;
 using Elasticsearch.Net;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Shared interface by all elasticsearch responses

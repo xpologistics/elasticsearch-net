@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[JsonObject(MemberSerialization.OptIn)]
 	public interface IMurmur3HashProperty : IDocValuesProperty { }

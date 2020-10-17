@@ -5,7 +5,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace Nest
+namespace Nest6
 {
 	internal static class NativeMethods
 	{

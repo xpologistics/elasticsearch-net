@@ -1,4 +1,4 @@
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// The indexing buffer is used to store newly indexed documents. When it fills up, the documents in the buffer are written to a segment on

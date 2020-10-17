@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Nest;
+using Nest6;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IPutLifecycleRequest
 	{

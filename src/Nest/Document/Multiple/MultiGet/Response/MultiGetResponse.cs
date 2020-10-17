@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	public interface IMultiGetResponse : IResponse
 	{

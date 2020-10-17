@@ -3,13 +3,13 @@ using System.Linq;
 using System.Text;
 using Elastic.Xunit.XunitPlumbing;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core;
 using Tests.Core.Client;
 using Tests.Domain;
 using Tests.Framework;
 using Tests.QueryDsl.BoolDsl.Operators;
-using static Nest.Infer;
+using static Nest6.Infer;
 using static Tests.Core.Serialization.SerializationTestHelper;
 
 namespace Tests.QueryDsl.BoolDsl

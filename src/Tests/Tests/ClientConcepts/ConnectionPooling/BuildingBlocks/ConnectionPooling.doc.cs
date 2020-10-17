@@ -6,7 +6,7 @@ using System.Threading;
 using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Configuration;
 using Tests.Framework;
 using Tests.XPack.Security.Privileges;

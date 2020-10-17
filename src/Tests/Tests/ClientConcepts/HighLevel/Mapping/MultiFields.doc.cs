@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Text;
 using Elastic.Xunit.XunitPlumbing;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Tests.Core.Client;

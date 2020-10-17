@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[JsonObject(MemberSerialization.OptIn)]
 	public interface ICompletionProperty : IDocValuesProperty

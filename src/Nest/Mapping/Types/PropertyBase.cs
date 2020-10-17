@@ -4,7 +4,7 @@ using System.Reflection;
 using Elasticsearch.Net;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// A mapping for a property type to a document field in Elasticsearch

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[ContractJsonConverter(typeof(ReadAsTypeJsonConverter<SearchTemplateRequest>))]
 	public partial interface ISearchTemplateRequest : ICovariantSearchRequest

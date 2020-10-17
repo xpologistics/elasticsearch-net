@@ -4,8 +4,8 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using Elastic.Xunit.XunitPlumbing;
 using FluentAssertions;
-using Nest;
-using Nest.JsonNetSerializer;
+using Nest6;
+using Nest6.JsonNetSerializer;
 using Newtonsoft.Json;
 using Tests.Core.Client.Settings;
 

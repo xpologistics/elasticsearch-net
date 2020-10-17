@@ -1,4 +1,4 @@
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// This action turns a ccr follower index into a regular index. This can be desired when moving follower indices into the

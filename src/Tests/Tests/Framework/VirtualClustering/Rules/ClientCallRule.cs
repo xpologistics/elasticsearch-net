@@ -1,5 +1,5 @@
 using System;
-using Nest;
+using Nest6;
 #if DOTNETCORE
 using System.Net.Http;
 using TheException = System.Net.Http.HttpRequestException;

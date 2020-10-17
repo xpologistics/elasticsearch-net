@@ -1,4 +1,4 @@
-﻿namespace Nest
+﻿namespace Nest6
 {
 	public partial interface IRecoveryStatusRequest { }
 

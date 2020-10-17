@@ -1,5 +1,5 @@
 ﻿using System.Runtime.InteropServices;
-using Nest;
+using Nest6;
 
 namespace System.Collections.Generic
 {

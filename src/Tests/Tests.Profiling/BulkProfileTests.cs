@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Nest;
+using Nest6;
 using Tests.Domain;
 using Tests.Profiling.Framework;
 using Tests.Profiling.Framework.Performance;

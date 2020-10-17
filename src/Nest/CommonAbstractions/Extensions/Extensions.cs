@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
-namespace Nest
+namespace Nest6
 {
 	internal static class EmptyReadOnly<TElement>
 	{

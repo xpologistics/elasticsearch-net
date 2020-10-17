@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using static Nest.FixedIndexSettings;
-using static Nest.IndexSortSettings;
-using static Nest.UpdatableIndexSettings;
+using static Nest6.FixedIndexSettings;
+using static Nest6.IndexSortSettings;
+using static Nest6.UpdatableIndexSettings;
 
-namespace Nest
+namespace Nest6
 {
 	internal class IndexSettingsConverter : VerbatimDictionaryKeysJsonConverter<string, object>
 	{

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Elasticsearch.Net;
 using Newtonsoft.Json;
-using static Nest.Infer;
+using static Nest6.Infer;
 
-namespace Nest
+namespace Nest6
 {
 	internal class FieldMappingPropertiesJsonConverter
 		: ResolvableDictionaryJsonConverterBase<FieldMappingProperties, Field, FieldMapping>

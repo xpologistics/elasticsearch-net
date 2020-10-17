@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary> The nori_part_of_speech token filter removes tokens that match a set of part-of-speech tags. </summary>
 	public interface INoriPartOfSpeechTokenFilter : ITokenFilter

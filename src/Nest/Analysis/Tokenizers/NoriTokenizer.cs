@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary> The decompound mode determines how the tokenizer handles compound tokens. </summary>
 	[JsonConverter(typeof(StringEnumConverter))]

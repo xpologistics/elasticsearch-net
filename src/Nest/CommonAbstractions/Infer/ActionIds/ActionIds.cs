@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	[DebuggerDisplay("{DebugDisplay,nq}")]
 	public class ActionIds : IUrlParameter, IEquatable<ActionIds>

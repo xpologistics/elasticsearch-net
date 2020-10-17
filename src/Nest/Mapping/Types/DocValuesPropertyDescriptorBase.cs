@@ -1,4 +1,4 @@
-﻿namespace Nest
+﻿namespace Nest6
 {
 	/// <inheritdoc cref="IDocValuesProperty" />
 	public abstract class DocValuesPropertyDescriptorBase<TDescriptor, TInterface, T>

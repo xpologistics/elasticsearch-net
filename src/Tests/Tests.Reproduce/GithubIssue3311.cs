@@ -2,7 +2,7 @@
 using System.Linq;
 using Elastic.Xunit.XunitPlumbing;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core.ManagedElasticsearch.Clusters;
 
 namespace Tests.Reproduce

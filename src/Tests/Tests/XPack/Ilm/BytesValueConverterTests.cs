@@ -1,6 +1,6 @@
 using Elastic.Xunit.XunitPlumbing;
 using FluentAssertions;
-using Nest;
+using Nest6;
 
 namespace Tests.XPack.Ilm
 {

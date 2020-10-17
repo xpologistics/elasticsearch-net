@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Nest
+namespace Nest6
 {
 	public interface IDescriptor { }
 

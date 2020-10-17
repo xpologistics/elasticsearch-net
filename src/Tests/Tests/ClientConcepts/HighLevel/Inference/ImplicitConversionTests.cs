@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Elastic.Xunit.XunitPlumbing;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Domain;
 
 namespace Tests.ClientConcepts.HighLevel.Inference

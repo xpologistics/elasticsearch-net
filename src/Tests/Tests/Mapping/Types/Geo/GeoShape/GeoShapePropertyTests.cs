@@ -1,6 +1,6 @@
 ﻿#pragma warning disable 612, 618
 using System;
-using Nest;
+using Nest6;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Domain;
 using Tests.Framework.Integration;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Elastic.Xunit.XunitPlumbing;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core.Client;
 using Tests.Core.Extensions;
 using Tests.Core.Serialization;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Aggregation response for an aggregation request

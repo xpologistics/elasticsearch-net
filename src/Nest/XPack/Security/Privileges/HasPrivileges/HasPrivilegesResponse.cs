@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using static Nest.IndicesPrivilegesResponseJsonConverter;
+using static Nest6.IndicesPrivilegesResponseJsonConverter;
 
-namespace Nest
+namespace Nest6
 {
 	public interface IHasPrivilegesResponse : IResponse
 	{

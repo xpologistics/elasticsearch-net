@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	using GetIndexResponseConverter = Func<IApiCallDetails, Stream, GetIndexResponse>;
 

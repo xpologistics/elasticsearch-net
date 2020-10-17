@@ -3,7 +3,7 @@ using Elastic.Managed.Ephemeral;
 using Elastic.Managed.Ephemeral.Plugins;
 using Elastic.Stack.Artifacts.Products;
 using Elastic.Xunit;
-using Nest;
+using Nest6;
 using Tests.Configuration;
 using Tests.Core.Client;
 using Tests.Core.Extensions;

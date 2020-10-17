@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using Elastic.Xunit.XunitPlumbing;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Domain;
 using Xunit.Abstractions;
-using static Nest.Infer;
+using static Nest6.Infer;
 
 namespace Tests.ClientConcepts.HighLevel.Caching
 {

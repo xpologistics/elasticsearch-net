@@ -1,4 +1,4 @@
-﻿using Nest;
+﻿using Nest6;
 using Tests.Core.Extensions;
 
 namespace Tests.Core.Serialization

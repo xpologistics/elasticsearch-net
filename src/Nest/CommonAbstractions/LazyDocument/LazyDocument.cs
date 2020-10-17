@@ -2,7 +2,7 @@
 using Elasticsearch.Net;
 using Newtonsoft.Json.Linq;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// A lazily deserialized document

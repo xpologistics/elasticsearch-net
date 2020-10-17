@@ -5,7 +5,7 @@ using Elasticsearch.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Nest
+namespace Nest6
 {
 	public class Inferrer
 	{

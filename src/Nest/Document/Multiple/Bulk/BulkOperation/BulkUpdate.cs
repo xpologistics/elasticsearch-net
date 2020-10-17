@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Nest
+namespace Nest6
 {
 	public interface IBulkUpdateOperation<TDocument, TPartialDocument> : IBulkOperation
 		where TDocument : class

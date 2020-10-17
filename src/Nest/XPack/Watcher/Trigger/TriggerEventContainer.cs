@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[ContractJsonConverter(typeof(ReadAsTypeJsonConverter<TriggerEventContainer>))]
 	public interface ITriggerEventContainer

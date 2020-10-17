@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	internal class ReserializeJsonConverter<TReadAs, TInterface> : JsonConverter
 		where TReadAs : class, TInterface

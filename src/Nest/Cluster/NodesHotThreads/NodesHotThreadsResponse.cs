@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Nest
+namespace Nest6
 {
 	public class HotThreadInformation
 	{

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Elastic.Xunit.XunitPlumbing;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Mapping.LocalMetadata.Extensions;
 using Tests.Mapping.Types.Core.Text;
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Nest
+namespace Nest6
 {
 	public interface ISelector { }
 

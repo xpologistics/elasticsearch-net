@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Contains aggregates that are returned by Elasticsearch. In NEST `Aggregation` always refers to an aggregation

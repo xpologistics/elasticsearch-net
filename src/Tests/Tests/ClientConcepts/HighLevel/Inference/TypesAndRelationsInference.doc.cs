@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Nest;
+using Nest6;
 using System;
 using System.Runtime.Serialization;
 using Elastic.Xunit.XunitPlumbing;
@@ -7,7 +7,7 @@ using Tests.Domain;
 using Tests.Framework;
 using Xunit;
 using static Tests.Core.Serialization.SerializationTestHelper;
-using static Nest.Infer;
+using static Nest6.Infer;
 
 namespace Tests.ClientConcepts.HighLevel.Inference
 {

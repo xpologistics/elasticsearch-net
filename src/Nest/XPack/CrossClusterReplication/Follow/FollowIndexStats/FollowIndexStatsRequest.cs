@@ -1,4 +1,4 @@
-﻿namespace Nest
+﻿namespace Nest6
 {
 	/// <summary>
 	/// Gets follower stats. Will return shard-level stats about the following tasks associated with each shard for the

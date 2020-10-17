@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary> The Painless execute API allows an arbitrary script to be executed and a result to be returned. </summary>
 	public partial interface IExecutePainlessScriptRequest

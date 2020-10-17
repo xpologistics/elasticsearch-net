@@ -1,6 +1,6 @@
 using System;
 using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 
 namespace Tests.Analysis.Tokenizers
 {

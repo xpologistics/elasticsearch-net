@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Elasticsearch.Net;
-using Nest;
-using Nest.JsonNetSerializer;
+using Nest6;
+using Nest6.JsonNetSerializer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Tests.Domain;

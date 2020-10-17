@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary> A response returned for each scroll in ScrollAll() </summary>
 	public interface IScrollAllResponse<T> where T : class

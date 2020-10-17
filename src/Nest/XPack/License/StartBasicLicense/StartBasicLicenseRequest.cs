@@ -1,4 +1,4 @@
-﻿namespace Nest
+﻿namespace Nest6
 {
 	/// <summary>
 	/// The start basic API enables you to initiate an indefinite basic license, which gives access to all

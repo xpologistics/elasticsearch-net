@@ -1,6 +1,6 @@
 ﻿using System;
 using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 using Tests.Analysis;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Domain;

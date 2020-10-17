@@ -1,4 +1,4 @@
-﻿namespace Nest
+﻿namespace Nest6
 {
 	public abstract class QueryDescriptorBase<TDescriptor, TInterface>
 		: DescriptorBase<TDescriptor, TInterface>, IQuery

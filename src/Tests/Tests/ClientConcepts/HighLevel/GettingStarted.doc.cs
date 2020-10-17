@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
-using Nest;
+using Nest6;
 
 namespace Tests.ClientConcepts.HighLevel
 {

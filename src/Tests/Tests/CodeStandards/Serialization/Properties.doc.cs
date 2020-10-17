@@ -2,7 +2,7 @@
 using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Framework;
 
 namespace Tests.CodeStandards.Serialization

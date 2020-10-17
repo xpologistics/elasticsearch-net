@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Nest
+namespace Nest6
 {
 	[ContractJsonConverter(typeof(PercentileRanksAggregationJsonConverter))]
 	public interface IPercentileRanksAggregation : IMetricAggregation

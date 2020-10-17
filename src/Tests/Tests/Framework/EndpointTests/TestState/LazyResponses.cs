@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Nest;
+using Nest6;
 using Tests.Framework.Integration;
 
 namespace Tests.Framework

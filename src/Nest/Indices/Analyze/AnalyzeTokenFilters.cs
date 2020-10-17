@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// A list of string references to stored token filters and/or inline token filter definitions

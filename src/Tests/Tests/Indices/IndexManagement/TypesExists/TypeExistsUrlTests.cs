@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 using Tests.Domain;
 using Tests.Framework;
-using static Nest.Indices;
-using static Nest.Types;
+using static Nest6.Indices;
+using static Nest6.Types;
 using static Tests.Framework.UrlTester;
 
 namespace Tests.Indices.IndexManagement.TypeExists

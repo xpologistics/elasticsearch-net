@@ -1,4 +1,4 @@
-﻿namespace Nest
+﻿namespace Nest6
 {
 	// ReSharper disable InconsistentNaming
 	//these const reflect their output on purpose

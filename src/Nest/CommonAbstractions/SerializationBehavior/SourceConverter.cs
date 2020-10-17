@@ -3,7 +3,7 @@ using Elasticsearch.Net;
 using Newtonsoft.Json;
 using static Elasticsearch.Net.SerializationFormatting;
 
-namespace Nest
+namespace Nest6
 {
 	internal class SourceConverter : JsonConverter
 	{

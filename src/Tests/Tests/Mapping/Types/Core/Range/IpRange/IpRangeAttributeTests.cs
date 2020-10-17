@@ -1,5 +1,5 @@
 ﻿using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 
 namespace Tests.Mapping.Types.Core.Range.IpRange
 {

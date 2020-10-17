@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[JsonConverter(typeof(VerbatimDictionaryKeysJsonConverter<Privileges, string, IPrivilegesActions>))]
 	public interface IPrivileges : IIsADictionary<string, IPrivilegesActions> { }

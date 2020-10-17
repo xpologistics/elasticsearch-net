@@ -1,4 +1,4 @@
-﻿namespace Nest
+﻿namespace Nest6
 {
 	[MapsApi("nodes.reload_secure_settings.json")]
 	public partial interface IReloadSecureSettingsRequest { }

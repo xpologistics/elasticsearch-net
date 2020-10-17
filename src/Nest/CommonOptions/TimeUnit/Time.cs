@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Elasticsearch.Net;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Represents a time value

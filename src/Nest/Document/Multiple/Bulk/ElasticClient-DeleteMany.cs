@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Provides DeleteMany extensions that make it easier to get many documents given a list of ids

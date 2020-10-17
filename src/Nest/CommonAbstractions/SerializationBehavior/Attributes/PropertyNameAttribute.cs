@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nest
+namespace Nest6
 {
 	[AttributeUsage(AttributeTargets.Property)]
 	public class PropertyNameAttribute : Attribute

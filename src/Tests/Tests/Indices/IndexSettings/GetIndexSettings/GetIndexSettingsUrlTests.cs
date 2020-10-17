@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 using Tests.Framework;
-using static Nest.Indices;
+using static Nest6.Indices;
 using static Tests.Framework.UrlTester;
 
 namespace Tests.Indices.IndexSettings.GetIndexSettings

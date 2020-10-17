@@ -1,6 +1,6 @@
 ﻿using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Newtonsoft.Json;
 using Tests.Core.Client;
 using Tests.Framework;

@@ -2,7 +2,7 @@
 using Elasticsearch.Net;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	internal class MultiSearchTemplateJsonConverter : JsonConverter
 	{

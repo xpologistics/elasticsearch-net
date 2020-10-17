@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[JsonConverter(typeof(AutoExpandReplicasJsonConverter))]
 	public class AutoExpandReplicas

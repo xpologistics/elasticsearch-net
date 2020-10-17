@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	public interface IDateMath
 	{

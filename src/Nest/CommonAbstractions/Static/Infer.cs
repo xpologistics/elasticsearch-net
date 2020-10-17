@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Nest
+namespace Nest6
 {
 	public static class Infer
 	{

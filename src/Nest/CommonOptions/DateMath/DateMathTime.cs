@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// A time representation for use within <see cref="DateMath" /> expressions.

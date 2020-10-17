@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary> The histogram group aggregates one or more numeric fields into numeric histogram intervals. </summary>
 	[JsonConverter(typeof(ReadAsTypeJsonConverter<HistogramRollupGrouping>))]

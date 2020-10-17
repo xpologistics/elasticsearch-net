@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Nest
+namespace Nest6
 {
 	public class FluentDictionary<TKey, TValue> : Dictionary<TKey, TValue>
 	{

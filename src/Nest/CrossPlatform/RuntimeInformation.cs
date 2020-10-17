@@ -3,7 +3,7 @@ using System.Linq;
 #if NET461
 using System.Reflection;
 
-namespace Nest
+namespace Nest6
 {
 	internal static class RuntimeInformation
 	{

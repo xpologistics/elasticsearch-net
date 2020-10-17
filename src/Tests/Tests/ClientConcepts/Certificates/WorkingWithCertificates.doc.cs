@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core.Xunit;
 using Tests.Framework;
 using Tests.Framework.Integration;
@@ -30,7 +30,7 @@ namespace Tests.ClientConcepts.Certificates
 	 */
 	public class WorkingWithCertificates
 	{
-		/** Imagine you deploy a web application that talks to Elasticsearch over HTTPS using NEST, and also uses some third party SOAP/WSDL endpoint.
+		/** Imagine you deploy a web application that talks to Elasticsearch over HTTPS using Nest6, and also uses some third party SOAP/WSDL endpoint.
 		* By setting the following
 		*/
 		public void ServerValidationCallback() => ServicePointManager.ServerCertificateValidationCallback +=

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[JsonObject]
 	public class CatThreadPoolRecord : ICatRecord

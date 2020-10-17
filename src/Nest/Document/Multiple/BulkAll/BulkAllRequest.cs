@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public interface IBulkAllRequest<T> where T : class
 	{

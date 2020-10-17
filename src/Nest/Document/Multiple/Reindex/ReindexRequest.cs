@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	///  A reindex implementation that uses ScrollAll() BulkAll() to compose a reindex pipeline.

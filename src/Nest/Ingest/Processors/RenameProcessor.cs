@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Renames an existing field. If the field doesn’t exist or the new name is already used, an exception will be thrown.

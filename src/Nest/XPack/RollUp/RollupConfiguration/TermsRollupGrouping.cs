@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// The terms group can be used on keyword or numeric fields, to allow bucketing via the terms aggregation at a

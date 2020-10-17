@@ -1,6 +1,6 @@
 ﻿using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IDeleteRequest : IRequest<DeleteRequestParameters> { }
 

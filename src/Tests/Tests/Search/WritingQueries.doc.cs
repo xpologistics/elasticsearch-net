@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 using Newtonsoft.Json.Linq;
 using Tests.Core.Client;
 using Tests.Core.ManagedElasticsearch.Clusters;

@@ -1,5 +1,5 @@
 using System;
-using Nest;
+using Nest6;
 
 namespace Tests.Analysis.CharFilters
 {

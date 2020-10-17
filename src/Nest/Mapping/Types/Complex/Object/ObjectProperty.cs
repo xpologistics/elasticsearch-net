@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// A object datatype mapping for an inner object

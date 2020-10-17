@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nest
+namespace Nest6
 {
 	[MapsApi("xpack.sql.translate.json")]
 	[ContractJsonConverter(typeof(ReadAsTypeJsonConverter<TranslateSqlRequest>))]

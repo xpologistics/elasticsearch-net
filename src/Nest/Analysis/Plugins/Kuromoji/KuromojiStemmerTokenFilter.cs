@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// The kuromoji_stemmer token filter normalizes common katakana spelling variations ending in a

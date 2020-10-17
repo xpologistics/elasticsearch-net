@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Nest
+namespace Nest6
 {
 	internal class PartitionHelper<TDocument> : IEnumerable<IList<TDocument>>
 	{

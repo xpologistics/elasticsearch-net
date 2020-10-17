@@ -1,4 +1,4 @@
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// const string collection of known Elasticsearch index settings that can only be provided at

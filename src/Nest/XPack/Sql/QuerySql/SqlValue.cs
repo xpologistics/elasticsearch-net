@@ -3,7 +3,7 @@ using Elasticsearch.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Nest
+namespace Nest6
 {
 	[ContractJsonConverter(typeof(SqlValueJsonConverter))]
 	public class SqlValue : LazyDocument

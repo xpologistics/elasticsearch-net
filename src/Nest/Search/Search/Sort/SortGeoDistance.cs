@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary> Allows you to sort based on a proximity to one or more <see cref="GeoLocation" /> </summary>
 	public interface IGeoDistanceSort : ISort

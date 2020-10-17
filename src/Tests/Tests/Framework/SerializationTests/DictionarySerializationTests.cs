@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 using static Tests.Core.Serialization.SerializationTestHelper;
 
 

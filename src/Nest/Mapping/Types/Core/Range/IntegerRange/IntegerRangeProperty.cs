@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// A range of signed 32-bit integers with a minimum value of -231 and maximum of 231-1.

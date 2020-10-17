@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 using Tests.Domain;
 using Tests.Framework;
-using static Nest.Infer;
+using static Nest6.Infer;
 using static Tests.Framework.UrlTester;
 
 namespace Tests.Indices.MappingManagement.GetFieldMapping

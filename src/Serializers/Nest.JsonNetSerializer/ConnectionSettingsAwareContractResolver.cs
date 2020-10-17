@@ -5,7 +5,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Nest.JsonNetSerializer
+namespace Nest6.JsonNetSerializer
 {
 	public class ConnectionSettingsAwareContractResolver : DefaultContractResolver
 	{

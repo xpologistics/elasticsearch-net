@@ -1,6 +1,6 @@
 using System;
 
-namespace Nest
+namespace Nest6
 {
 	// This does not extend from Union because its intended to be used on folk's _source's
 	// And the union serialization will bleed into their own JSON.NET serializer should they

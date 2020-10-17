@@ -7,8 +7,8 @@ using System.Runtime.Serialization;
 using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
-using Nest.JsonNetSerializer;
+using Nest6;
+using Nest6.JsonNetSerializer;
 using Newtonsoft.Json;
 using Tests.Core.Client;
 using Tests.Core.Client.Settings;
@@ -17,7 +17,7 @@ using Tests.Domain;
 using Tests.Framework;
 using Tests.Framework.ManagedElasticsearch;
 using static Tests.Core.Serialization.SerializationTestHelper;
-using static Nest.Infer;
+using static Nest6.Infer;
 using Field = Nest.Field;
 
 namespace Tests.ClientConcepts.HighLevel.Inference
@@ -125,12 +125,12 @@ namespace Tests.ClientConcepts.HighLevel.Inference
 
 		/**
 		* [[nest-infer]]
-		* ==== Using Nest.Infer methods
+		* ==== using Nest6.Infer methods
 		* To ease creating a `Field` instance from expressions, there is a static `Infer` class you can use
 		*
 		* [TIP]
 		* ====
-		* This example uses the https://msdn.microsoft.com/en-us/library/sf0df423.aspx#Anchor_0[static import] `using static Nest.Infer;`
+		* This example uses the https://msdn.microsoft.com/en-us/library/sf0df423.aspx#Anchor_0[static import] `using static Nest6.Infer;`
 		 * in the using directives to shorthand `Nest.Infer.Field<T>()`
 		* to simply `Field<T>()`. Be sure to include this static import if copying any of these examples.
 		* ====
@@ -297,7 +297,7 @@ namespace Tests.ClientConcepts.HighLevel.Inference
 		/**[[field-name-attribute]]
 		* ==== Attribute based naming
 		*
-		* Using NEST's property attributes you can specify a new name for the properties
+		* using Nest6's property attributes you can specify a new name for the properties
 		*/
 		public class BuiltIn
 		{

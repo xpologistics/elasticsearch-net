@@ -1,4 +1,4 @@
-﻿namespace Nest
+﻿namespace Nest6
 {
 	[MapsApi("xpack.rollup.get_jobs.json")]
 	public partial interface IGetRollupJobRequest { }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Elasticsearch.Net;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>The built in internal serializer that the high level client NEST uses.</summary>
 	internal class InternalSerializer : IElasticsearchSerializer

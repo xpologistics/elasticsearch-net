@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>Determines how a POCO property maps to the property on a JSON object when serialized</summary>
 	public interface IPropertyMapping

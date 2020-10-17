@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Framework;
 using System.Reflection;
 using Elastic.Xunit.XunitPlumbing;
