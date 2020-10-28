@@ -1,3 +1,7 @@
+<h3>Custom fork of elasticsearch-net to be forked within XPO organisation so that we can use Nest 7 and Nest 6 simultaneously on our applciations. This repository has changes on Nest version 6.7 where namespaces and nuspec files are edited in order to build two new libraries Nest6 and ElasticSearch6 which will be hosted in XPO internal nuget repository.</h3>
+
+<h1>Original Readme below:</h1>
+
 Repository for both **NEST** and **Elasticsearch.Net**, the two official [elasticsearch](https://github.com/elastic/elasticsearch) .NET clients.
 
 ## Compatibility Matrix
