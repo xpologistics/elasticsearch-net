@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Nest;
+using Nest6;
 using Tests.Domain;
 
 namespace Tests.Core.ManagedElasticsearch.Clusters

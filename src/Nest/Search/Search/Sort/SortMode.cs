@@ -2,7 +2,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Elasticsearch supports sorting by array or multi-valued fields. The mode option controls what array value is picked for

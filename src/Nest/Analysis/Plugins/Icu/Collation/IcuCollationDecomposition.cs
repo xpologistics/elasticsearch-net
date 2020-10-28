@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Setting this decomposition property to canonical allows the Collator to handle unnormalized

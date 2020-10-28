@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[JsonConverter(typeof(ReadAsTypeJsonConverter<BoolQuery>))]
 	[JsonObject(MemberSerialization = MemberSerialization.OptIn)]

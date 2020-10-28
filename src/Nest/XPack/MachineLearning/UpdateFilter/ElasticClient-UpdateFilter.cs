@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -12,15 +12,15 @@ namespace Nest
 		/// </summary>
 		IUpdateFilterResponse UpdateFilter(Id filterId, Func<UpdateFilterDescriptor, IUpdateFilterRequest> selector = null);
 
-		/// <inheritdoc cref="UpdateFilter(Nest.Id,System.Func{Nest.UpdateFilterDescriptor,Nest.IUpdateFilterRequest})" />
+		/// <inheritdoc cref="UpdateFilter(Nest6.Id,System.Func{Nest6.UpdateFilterDescriptor,Nest6.IUpdateFilterRequest})" />
 		IUpdateFilterResponse UpdateFilter(IUpdateFilterRequest request);
 
-		/// <inheritdoc cref="UpdateFilter(Nest.Id,System.Func{Nest.UpdateFilterDescriptor,Nest.IUpdateFilterRequest})" />
+		/// <inheritdoc cref="UpdateFilter(Nest6.Id,System.Func{Nest6.UpdateFilterDescriptor,Nest6.IUpdateFilterRequest})" />
 		Task<IUpdateFilterResponse> UpdateFilterAsync(Id filterId, Func<UpdateFilterDescriptor, IUpdateFilterRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="UpdateFilter(Nest.Id,System.Func{Nest.UpdateFilterDescriptor,Nest.IUpdateFilterRequest})" />
+		/// <inheritdoc cref="UpdateFilter(Nest6.Id,System.Func{Nest6.UpdateFilterDescriptor,Nest6.IUpdateFilterRequest})" />
 		Task<IUpdateFilterResponse> UpdateFilterAsync(IUpdateFilterRequest request, CancellationToken cancellationToken = default(CancellationToken));
 	}
 

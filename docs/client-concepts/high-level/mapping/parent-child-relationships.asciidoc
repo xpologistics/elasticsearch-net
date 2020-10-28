@@ -276,7 +276,7 @@ indexResponse.ApiCall.Uri.Query.Should().Contain("routing=1337");
 ----
 
 The same goes for when we index a child, we can pass the instance directly to `Routing` and NEST will use the parent id
-already specified on `child`. Here we use the static import `using static Nest.Infer` and it's `Route()` static method to
+already specified on `child`. Here we use the static import `using static Nest6.Infer` and it's `Route()` static method to
 create an instance of `Routing`
 
 [source,csharp]

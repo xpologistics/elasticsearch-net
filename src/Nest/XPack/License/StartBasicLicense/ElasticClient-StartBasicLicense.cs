@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -15,38 +15,38 @@ namespace Nest
 		/// </summary>
 		IStartBasicLicenseResponse StartBasicLicense(Func<StartBasicLicenseDescriptor, IStartBasicLicenseRequest> selector = null);
 
-		/// <inheritdoc cref="StartBasicLicense(System.Func{Nest.StartBasicLicenseDescriptor,Nest.IStartBasicLicenseRequest})"/>
+		/// <inheritdoc cref="StartBasicLicense(System.Func{Nest6.StartBasicLicenseDescriptor,Nest6.IStartBasicLicenseRequest})"/>
 		IStartBasicLicenseResponse StartBasicLicense(IStartBasicLicenseRequest request);
 
-		/// <inheritdoc cref="StartBasicLicense(System.Func{Nest.StartBasicLicenseDescriptor,Nest.IStartBasicLicenseRequest})"/>
+		/// <inheritdoc cref="StartBasicLicense(System.Func{Nest6.StartBasicLicenseDescriptor,Nest6.IStartBasicLicenseRequest})"/>
 		Task<IStartBasicLicenseResponse> StartBasicLicenseAsync(Func<StartBasicLicenseDescriptor, IStartBasicLicenseRequest> selector = null,
 			CancellationToken cancellationToken = default
 		);
 
-		/// <inheritdoc cref="StartBasicLicense(System.Func{Nest.StartBasicLicenseDescriptor,Nest.IStartBasicLicenseRequest})"/>
+		/// <inheritdoc cref="StartBasicLicense(System.Func{Nest6.StartBasicLicenseDescriptor,Nest6.IStartBasicLicenseRequest})"/>
 		Task<IStartBasicLicenseResponse> StartBasicLicenseAsync(IStartBasicLicenseRequest request, CancellationToken cancellationToken = default);
 	}
 
 	public partial class ElasticClient
 	{
-		/// <inheritdoc cref="StartBasicLicense(System.Func{Nest.StartBasicLicenseDescriptor,Nest.IStartBasicLicenseRequest})"/>
+		/// <inheritdoc cref="StartBasicLicense(System.Func{Nest6.StartBasicLicenseDescriptor,Nest6.IStartBasicLicenseRequest})"/>
 		public IStartBasicLicenseResponse StartBasicLicense(Func<StartBasicLicenseDescriptor, IStartBasicLicenseRequest> selector = null) =>
 			StartBasicLicense(selector.InvokeOrDefault(new StartBasicLicenseDescriptor()));
 
-		/// <inheritdoc cref="StartBasicLicense(System.Func{Nest.StartBasicLicenseDescriptor,Nest.IStartBasicLicenseRequest})"/>
+		/// <inheritdoc cref="StartBasicLicense(System.Func{Nest6.StartBasicLicenseDescriptor,Nest6.IStartBasicLicenseRequest})"/>
 		public IStartBasicLicenseResponse StartBasicLicense(IStartBasicLicenseRequest request) =>
 			Dispatcher.Dispatch<IStartBasicLicenseRequest, StartBasicLicenseRequestParameters, StartBasicLicenseResponse>(
 				request,
 				(p, d) => LowLevelDispatch.XpackLicensePostStartBasicDispatch<StartBasicLicenseResponse>(p)
 			);
 
-		/// <inheritdoc cref="StartBasicLicense(System.Func{Nest.StartBasicLicenseDescriptor,Nest.IStartBasicLicenseRequest})"/>
+		/// <inheritdoc cref="StartBasicLicense(System.Func{Nest6.StartBasicLicenseDescriptor,Nest6.IStartBasicLicenseRequest})"/>
 		public Task<IStartBasicLicenseResponse> StartBasicLicenseAsync(Func<StartBasicLicenseDescriptor, IStartBasicLicenseRequest> selector = null,
 			CancellationToken cancellationToken = default
 		) =>
 			StartBasicLicenseAsync(selector.InvokeOrDefault(new StartBasicLicenseDescriptor()), cancellationToken);
 
-		/// <inheritdoc cref="StartBasicLicense(System.Func{Nest.StartBasicLicenseDescriptor,Nest.IStartBasicLicenseRequest})"/>
+		/// <inheritdoc cref="StartBasicLicense(System.Func{Nest6.StartBasicLicenseDescriptor,Nest6.IStartBasicLicenseRequest})"/>
 		public Task<IStartBasicLicenseResponse> StartBasicLicenseAsync(IStartBasicLicenseRequest request, CancellationToken cancellationToken = default
 		) =>
 			Dispatcher.DispatchAsync<IStartBasicLicenseRequest, StartBasicLicenseRequestParameters, StartBasicLicenseResponse, IStartBasicLicenseResponse>(

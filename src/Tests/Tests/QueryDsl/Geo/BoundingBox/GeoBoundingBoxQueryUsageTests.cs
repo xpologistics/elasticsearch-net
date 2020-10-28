@@ -1,4 +1,4 @@
-﻿using Nest;
+﻿using Nest6;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Domain;
 using Tests.Framework.Integration;
@@ -12,7 +12,7 @@ namespace Tests.QueryDsl.Geo.BoundingBox
 		protected override ConditionlessWhen ConditionlessWhen => new ConditionlessWhen<IGeoBoundingBoxQuery>(a => a.GeoBoundingBox)
 		{
 			q => q.BoundingBox = null,
-			q => q.BoundingBox = new Nest.BoundingBox { },
+			q => q.BoundingBox = new Nest6.BoundingBox { },
 			q => q.Field = null
 		};
 
@@ -21,7 +21,7 @@ namespace Tests.QueryDsl.Geo.BoundingBox
 			Boost = 1.1,
 			Name = "named_query",
 			Field = Infer.Field<Project>(p => p.Location),
-			BoundingBox = new Nest.BoundingBox
+			BoundingBox = new Nest6.BoundingBox
 			{
 				TopLeft = new GeoLocation(34, -34),
 				BottomRight = new GeoLocation(-34, 34),
@@ -75,7 +75,7 @@ namespace Tests.QueryDsl.Geo.BoundingBox
 		protected override ConditionlessWhen ConditionlessWhen => new ConditionlessWhen<IGeoBoundingBoxQuery>(a => a.GeoBoundingBox)
 		{
 			q => q.BoundingBox = null,
-			q => q.BoundingBox = new Nest.BoundingBox { },
+			q => q.BoundingBox = new Nest6.BoundingBox { },
 			q => q.Field = null
 		};
 
@@ -84,7 +84,7 @@ namespace Tests.QueryDsl.Geo.BoundingBox
 			Boost = 1.1,
 			Name = "named_query",
 			Field = Infer.Field<Project>(p => p.Location),
-			BoundingBox = new Nest.BoundingBox
+			BoundingBox = new Nest6.BoundingBox
 			{
 				WellKnownText = "BBOX (34, -34, -34, 34)"
 			},

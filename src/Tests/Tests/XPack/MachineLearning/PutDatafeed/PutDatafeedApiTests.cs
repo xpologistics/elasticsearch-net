@@ -1,7 +1,7 @@
 ﻿using System;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core.Extensions;
 using Tests.Domain;
 using Tests.Framework;
@@ -74,7 +74,7 @@ namespace Tests.XPack.MachineLearning.PutDatafeed
 			response.QueryDelay.Should().BeGreaterThan(new Time("1nanos"));
 
 			response.Indices.Should().NotBeNull("Indices");
-			response.Indices.Should().Be(Nest.Indices.Parse("server-metrics"));
+			response.Indices.Should().Be(Nest6.Indices.Parse("server-metrics"));
 
 			response.Types.Should().NotBeNull("Types");
 			response.Types.Should().Be(Types.Parse("metric"));

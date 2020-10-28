@@ -1,5 +1,5 @@
 using Elasticsearch.Net;
-using Nest;
+using Nest6;
 
 namespace Tests.Framework
 {

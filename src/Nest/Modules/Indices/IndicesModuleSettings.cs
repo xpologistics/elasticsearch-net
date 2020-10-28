@@ -1,6 +1,6 @@
 using System;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary> Settings to control where, when, and how shards are allocated to nodes. </summary>
 	public interface IIndicesModuleSettings

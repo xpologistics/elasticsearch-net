@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Conditions that must be satisfied for a new index to be created

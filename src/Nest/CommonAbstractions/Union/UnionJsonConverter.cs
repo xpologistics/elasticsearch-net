@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Reflection;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	internal class UnionJsonConverter : JsonConverter
 	{

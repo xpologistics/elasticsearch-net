@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -14,15 +14,15 @@ namespace Nest
 		/// </summary>
 		IRetryIlmResponse RetryIlm(IndexName index, Func<RetryIlmDescriptor, IRetryIlmRequest> selector = null);
 
-		/// <inheritdoc cref="RetryIlm(Nest.IndexName,System.Func{Nest.RetryIlmDescriptor,Nest.IRetryIlmRequest})" />
+		/// <inheritdoc cref="RetryIlm(Nest6.IndexName,System.Func{Nest6.RetryIlmDescriptor,Nest6.IRetryIlmRequest})" />
 		IRetryIlmResponse RetryIlm(IRetryIlmRequest request);
 
-		/// <inheritdoc cref="RetryIlm(Nest.IndexName,System.Func{Nest.RetryIlmDescriptor,Nest.IRetryIlmRequest})" />
+		/// <inheritdoc cref="RetryIlm(Nest6.IndexName,System.Func{Nest6.RetryIlmDescriptor,Nest6.IRetryIlmRequest})" />
 		Task<IRetryIlmResponse> RetryIlmAsync(IndexName index, Func<RetryIlmDescriptor, IRetryIlmRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="RetryIlm(Nest.IndexName,System.Func{Nest.RetryIlmDescriptor,Nest.IRetryIlmRequest})" />
+		/// <inheritdoc cref="RetryIlm(Nest6.IndexName,System.Func{Nest6.RetryIlmDescriptor,Nest6.IRetryIlmRequest})" />
 		Task<IRetryIlmResponse> RetryIlmAsync(IRetryIlmRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
@@ -30,24 +30,24 @@ namespace Nest
 
 	public partial class ElasticClient
 	{
-		/// <inheritdoc cref="RetryIlm(Nest.IndexName,System.Func{Nest.RetryIlmDescriptor,Nest.IRetryIlmRequest})" />
+		/// <inheritdoc cref="RetryIlm(Nest6.IndexName,System.Func{Nest6.RetryIlmDescriptor,Nest6.IRetryIlmRequest})" />
 		public IRetryIlmResponse RetryIlm(IndexName index, Func<RetryIlmDescriptor, IRetryIlmRequest> selector = null) =>
 			RetryIlm(selector.InvokeOrDefault(new RetryIlmDescriptor(index)));
 
-		/// <inheritdoc cref="RetryIlm(Nest.IndexName,System.Func{Nest.RetryIlmDescriptor,Nest.IRetryIlmRequest})" />
+		/// <inheritdoc cref="RetryIlm(Nest6.IndexName,System.Func{Nest6.RetryIlmDescriptor,Nest6.IRetryIlmRequest})" />
 		public IRetryIlmResponse RetryIlm(IRetryIlmRequest request) =>
 			Dispatcher.Dispatch<IRetryIlmRequest, RetryIlmRequestParameters, RetryIlmResponse>(
 				request,
 				(p, d) => LowLevelDispatch.XpackIlmRetryDispatch<RetryIlmResponse>(p)
 			);
 
-		/// <inheritdoc cref="RetryIlm(Nest.IndexName,System.Func{Nest.RetryIlmDescriptor,Nest.IRetryIlmRequest})" />
+		/// <inheritdoc cref="RetryIlm(Nest6.IndexName,System.Func{Nest6.RetryIlmDescriptor,Nest6.IRetryIlmRequest})" />
 		public Task<IRetryIlmResponse> RetryIlmAsync(IndexName index, Func<RetryIlmDescriptor, IRetryIlmRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>
 			RetryIlmAsync(selector.InvokeOrDefault(new RetryIlmDescriptor(index)), cancellationToken);
 
-		/// <inheritdoc cref="RetryIlm(Nest.IndexName,System.Func{Nest.RetryIlmDescriptor,Nest.IRetryIlmRequest})" />
+		/// <inheritdoc cref="RetryIlm(Nest6.IndexName,System.Func{Nest6.RetryIlmDescriptor,Nest6.IRetryIlmRequest})" />
 		public Task<IRetryIlmResponse> RetryIlmAsync(IRetryIlmRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>

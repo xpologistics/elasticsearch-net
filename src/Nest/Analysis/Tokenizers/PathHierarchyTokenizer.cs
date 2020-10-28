@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	///  The path_hierarchy tokenizer takes something like this:

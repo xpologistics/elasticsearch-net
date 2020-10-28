@@ -1,4 +1,4 @@
-﻿namespace Nest
+﻿namespace Nest6
 {
 	[MapsApi("xpack.security.delete_privileges.json")]
 	public partial interface IDeletePrivilegesRequest { }

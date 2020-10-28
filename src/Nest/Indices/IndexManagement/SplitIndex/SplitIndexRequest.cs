@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// A request to split an existing index into a new index, where each original primary

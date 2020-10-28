@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	[DebuggerDisplay("{DebugDisplay,nq}")]
 	public class TaskId : IUrlParameter, IEquatable<TaskId>

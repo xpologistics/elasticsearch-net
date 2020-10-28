@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// A values source for <see cref="ICompositeAggregation" />

@@ -7,8 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
-using Nest;
-using Nest.JsonNetSerializer;
+using Nest6;
+using Nest6.JsonNetSerializer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -22,7 +22,7 @@ namespace Tests.ClientConcepts.HighLevel.Serialization
 	 *
 	 * NEST 6.x ships with a _shaded_ Json.NET dependency, meaning that all of Json.NET's types are
 	 * internalized and IL merged into the NEST assembly, and their namespace has been changed
-	 * from `Newtonsoft.Json` to `Nest.Json`.
+	 * from `Newtonsoft.Json` to `Nest6.Json`.
 	 *
 	 * Why would we do this, you may ask? Well, NEST has always isolated its dependency on Json.NET as best as it could,
 	 * but this meant that we had to mandate how certain things were in the client. For instance,
@@ -52,7 +52,7 @@ namespace Tests.ClientConcepts.HighLevel.Serialization
 		 * Within NEST, we refer to this serializer as the `SourceSerializer`.
 		 *
 		 * Another serializer also exists within NEST known as the `RequestResponseSerializer`. This serializer is internal
-		 * and is responsible for serializing the request and response types that are part of NEST.
+		 * and is responsible for serializing the request and response types that are part of Nest6.
 		 *
 		 * If `SourceSerializer` is left unconfigured, the internal `RequestResponseSerializer` is the `SourceSerializer` as well.
 		 *
@@ -111,7 +111,7 @@ namespace Tests.ClientConcepts.HighLevel.Serialization
 		/**
 		 * ==== JsonNetSerializer
 		 *
-		 * We ship a separate {nuget}/NEST.JsonNetSerializer[NEST.JsonNetSerializer] package that helps in composing a custom `SourceSerializer`
+		 * We ship a separate {nuget}/Nest6.JsonNetSerializer[Nest6.JsonNetSerializer] package that helps in composing a custom `SourceSerializer`
 		 * using `Json.NET`, that is smart enough to delegate the serialization of known NEST types back to the built-in
 		 * `RequestResponseSerializer`. This package is also useful if you want to control how your documents and values are stored
 		 * and retrieved from Elasticsearch using `Json.NET`, without interfering with the way NEST uses `Json.NET` internally.

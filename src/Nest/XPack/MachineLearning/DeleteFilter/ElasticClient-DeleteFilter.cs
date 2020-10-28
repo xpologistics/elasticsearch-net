@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -14,15 +14,15 @@ namespace Nest
 		/// </summary>
 		IDeleteFilterResponse DeleteFilter(Id filterId, Func<DeleteFilterDescriptor, IDeleteFilterRequest> selector = null);
 
-		/// <inheritdoc cref="DeleteFilter(Nest.Id,System.Func{Nest.DeleteFilterDescriptor,Nest.IDeleteFilterRequest})" />
+		/// <inheritdoc cref="DeleteFilter(Nest6.Id,System.Func{Nest6.DeleteFilterDescriptor,Nest6.IDeleteFilterRequest})" />
 		IDeleteFilterResponse DeleteFilter(IDeleteFilterRequest request);
 
-		/// <inheritdoc cref="DeleteFilter(Nest.Id,System.Func{Nest.DeleteFilterDescriptor,Nest.IDeleteFilterRequest})" />
+		/// <inheritdoc cref="DeleteFilter(Nest6.Id,System.Func{Nest6.DeleteFilterDescriptor,Nest6.IDeleteFilterRequest})" />
 		Task<IDeleteFilterResponse> DeleteFilterAsync(Id filterId, Func<DeleteFilterDescriptor, IDeleteFilterRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="DeleteFilter(Nest.Id,System.Func{Nest.DeleteFilterDescriptor,Nest.IDeleteFilterRequest})" />
+		/// <inheritdoc cref="DeleteFilter(Nest6.Id,System.Func{Nest6.DeleteFilterDescriptor,Nest6.IDeleteFilterRequest})" />
 		Task<IDeleteFilterResponse> DeleteFilterAsync(IDeleteFilterRequest request, CancellationToken cancellationToken = default(CancellationToken));
 	}
 

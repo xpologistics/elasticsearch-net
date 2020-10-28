@@ -1,4 +1,4 @@
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// This action will set the index to be read-only.

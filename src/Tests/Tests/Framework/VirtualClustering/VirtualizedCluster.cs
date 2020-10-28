@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
-using Nest;
+using Nest6;
 using Tests.Domain;
 
 namespace Tests.Framework

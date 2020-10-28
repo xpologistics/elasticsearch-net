@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -14,15 +14,15 @@ namespace Nest
 		/// </summary>
 		IRemovePolicyResponse RemovePolicy(IndexName index, Func<RemovePolicyDescriptor, IRemovePolicyRequest> selector = null);
 
-		/// <inheritdoc cref="RemovePolicy(Nest.IndexName,System.Func{Nest.RemovePolicyDescriptor,Nest.IRemovePolicyRequest})" />
+		/// <inheritdoc cref="RemovePolicy(Nest6.IndexName,System.Func{Nest6.RemovePolicyDescriptor,Nest6.IRemovePolicyRequest})" />
 		IRemovePolicyResponse RemovePolicy(IRemovePolicyRequest request);
 
-		/// <inheritdoc cref="RemovePolicy(Nest.IndexName,System.Func{Nest.RemovePolicyDescriptor,Nest.IRemovePolicyRequest})" />
+		/// <inheritdoc cref="RemovePolicy(Nest6.IndexName,System.Func{Nest6.RemovePolicyDescriptor,Nest6.IRemovePolicyRequest})" />
 		Task<IRemovePolicyResponse> RemovePolicyAsync(IndexName index, Func<RemovePolicyDescriptor, IRemovePolicyRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="RemovePolicy(Nest.IndexName,System.Func{Nest.RemovePolicyDescriptor,Nest.IRemovePolicyRequest})" />
+		/// <inheritdoc cref="RemovePolicy(Nest6.IndexName,System.Func{Nest6.RemovePolicyDescriptor,Nest6.IRemovePolicyRequest})" />
 		Task<IRemovePolicyResponse> RemovePolicyAsync(IRemovePolicyRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
@@ -30,24 +30,24 @@ namespace Nest
 
 	public partial class ElasticClient
 	{
-		/// <inheritdoc cref="RemovePolicy(Nest.IndexName,System.Func{Nest.RemovePolicyDescriptor,Nest.IRemovePolicyRequest})" />
+		/// <inheritdoc cref="RemovePolicy(Nest6.IndexName,System.Func{Nest6.RemovePolicyDescriptor,Nest6.IRemovePolicyRequest})" />
 		public IRemovePolicyResponse RemovePolicy(IndexName index, Func<RemovePolicyDescriptor, IRemovePolicyRequest> selector = null) =>
 			RemovePolicy(selector.InvokeOrDefault(new RemovePolicyDescriptor(index)));
 
-		/// <inheritdoc cref="RemovePolicy(Nest.IndexName,System.Func{Nest.RemovePolicyDescriptor,Nest.IRemovePolicyRequest})" />
+		/// <inheritdoc cref="RemovePolicy(Nest6.IndexName,System.Func{Nest6.RemovePolicyDescriptor,Nest6.IRemovePolicyRequest})" />
 		public IRemovePolicyResponse RemovePolicy(IRemovePolicyRequest request) =>
 			Dispatcher.Dispatch<IRemovePolicyRequest, RemovePolicyRequestParameters, RemovePolicyResponse>(
 				request,
 				(p, d) => LowLevelDispatch.XpackIlmRemovePolicyDispatch<RemovePolicyResponse>(p)
 			);
 
-		/// <inheritdoc cref="RemovePolicy(Nest.IndexName,System.Func{Nest.RemovePolicyDescriptor,Nest.IRemovePolicyRequest})" />
+		/// <inheritdoc cref="RemovePolicy(Nest6.IndexName,System.Func{Nest6.RemovePolicyDescriptor,Nest6.IRemovePolicyRequest})" />
 		public Task<IRemovePolicyResponse> RemovePolicyAsync(IndexName index, Func<RemovePolicyDescriptor, IRemovePolicyRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>
 			RemovePolicyAsync(selector.InvokeOrDefault(new RemovePolicyDescriptor(index)), cancellationToken);
 
-		/// <inheritdoc cref="RemovePolicy(Nest.IndexName,System.Func{Nest.RemovePolicyDescriptor,Nest.IRemovePolicyRequest})" />
+		/// <inheritdoc cref="RemovePolicy(Nest6.IndexName,System.Func{Nest6.RemovePolicyDescriptor,Nest6.IRemovePolicyRequest})" />
 		public Task<IRemovePolicyResponse> RemovePolicyAsync(IRemovePolicyRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>

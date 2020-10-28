@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary> Ingest pipelines are composed of one or more processors </summary>
 	public interface IProcessor

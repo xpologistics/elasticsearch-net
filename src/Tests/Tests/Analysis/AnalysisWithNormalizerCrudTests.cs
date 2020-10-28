@@ -1,4 +1,4 @@
-﻿using Nest;
+﻿using Nest6;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Framework.Integration;
 using static Tests.Framework.Promisify;
@@ -13,7 +13,7 @@ namespace Tests.Analysis
 		{
 			Settings = new IndexSettings
 			{
-				Analysis = new Nest.Analysis
+				Analysis = new Nest6.Analysis
 				{
 					Analyzers = AnalysisUsageTests.AnalyzersInitializer.Analysis.Analyzers,
 					CharFilters = AnalysisUsageTests.CharFiltersInitializer.Analysis.CharFilters,

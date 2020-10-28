@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Joins each element of an array into a single string using a separator

@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Nest;
+using Nest6;
 using System;
 using System.Runtime.Serialization;
 using Elastic.Xunit.XunitPlumbing;
@@ -7,7 +7,7 @@ using Tests.Domain;
 using Tests.Framework;
 using Xunit;
 using static Tests.Core.Serialization.SerializationTestHelper;
-using static Nest.Infer;
+using static Nest6.Infer;
 
 namespace Tests.ClientConcepts.HighLevel.Inference
 {
@@ -173,8 +173,8 @@ namespace Tests.ClientConcepts.HighLevel.Inference
 			Relation<Project>().Should().NotBe(Relation<Developer>());
 
 
-			Nest.Types types1 = "foo,bar";
-			Nest.Types types2 = "bar,foo";
+			Nest6.Types types1 = "foo,bar";
+			Nest6.Types types2 = "bar,foo";
 			types1.Should().Be(types2);
 			(types1 == types2).Should().BeTrue();
 		}

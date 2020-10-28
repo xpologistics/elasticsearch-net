@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Nest
+namespace Nest6
 {
 	internal static class DotNetCoreTypeExtensions
 	{

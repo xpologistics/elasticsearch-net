@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Transforms are used to process Unicode text in many different ways, such as case mapping,

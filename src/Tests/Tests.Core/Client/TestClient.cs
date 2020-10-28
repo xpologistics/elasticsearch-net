@@ -1,5 +1,5 @@
-﻿using Nest;
-using Nest.JsonNetSerializer;
+﻿using Nest6;
+using Nest6.JsonNetSerializer;
 using Tests.Configuration;
 using Tests.Core.Client.Settings;
 using Tests.Domain.Extensions;

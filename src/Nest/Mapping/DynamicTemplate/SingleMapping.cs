@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Nest
+namespace Nest6
 {
 	public class SingleMappingSelector<T> : SelectorBase<IProperty>, IPropertiesDescriptor<T, IProperty> where T : class
 	{

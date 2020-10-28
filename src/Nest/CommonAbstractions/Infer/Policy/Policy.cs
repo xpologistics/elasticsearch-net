@@ -2,7 +2,7 @@
 using System.Globalization;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public class PolicyId : IUrlParameter, IEquatable<PolicyId>
 	{

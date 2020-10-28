@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Nest;
+using Nest6;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Domain;
 using Tests.Framework.Integration;
@@ -80,7 +80,7 @@ namespace Tests.QueryDsl.Geo.Shape.GeometryCollection
 			Name = "named_query",
 			Boost = 1.1,
 			Field = Infer.Field<Project>(p => p.Location),
-			Shape = new Nest.GeometryCollection
+			Shape = new Nest6.GeometryCollection
 			{
 				Geometries = new IGeoShape[]
 				{

@@ -3,7 +3,7 @@ using System.IO;
 using Elastic.Managed.Ephemeral;
 using Elastic.Xunit;
 using Elasticsearch.Net;
-using Nest;
+using Nest6;
 using Tests.Core.Extensions;
 using Tests.Core.ManagedElasticsearch.NodeSeeders;
 using Tests.Core.ManagedElasticsearch.Tasks;

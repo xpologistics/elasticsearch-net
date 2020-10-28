@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary> Settings to control where, when, and how shards are allocated to nodes. </summary>
 	public interface IClusterModuleSettings

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Elasticsearch.Net;
-using Nest;
+using Nest6;
 using Tests.Domain;
 
 #if DOTNETCORE

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Elastic.Xunit;
 using Elastic.Xunit.XunitPlumbing;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core.Client;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Core.Serialization;
@@ -68,7 +68,7 @@ namespace Tests.Analysis
 			Settings = new IndexSettings { Analysis = InitializerAnalysis() }
 		};
 
-		protected abstract Nest.Analysis InitializerAnalysis();
+		protected abstract Nest6.Analysis InitializerAnalysis();
 
 		[U] public virtual async Task TestPutSettingsRequest() => await Usage.AssertOnAllResponses(r =>
 		{

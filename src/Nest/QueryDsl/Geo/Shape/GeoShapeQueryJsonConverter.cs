@@ -3,7 +3,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Marks an instance where _name, boost and ignore_unmapped do

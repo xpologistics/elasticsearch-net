@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[ContractJsonConverter(typeof(StopWordsJsonConverter))]
 	public class StopWords : Union<string, IEnumerable<string>>

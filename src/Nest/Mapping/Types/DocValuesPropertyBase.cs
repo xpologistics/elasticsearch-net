@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Properties of a mapping for a property type to a document field that has doc_values in Elasticsearch

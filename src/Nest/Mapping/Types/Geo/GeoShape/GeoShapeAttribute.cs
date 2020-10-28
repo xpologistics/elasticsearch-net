@@ -1,4 +1,4 @@
-﻿namespace Nest
+﻿namespace Nest6
 {
 	/// <inheritdoc cref="IGeoShapeProperty" />
 	public class GeoShapeAttribute : ElasticsearchDocValuesPropertyAttributeBase, IGeoShapeProperty

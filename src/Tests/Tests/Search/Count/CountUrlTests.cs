@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 using Tests.Domain;
 using Tests.Framework;
 using static Tests.Framework.UrlTester;
@@ -55,18 +55,18 @@ namespace Tests.Search.Count
 			await GET("/_count")
 					.Fluent(c => c.Count<Project>(s => s.AllTypes().AllIndices()))
 					.Request(c => c.Count<Project>(new CountRequest()))
-					.Request(c => c.Count<Project>(new CountRequest<Project>(Nest.Indices.All, Types.All)))
+					.Request(c => c.Count<Project>(new CountRequest<Project>(Nest6.Indices.All, Types.All)))
 					.FluentAsync(c => c.CountAsync<Project>(s => s.AllIndices().Type(Types.All)))
-					.RequestAsync(c => c.CountAsync<Project>(new CountRequest<Project>(Nest.Indices.All, Types.All)))
+					.RequestAsync(c => c.CountAsync<Project>(new CountRequest<Project>(Nest6.Indices.All, Types.All)))
 					.RequestAsync(c => c.CountAsync<Project>(new CountRequest()))
 				;
 
 			await POST("/_count")
 					.Fluent(c => c.Count<Project>(s => s.AllTypes().AllIndices().Query(q => q.MatchAll())))
 					.Request(c => c.Count<Project>(new CountRequest() { Query = new MatchAllQuery() }))
-					.Request(c => c.Count<Project>(new CountRequest<Project>(Nest.Indices.All, Types.All) { Query = new MatchAllQuery() }))
+					.Request(c => c.Count<Project>(new CountRequest<Project>(Nest6.Indices.All, Types.All) { Query = new MatchAllQuery() }))
 					.FluentAsync(c => c.CountAsync<Project>(s => s.AllIndices().Type(Types.All).Query(q => q.MatchAll())))
-					.RequestAsync(c => c.CountAsync<Project>(new CountRequest<Project>(Nest.Indices.All, Types.All) { Query = new MatchAllQuery() }))
+					.RequestAsync(c => c.CountAsync<Project>(new CountRequest<Project>(Nest6.Indices.All, Types.All) { Query = new MatchAllQuery() }))
 					.RequestAsync(c => c.CountAsync<Project>(new CountRequest() { Query = new MatchAllQuery() }))
 				;
 		}

@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	internal class FieldNameQueryJsonConverter<TReadAs> : ReserializeJsonConverter<TReadAs, IFieldNameQuery>
 		where TReadAs : class, IFieldNameQuery, new()

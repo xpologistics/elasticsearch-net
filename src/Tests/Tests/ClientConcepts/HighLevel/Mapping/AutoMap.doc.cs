@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
-using Nest;
+using Nest6;
 using Tests.Core.Client;
 using Tests.Framework;
 using static Tests.Core.Serialization.SerializationTestHelper;
@@ -247,13 +247,13 @@ namespace Tests.ClientConcepts.HighLevel.Mapping
 		 * and supports a number of special types defined in NEST
 		 *
 		 * [horizontal]
-		 * `Nest.GeoLocation`:: maps to `"geo_point"`
-		 * `Nest.CompletionField`:: maps to `"completion"`
-		 * `Nest.DateRange`:: maps to `"date_range"`
-		 * `Nest.DoubleRange`:: maps to `"double_range"`
-		 * `Nest.FloatRange`:: maps to `"float_range"`
-		 * `Nest.IntegerRange`:: maps to `"integer_range"`
-		 * `Nest.LongRange`:: maps to `"long_range"`
+		 * `Nest6.GeoLocation`:: maps to `"geo_point"`
+		 * `Nest6.CompletionField`:: maps to `"completion"`
+		 * `Nest6.DateRange`:: maps to `"date_range"`
+		 * `Nest6.DoubleRange`:: maps to `"double_range"`
+		 * `Nest6.FloatRange`:: maps to `"float_range"`
+		 * `Nest6.IntegerRange`:: maps to `"integer_range"`
+		 * `Nest6.LongRange`:: maps to `"long_range"`
 		 *
 		 * All other types map to `"object"` by default.
 		 *

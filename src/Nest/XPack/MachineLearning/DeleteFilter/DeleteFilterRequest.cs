@@ -1,4 +1,4 @@
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Deletes a machine learning filter

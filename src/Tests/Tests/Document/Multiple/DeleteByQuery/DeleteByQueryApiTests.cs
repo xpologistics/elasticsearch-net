@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core.Extensions;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Core.ManagedElasticsearch.NodeSeeders;
 using Tests.Domain;
 using Tests.Framework;
 using Tests.Framework.Integration;
-using static Nest.Infer;
+using static Nest6.Infer;
 
 namespace Tests.Document.Multiple.DeleteByQuery
 {
@@ -61,7 +61,7 @@ namespace Tests.Document.Multiple.DeleteByQuery
 		protected override bool SupportsDeserialization => false;
 
 		protected override string UrlPath => $"/{CallIsolatedValue}%2C{SecondIndex}/doc/_delete_by_query?ignore_unavailable=true";
-		private Nest.Indices Indices => Index(CallIsolatedValue).And(SecondIndex);
+		private Nest6.Indices Indices => Index(CallIsolatedValue).And(SecondIndex);
 
 		private string SecondIndex => $"{CallIsolatedValue}-clone";
 

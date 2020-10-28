@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -13,15 +13,15 @@ namespace Nest
 		/// </summary>
 		IStopRollupJobResponse StopRollupJob(Id id, Func<StopRollupJobDescriptor, IStopRollupJobRequest> selector = null);
 
-		/// <inheritdoc cref="StopRollupJob(Nest.Id,System.Func{Nest.StopRollupJobDescriptor,Nest.IStopRollupJobRequest})" />
+		/// <inheritdoc cref="StopRollupJob(Nest6.Id,System.Func{Nest6.StopRollupJobDescriptor,Nest6.IStopRollupJobRequest})" />
 		IStopRollupJobResponse StopRollupJob(IStopRollupJobRequest request);
 
-		/// <inheritdoc cref="StopRollupJob(Nest.Id,System.Func{Nest.StopRollupJobDescriptor,Nest.IStopRollupJobRequest})" />
+		/// <inheritdoc cref="StopRollupJob(Nest6.Id,System.Func{Nest6.StopRollupJobDescriptor,Nest6.IStopRollupJobRequest})" />
 		Task<IStopRollupJobResponse> StopRollupJobAsync(Id id,
 			Func<StopRollupJobDescriptor, IStopRollupJobRequest> selector = null, CancellationToken cancellationToken = default
 		);
 
-		/// <inheritdoc cref="StopRollupJob(Nest.Id,System.Func{Nest.StopRollupJobDescriptor,Nest.IStopRollupJobRequest})" />
+		/// <inheritdoc cref="StopRollupJob(Nest6.Id,System.Func{Nest6.StopRollupJobDescriptor,Nest6.IStopRollupJobRequest})" />
 		Task<IStopRollupJobResponse> StopRollupJobAsync(IStopRollupJobRequest request, CancellationToken cancellationToken = default);
 	}
 

@@ -2,7 +2,7 @@ using System;
 using System.Linq.Expressions;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Defines the format of the input data when you send data to the machine learning job.

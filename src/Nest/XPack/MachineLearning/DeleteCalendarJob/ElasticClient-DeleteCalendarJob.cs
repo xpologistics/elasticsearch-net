@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -13,15 +13,15 @@ namespace Nest
 		/// </summary>
 		IDeleteCalendarJobResponse DeleteCalendarJob(Id calendarId, Id jobId, Func<DeleteCalendarJobDescriptor, IDeleteCalendarJobRequest> selector = null);
 
-		/// <inheritdoc cref="DeleteCalendarJob(Nest.Id,Nest.Id,System.Func{Nest.DeleteCalendarJobDescriptor,Nest.IDeleteCalendarJobRequest})" />
+		/// <inheritdoc cref="DeleteCalendarJob(Nest6.Id,Nest6.Id,System.Func{Nest6.DeleteCalendarJobDescriptor,Nest6.IDeleteCalendarJobRequest})" />
 		IDeleteCalendarJobResponse DeleteCalendarJob(IDeleteCalendarJobRequest request);
 
-		/// <inheritdoc cref="DeleteCalendarJob(Nest.Id,Nest.Id,System.Func{Nest.DeleteCalendarJobDescriptor,Nest.IDeleteCalendarJobRequest})" />
+		/// <inheritdoc cref="DeleteCalendarJob(Nest6.Id,Nest6.Id,System.Func{Nest6.DeleteCalendarJobDescriptor,Nest6.IDeleteCalendarJobRequest})" />
 		Task<IDeleteCalendarJobResponse> DeleteCalendarJobAsync(Id calendarId, Id jobId, Func<DeleteCalendarJobDescriptor, IDeleteCalendarJobRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="DeleteCalendarJob(Nest.Id,Nest.Id,System.Func{Nest.DeleteCalendarJobDescriptor,Nest.IDeleteCalendarJobRequest})" />
+		/// <inheritdoc cref="DeleteCalendarJob(Nest6.Id,Nest6.Id,System.Func{Nest6.DeleteCalendarJobDescriptor,Nest6.IDeleteCalendarJobRequest})" />
 		Task<IDeleteCalendarJobResponse> DeleteCalendarJobAsync(IDeleteCalendarJobRequest request, CancellationToken cancellationToken = default(CancellationToken));
 	}
 

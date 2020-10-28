@@ -60,7 +60,7 @@ Each individual moving part is further explained in the documentation
 Many places that only took a string now take a more strongly typed object, `Id`, `Field`, `Fields`, `Index`, `Indices`, `Type`, `Types`, `DocumentPath<T>`.
 Its good to know that in most cases you can still implicitly convert to them from `string`, `long`, `Guid` where it makes sense.
 
-If you are using `C# 6` you can also staticly import `using static Nest.Infer`. This will allow you to write `Field<Project>(p=>p.Name)` any where that takes a `Field`,
+If you are using `C# 6` you can also staticly import `using static Nest6.Infer`. This will allow you to write `Field<Project>(p=>p.Name)` any where that takes a `Field`,
 `Field<Project>(p=>p.Name).And(p=>p.Description).And("field")` anywhere that takes `Fields`, `Index<Project>()` for `Index` and so on and so on.
 
 If you are using the fluent API using these are not required (but still possible)

@@ -1,4 +1,4 @@
-﻿namespace Nest
+﻿namespace Nest6
 {
 	public interface IRollupSearchResponse<T> : ISearchResponse<T> where T : class { }
 

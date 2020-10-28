@@ -3,7 +3,7 @@ using System.Text;
 using Elasticsearch.Net;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Shared interface by all elasticsearch responses
@@ -48,7 +48,7 @@ namespace Nest
 
 		/// <summary>
 		/// If the response results in an error on elasticsearch's side an <pre>error</pre> element will be returned, this is mapped to
-		/// <see cref="ServerError" /> in NEST.
+		/// <see cref="ServerError" /> in Nest6.
 		/// <para>Possibly set when <see cref="IsValid" /> is false, depending on the cause of the error</para>
 		/// <para>
 		/// You can also configure the client to always throw an <see cref="ElasticsearchClientException" /> using

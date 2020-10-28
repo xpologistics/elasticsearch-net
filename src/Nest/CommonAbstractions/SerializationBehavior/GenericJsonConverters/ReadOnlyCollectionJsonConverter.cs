@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Json converter that deserializes into an <see cref="ReadOnlyCollection{T}" /> or <see cref="IReadOnlyCollection{T}" />

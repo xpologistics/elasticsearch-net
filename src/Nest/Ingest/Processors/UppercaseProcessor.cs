@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Converts a string to its uppercase equivalent.

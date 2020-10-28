@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -13,15 +13,15 @@ namespace Nest
 		/// </summary>
 		IDeleteCalendarResponse DeleteCalendar(Id calendarId, Func<DeleteCalendarDescriptor, IDeleteCalendarRequest> selector = null);
 
-		/// <inheritdoc cref="DeleteCalendar(Nest.Id,System.Func{Nest.DeleteCalendarDescriptor,Nest.IDeleteCalendarRequest})" />
+		/// <inheritdoc cref="DeleteCalendar(Nest6.Id,System.Func{Nest6.DeleteCalendarDescriptor,Nest6.IDeleteCalendarRequest})" />
 		IDeleteCalendarResponse DeleteCalendar(IDeleteCalendarRequest request);
 
-		/// <inheritdoc cref="DeleteCalendar(Nest.Id,System.Func{Nest.DeleteCalendarDescriptor,Nest.IDeleteCalendarRequest})" />
+		/// <inheritdoc cref="DeleteCalendar(Nest6.Id,System.Func{Nest6.DeleteCalendarDescriptor,Nest6.IDeleteCalendarRequest})" />
 		Task<IDeleteCalendarResponse> DeleteCalendarAsync(Id calendarId, Func<DeleteCalendarDescriptor, IDeleteCalendarRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="DeleteCalendar(Nest.Id,System.Func{Nest.DeleteCalendarDescriptor,Nest.IDeleteCalendarRequest})" />
+		/// <inheritdoc cref="DeleteCalendar(Nest6.Id,System.Func{Nest6.DeleteCalendarDescriptor,Nest6.IDeleteCalendarRequest})" />
 		Task<IDeleteCalendarResponse> DeleteCalendarAsync(IDeleteCalendarRequest request, CancellationToken cancellationToken = default(CancellationToken));
 	}
 

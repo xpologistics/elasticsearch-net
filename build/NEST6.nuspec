@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
 	<metadata>
-		<id>NEST</id>
+		<id>NEST6</id>
 		<version>$version$</version>
 		<title>NEST - Elasticsearch .NET high level client</title>
 		
@@ -21,20 +21,20 @@
 		
 		<dependencies>
 			<group targetFramework="net461">
-				<dependency id="Elasticsearch.Net" version="[$version$, $nextMajorVersion$)" />
+				<dependency id="Elasticsearch6.Net" version="[$version$, $nextMajorVersion$)" />
 			</group>
 			<group targetFramework="netstandard2.0">
-				<dependency id="Elasticsearch.Net" version="[$version$, $nextMajorVersion$)" />
+				<dependency id="Elasticsearch6.Net" version="[$version$, $nextMajorVersion$)" />
 			</group>
 		</dependencies>
 	</metadata>
 	<files>
 		<file src="..\license.txt" target="" />
 	
-		<file src="output\Nest\net461\Nest.dll" target="lib\net461"/>
-		<file src="output\Nest\net461\Nest.XML" target="lib\net461"/>
+		<file src="..\src\Nest\bin\Debug\net461\Nest6.dll" target="lib\net461"/>
+		<file src="..\src\Nest\bin\Debug\net461\Nest6.XML" target="lib\net461"/>
 
-		<file src="output\Nest\netstandard2.0\Nest.dll" target="lib\netstandard2.0"/>
-		<file src="output\Nest\netstandard2.0\Nest.xml" target="lib\netstandard2.0"/>
+		<file src="..\src\Nest\bin\Debug\netstandard2.0\Nest6.dll" target="lib\netstandard2.0"/>
+		<file src="..\src\Nest\bin\Debug\netstandard2.0\Nest6.xml" target="lib\netstandard2.0"/>
 	</files>
 </package>

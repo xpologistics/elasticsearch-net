@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -14,32 +14,32 @@ namespace Nest
 		/// </summary>
 		IPauseFollowIndexResponse PauseFollowIndex(IndexName index, Func<PauseFollowIndexDescriptor, IPauseFollowIndexRequest> selector = null);
 
-		/// <inheritdoc cref="PauseFollowIndex(IndexName, System.Func{Nest.PauseFollowIndexDescriptor,Nest.IPauseFollowIndexRequest})" />
+		/// <inheritdoc cref="PauseFollowIndex(IndexName, System.Func{Nest6.PauseFollowIndexDescriptor,Nest6.IPauseFollowIndexRequest})" />
 		IPauseFollowIndexResponse PauseFollowIndex(IPauseFollowIndexRequest request);
 
-		/// <inheritdoc cref="PauseFollowIndex(IndexName, System.Func{Nest.PauseFollowIndexDescriptor,Nest.IPauseFollowIndexRequest})" />
+		/// <inheritdoc cref="PauseFollowIndex(IndexName, System.Func{Nest6.PauseFollowIndexDescriptor,Nest6.IPauseFollowIndexRequest})" />
 		Task<IPauseFollowIndexResponse> PauseFollowIndexAsync(IndexName index, Func<PauseFollowIndexDescriptor, IPauseFollowIndexRequest> selector = null,
 			CancellationToken cancellationToken = default
 		);
 
-		/// <inheritdoc cref="PauseFollowIndex(IndexName, System.Func{Nest.PauseFollowIndexDescriptor,Nest.IPauseFollowIndexRequest})" />
+		/// <inheritdoc cref="PauseFollowIndex(IndexName, System.Func{Nest6.PauseFollowIndexDescriptor,Nest6.IPauseFollowIndexRequest})" />
 		Task<IPauseFollowIndexResponse> PauseFollowIndexAsync(IPauseFollowIndexRequest request, CancellationToken cancellationToken = default);
 	}
 
 	public partial class ElasticClient
 	{
-		/// <inheritdoc cref="PauseFollowIndex(IndexName, System.Func{Nest.PauseFollowIndexDescriptor,Nest.IPauseFollowIndexRequest})" />
+		/// <inheritdoc cref="PauseFollowIndex(IndexName, System.Func{Nest6.PauseFollowIndexDescriptor,Nest6.IPauseFollowIndexRequest})" />
 		public IPauseFollowIndexResponse PauseFollowIndex(IndexName index, Func<PauseFollowIndexDescriptor, IPauseFollowIndexRequest> selector = null) =>
 			PauseFollowIndex(selector.InvokeOrDefault(new PauseFollowIndexDescriptor(index)));
 
-		/// <inheritdoc cref="PauseFollowIndex(IndexName, System.Func{Nest.PauseFollowIndexDescriptor,Nest.IPauseFollowIndexRequest})" />
+		/// <inheritdoc cref="PauseFollowIndex(IndexName, System.Func{Nest6.PauseFollowIndexDescriptor,Nest6.IPauseFollowIndexRequest})" />
 		public IPauseFollowIndexResponse PauseFollowIndex(IPauseFollowIndexRequest request) =>
 			Dispatcher.Dispatch<IPauseFollowIndexRequest, PauseFollowIndexRequestParameters, PauseFollowIndexResponse>(
 				request,
 				(p, d) => LowLevelDispatch.CcrPauseFollowDispatch<PauseFollowIndexResponse>(p)
 			);
 
-		/// <inheritdoc cref="PauseFollowIndex(IndexName, System.Func{Nest.PauseFollowIndexDescriptor,Nest.IPauseFollowIndexRequest})" />
+		/// <inheritdoc cref="PauseFollowIndex(IndexName, System.Func{Nest6.PauseFollowIndexDescriptor,Nest6.IPauseFollowIndexRequest})" />
 		public Task<IPauseFollowIndexResponse> PauseFollowIndexAsync(
 			IndexName index,
 			Func<PauseFollowIndexDescriptor, IPauseFollowIndexRequest> selector = null,
@@ -47,7 +47,7 @@ namespace Nest
 		) =>
 			PauseFollowIndexAsync(selector.InvokeOrDefault(new PauseFollowIndexDescriptor(index)), cancellationToken);
 
-		/// <inheritdoc cref="PauseFollowIndex(IndexName, System.Func{Nest.PauseFollowIndexDescriptor,Nest.IPauseFollowIndexRequest})" />
+		/// <inheritdoc cref="PauseFollowIndex(IndexName, System.Func{Nest6.PauseFollowIndexDescriptor,Nest6.IPauseFollowIndexRequest})" />
 		public Task<IPauseFollowIndexResponse> PauseFollowIndexAsync(IPauseFollowIndexRequest request, CancellationToken cancellationToken = default) =>
 			Dispatcher.DispatchAsync<IPauseFollowIndexRequest, PauseFollowIndexRequestParameters, PauseFollowIndexResponse, IPauseFollowIndexResponse>(
 				request,

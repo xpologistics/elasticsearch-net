@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core.Extensions;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Framework;
@@ -122,7 +122,7 @@ namespace Tests.Indices.IndexManagement.CreateIndex
 
 		protected override CreateIndexRequest Initializer => new CreateIndexRequest(CallIsolatedValue)
 		{
-			Settings = new Nest.IndexSettings
+			Settings = new Nest6.IndexSettings
 			{
 				NumberOfReplicas = 1,
 				NumberOfShards = 1,
@@ -281,7 +281,7 @@ namespace Tests.Indices.IndexManagement.CreateIndex
 
 		protected override CreateIndexRequest Initializer => new CreateIndexRequest(CallIsolatedValue)
 		{
-			Settings = new Nest.IndexSettings
+			Settings = new Nest6.IndexSettings
 			{
 				NumberOfReplicas = 0,
 				NumberOfShards = 1,
@@ -370,7 +370,7 @@ namespace Tests.Indices.IndexManagement.CreateIndex
 
 		protected override CreateIndexRequest Initializer => new CreateIndexRequest(CallIsolatedValue)
 		{
-			Settings = new Nest.IndexSettings
+			Settings = new Nest6.IndexSettings
 			{
 				NumberOfReplicas = 0,
 				NumberOfShards = 1,

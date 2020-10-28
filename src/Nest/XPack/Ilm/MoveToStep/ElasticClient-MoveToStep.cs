@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -16,15 +16,15 @@ namespace Nest
 		/// </summary>
 		IMoveToStepResponse MoveToStep(IndexName index, Func<MoveToStepDescriptor, IMoveToStepRequest> selector = null);
 
-		/// <inheritdoc cref="MoveToStep(Nest.IndexName,System.Func{Nest.MoveToStepDescriptor,Nest.IMoveToStepRequest})" />
+		/// <inheritdoc cref="MoveToStep(Nest6.IndexName,System.Func{Nest6.MoveToStepDescriptor,Nest6.IMoveToStepRequest})" />
 		IMoveToStepResponse MoveToStep(IMoveToStepRequest request);
 
-		/// <inheritdoc cref="MoveToStep(Nest.IndexName,System.Func{Nest.MoveToStepDescriptor,Nest.IMoveToStepRequest})" />
+		/// <inheritdoc cref="MoveToStep(Nest6.IndexName,System.Func{Nest6.MoveToStepDescriptor,Nest6.IMoveToStepRequest})" />
 		Task<IMoveToStepResponse> MoveToStepAsync(IndexName index, Func<MoveToStepDescriptor, IMoveToStepRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="MoveToStep(Nest.IndexName,System.Func{Nest.MoveToStepDescriptor,Nest.IMoveToStepRequest})" />
+		/// <inheritdoc cref="MoveToStep(Nest6.IndexName,System.Func{Nest6.MoveToStepDescriptor,Nest6.IMoveToStepRequest})" />
 		Task<IMoveToStepResponse> MoveToStepAsync(IMoveToStepRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
@@ -32,24 +32,24 @@ namespace Nest
 
 	public partial class ElasticClient
 	{
-		/// <inheritdoc cref="MoveToStep(Nest.IndexName,System.Func{Nest.MoveToStepDescriptor,Nest.IMoveToStepRequest})" />
+		/// <inheritdoc cref="MoveToStep(Nest6.IndexName,System.Func{Nest6.MoveToStepDescriptor,Nest6.IMoveToStepRequest})" />
 		public IMoveToStepResponse MoveToStep(IndexName index, Func<MoveToStepDescriptor, IMoveToStepRequest> selector = null) =>
 			MoveToStep(selector.InvokeOrDefault(new MoveToStepDescriptor(index)));
 
-		/// <inheritdoc cref="MoveToStep(Nest.IndexName,System.Func{Nest.MoveToStepDescriptor,Nest.IMoveToStepRequest})" />
+		/// <inheritdoc cref="MoveToStep(Nest6.IndexName,System.Func{Nest6.MoveToStepDescriptor,Nest6.IMoveToStepRequest})" />
 		public IMoveToStepResponse MoveToStep(IMoveToStepRequest request) =>
 			Dispatcher.Dispatch<IMoveToStepRequest, MoveToStepRequestParameters, MoveToStepResponse>(
 				request,
 				LowLevelDispatch.XpackIlmMoveToStepDispatch<MoveToStepResponse>
 			);
 
-		/// <inheritdoc cref="MoveToStep(Nest.IndexName,System.Func{Nest.MoveToStepDescriptor,Nest.IMoveToStepRequest})" />
+		/// <inheritdoc cref="MoveToStep(Nest6.IndexName,System.Func{Nest6.MoveToStepDescriptor,Nest6.IMoveToStepRequest})" />
 		public Task<IMoveToStepResponse> MoveToStepAsync(IndexName index, Func<MoveToStepDescriptor, IMoveToStepRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>
 			MoveToStepAsync(selector.InvokeOrDefault(new MoveToStepDescriptor(index)), cancellationToken);
 
-		/// <inheritdoc cref="MoveToStep(Nest.IndexName,System.Func{Nest.MoveToStepDescriptor,Nest.IMoveToStepRequest})" />
+		/// <inheritdoc cref="MoveToStep(Nest6.IndexName,System.Func{Nest6.MoveToStepDescriptor,Nest6.IMoveToStepRequest})" />
 		public Task<IMoveToStepResponse> MoveToStepAsync(IMoveToStepRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>

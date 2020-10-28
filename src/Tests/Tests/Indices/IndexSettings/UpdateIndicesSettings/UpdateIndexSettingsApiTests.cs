@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Elasticsearch.Net;
-using Nest;
+using Nest6;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Framework;
 using Tests.Framework.Integration;
@@ -37,7 +37,7 @@ namespace Tests.Indices.IndexSettings.UpdateIndicesSettings
 
 		protected override UpdateIndexSettingsRequest Initializer => new UpdateIndexSettingsRequest(CallIsolatedValue)
 		{
-			IndexSettings = new Nest.IndexSettings(new Dictionary<string, object>
+			IndexSettings = new Nest6.IndexSettings(new Dictionary<string, object>
 			{
 				{ "index.number_of_replicas", 3 },
 				{ "index.priority", 2 }
@@ -95,7 +95,7 @@ namespace Tests.Indices.IndexSettings.UpdateIndicesSettings
 
 		protected override UpdateIndexSettingsRequest Initializer => new UpdateIndexSettingsRequest(CallIsolatedValue)
 		{
-			IndexSettings = new Nest.IndexSettings
+			IndexSettings = new Nest6.IndexSettings
 			{
 				RefreshInterval = null
 			}

@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -12,15 +12,15 @@ namespace Nest
 		/// </summary>
 		IPutFilterResponse PutFilter(Id filterId, Func<PutFilterDescriptor, IPutFilterRequest> selector = null);
 
-		/// <inheritdoc cref="PutFilter(Nest.Id,System.Func{Nest.PutFilterDescriptor,Nest.IPutFilterRequest})" />
+		/// <inheritdoc cref="PutFilter(Nest6.Id,System.Func{Nest6.PutFilterDescriptor,Nest6.IPutFilterRequest})" />
 		IPutFilterResponse PutFilter(IPutFilterRequest request);
 
-		/// <inheritdoc cref="PutFilter(Nest.Id,System.Func{Nest.PutFilterDescriptor,Nest.IPutFilterRequest})" />
+		/// <inheritdoc cref="PutFilter(Nest6.Id,System.Func{Nest6.PutFilterDescriptor,Nest6.IPutFilterRequest})" />
 		Task<IPutFilterResponse> PutFilterAsync(Id filterId, Func<PutFilterDescriptor, IPutFilterRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="PutFilter(Nest.Id,System.Func{Nest.PutFilterDescriptor,Nest.IPutFilterRequest})" />
+		/// <inheritdoc cref="PutFilter(Nest6.Id,System.Func{Nest6.PutFilterDescriptor,Nest6.IPutFilterRequest})" />
 		Task<IPutFilterResponse> PutFilterAsync(IPutFilterRequest request, CancellationToken cancellationToken = default(CancellationToken));
 	}
 

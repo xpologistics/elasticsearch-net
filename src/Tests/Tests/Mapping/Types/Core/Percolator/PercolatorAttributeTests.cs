@@ -1,4 +1,4 @@
-﻿using Nest;
+﻿using Nest6;
 
 namespace Tests.Mapping.Types.Core.Percolator
 {

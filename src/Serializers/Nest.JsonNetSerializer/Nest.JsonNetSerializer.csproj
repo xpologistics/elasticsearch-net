@@ -4,9 +4,13 @@
   <PropertyGroup>
     <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">netstandard2.0;net461</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">netstandard2.0</TargetFrameworks>
+    <ProjectGuid>{CDC8DEC8-3872-4337-9C40-9CDE5724BBDD}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Nest\Nest.csproj" />
+    <ProjectReference Include="..\..\Nest\Nest6.csproj">
+      <Project>{072BA7DA-7B60-407D-8B6E-95E3186BE70C}</Project>
+      <Name>Nest6</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />

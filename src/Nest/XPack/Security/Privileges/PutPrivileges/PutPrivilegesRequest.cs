@@ -4,7 +4,7 @@ using System.IO;
 using Elasticsearch.Net;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[MapsApi("xpack.security.put_privileges.json")]
 	[JsonConverter(typeof(PutPrivilegesConverter))]

@@ -1,4 +1,4 @@
-﻿namespace Nest
+﻿namespace Nest6
 {
 	/// <summary>
 	/// A token filter of type uppercase that normalizes token text to upper case.

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// The percolate query can be used to match queries stored in an index

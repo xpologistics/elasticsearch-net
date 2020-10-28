@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// A range of date values represented as unsigned 64-bit integer milliseconds elapsed since system epoch.

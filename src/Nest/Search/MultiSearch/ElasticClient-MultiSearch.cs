@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Elasticsearch.Net;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	using MultiSearchCreator = Func<IApiCallDetails, Stream, MultiSearchResponse>;
 

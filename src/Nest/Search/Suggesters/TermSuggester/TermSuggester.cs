@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Nest
+namespace Nest6
 {
 	[JsonObject(MemberSerialization.OptIn)]
 	[JsonConverter(typeof(ReadAsTypeJsonConverter<TermSuggester>))]

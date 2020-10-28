@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// An alias mapping defines an alternate name for a field in the index. The alias can be used in place

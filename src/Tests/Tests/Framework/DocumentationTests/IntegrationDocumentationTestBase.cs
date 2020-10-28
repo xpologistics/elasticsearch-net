@@ -1,5 +1,5 @@
 ﻿using System;
-using Nest;
+using Nest6;
 using Tests.Core.Client;
 using Tests.Core.ManagedElasticsearch.Clusters;
 

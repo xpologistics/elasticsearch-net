@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Framework;
 using Tests.Framework.Integration;
-using static Nest.Infer;
+using static Nest6.Infer;
 
 namespace Tests.Document.Multiple.ReindexOnServer
 {

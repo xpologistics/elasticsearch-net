@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -14,17 +14,17 @@ namespace Nest
 			Func<GetRollupIndexCapabilitiesDescriptor, IGetRollupIndexCapabilitiesRequest> selector = null
 		);
 
-		/// <inheritdoc cref="GetRollupIndexCapabilities(IndexName, System.Func{Nest.GetRollupIndexCapabilitiesDescriptor,Nest.IGetRollupIndexCapabilitiesRequest})" />
+		/// <inheritdoc cref="GetRollupIndexCapabilities(IndexName, System.Func{Nest6.GetRollupIndexCapabilitiesDescriptor,Nest6.IGetRollupIndexCapabilitiesRequest})" />
 		IGetRollupIndexCapabilitiesResponse GetRollupIndexCapabilities(IGetRollupIndexCapabilitiesRequest request);
 
-		/// <inheritdoc cref="GetRollupIndexCapabilities(IndexName, System.Func{Nest.GetRollupIndexCapabilitiesDescriptor,Nest.IGetRollupIndexCapabilitiesRequest})" />
+		/// <inheritdoc cref="GetRollupIndexCapabilities(IndexName, System.Func{Nest6.GetRollupIndexCapabilitiesDescriptor,Nest6.IGetRollupIndexCapabilitiesRequest})" />
 		Task<IGetRollupIndexCapabilitiesResponse> GetRollupIndexCapabilitiesAsync(
 			IndexName index,
 			Func<GetRollupIndexCapabilitiesDescriptor, IGetRollupIndexCapabilitiesRequest> selector = null,
 			CancellationToken cancellationToken = default
 		);
 
-		/// <inheritdoc cref="GetRollupIndexCapabilities(IndexName, System.Func{Nest.GetRollupIndexCapabilitiesDescriptor,Nest.IGetRollupIndexCapabilitiesRequest})" />
+		/// <inheritdoc cref="GetRollupIndexCapabilities(IndexName, System.Func{Nest6.GetRollupIndexCapabilitiesDescriptor,Nest6.IGetRollupIndexCapabilitiesRequest})" />
 		Task<IGetRollupIndexCapabilitiesResponse> GetRollupIndexCapabilitiesAsync(IGetRollupIndexCapabilitiesRequest request,
 			CancellationToken cancellationToken = default
 		);
@@ -32,21 +32,21 @@ namespace Nest
 
 	public partial class ElasticClient
 	{
-		/// <inheritdoc cref="GetRollupIndexCapabilities(IndexName, System.Func{Nest.GetRollupIndexCapabilitiesDescriptor,Nest.IGetRollupIndexCapabilitiesRequest})" />
+		/// <inheritdoc cref="GetRollupIndexCapabilities(IndexName, System.Func{Nest6.GetRollupIndexCapabilitiesDescriptor,Nest6.IGetRollupIndexCapabilitiesRequest})" />
 		public IGetRollupIndexCapabilitiesResponse GetRollupIndexCapabilities(
 			IndexName index,
 			Func<GetRollupIndexCapabilitiesDescriptor, IGetRollupIndexCapabilitiesRequest> selector = null
 		) =>
 			GetRollupIndexCapabilities(selector.InvokeOrDefault(new GetRollupIndexCapabilitiesDescriptor(index)));
 
-		/// <inheritdoc cref="GetRollupIndexCapabilities(IndexName, System.Func{Nest.GetRollupIndexCapabilitiesDescriptor,Nest.IGetRollupIndexCapabilitiesRequest})" />
+		/// <inheritdoc cref="GetRollupIndexCapabilities(IndexName, System.Func{Nest6.GetRollupIndexCapabilitiesDescriptor,Nest6.IGetRollupIndexCapabilitiesRequest})" />
 		public IGetRollupIndexCapabilitiesResponse GetRollupIndexCapabilities(IGetRollupIndexCapabilitiesRequest request) =>
 			Dispatcher.Dispatch<IGetRollupIndexCapabilitiesRequest, GetRollupIndexCapabilitiesRequestParameters, GetRollupIndexCapabilitiesResponse>(
 				request,
 				(p, d) => LowLevelDispatch.XpackRollupGetRollupIndexCapsDispatch<GetRollupIndexCapabilitiesResponse>(p)
 			);
 
-		/// <inheritdoc cref="GetRollupIndexCapabilities(IndexName, System.Func{Nest.GetRollupIndexCapabilitiesDescriptor,Nest.IGetRollupIndexCapabilitiesRequest})" />
+		/// <inheritdoc cref="GetRollupIndexCapabilities(IndexName, System.Func{Nest6.GetRollupIndexCapabilitiesDescriptor,Nest6.IGetRollupIndexCapabilitiesRequest})" />
 		public Task<IGetRollupIndexCapabilitiesResponse> GetRollupIndexCapabilitiesAsync(
 			IndexName index,
 			Func<GetRollupIndexCapabilitiesDescriptor, IGetRollupIndexCapabilitiesRequest> selector = null,
@@ -54,7 +54,7 @@ namespace Nest
 		) =>
 			GetRollupIndexCapabilitiesAsync(selector.InvokeOrDefault(new GetRollupIndexCapabilitiesDescriptor(index)), cancellationToken);
 
-		/// <inheritdoc cref="GetRollupIndexCapabilities(IndexName, System.Func{Nest.GetRollupIndexCapabilitiesDescriptor,Nest.IGetRollupIndexCapabilitiesRequest})" />
+		/// <inheritdoc cref="GetRollupIndexCapabilities(IndexName, System.Func{Nest6.GetRollupIndexCapabilitiesDescriptor,Nest6.IGetRollupIndexCapabilitiesRequest})" />
 		public Task<IGetRollupIndexCapabilitiesResponse> GetRollupIndexCapabilitiesAsync(IGetRollupIndexCapabilitiesRequest request,
 			CancellationToken cancellationToken = default
 		) =>

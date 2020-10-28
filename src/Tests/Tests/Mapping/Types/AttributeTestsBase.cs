@@ -1,5 +1,5 @@
 ﻿using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 using static Tests.Core.Serialization.SerializationTestHelper;
 
 namespace Tests.Mapping.Types

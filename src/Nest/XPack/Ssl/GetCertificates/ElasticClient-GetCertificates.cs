@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -15,15 +15,15 @@ namespace Nest
 		/// </summary>
 		IGetCertificatesResponse GetCertificates(Func<GetCertificatesDescriptor, IGetCertificatesRequest> selector = null);
 
-		/// <inheritdoc cref="GetCertificates(System.Func{Nest.GetCertificatesDescriptor,Nest.IGetCertificatesRequest})" />
+		/// <inheritdoc cref="GetCertificates(System.Func{Nest6.GetCertificatesDescriptor,Nest6.IGetCertificatesRequest})" />
 		IGetCertificatesResponse GetCertificates(IGetCertificatesRequest request);
 
-		/// <inheritdoc cref="GetCertificates(System.Func{Nest.GetCertificatesDescriptor,Nest.IGetCertificatesRequest})" />
+		/// <inheritdoc cref="GetCertificates(System.Func{Nest6.GetCertificatesDescriptor,Nest6.IGetCertificatesRequest})" />
 		Task<IGetCertificatesResponse> GetCertificatesAsync(Func<GetCertificatesDescriptor, IGetCertificatesRequest> selector = null,
 			CancellationToken cancellationToken = default
 		);
 
-		/// <inheritdoc cref="GetCertificates(System.Func{Nest.GetCertificatesDescriptor,Nest.IGetCertificatesRequest})" />
+		/// <inheritdoc cref="GetCertificates(System.Func{Nest6.GetCertificatesDescriptor,Nest6.IGetCertificatesRequest})" />
 		Task<IGetCertificatesResponse> GetCertificatesAsync(IGetCertificatesRequest request,
 			CancellationToken cancellationToken = default
 		);
@@ -31,11 +31,11 @@ namespace Nest
 
 	public partial class ElasticClient
 	{
-		/// <inheritdoc cref="GetCertificates(System.Func{Nest.GetCertificatesDescriptor,Nest.IGetCertificatesRequest})" />
+		/// <inheritdoc cref="GetCertificates(System.Func{Nest6.GetCertificatesDescriptor,Nest6.IGetCertificatesRequest})" />
 		public IGetCertificatesResponse GetCertificates(Func<GetCertificatesDescriptor, IGetCertificatesRequest> selector = null) =>
 			GetCertificates(selector.InvokeOrDefault(new GetCertificatesDescriptor()));
 
-		/// <inheritdoc cref="GetCertificates(System.Func{Nest.GetCertificatesDescriptor,Nest.IGetCertificatesRequest})" />
+		/// <inheritdoc cref="GetCertificates(System.Func{Nest6.GetCertificatesDescriptor,Nest6.IGetCertificatesRequest})" />
 		public IGetCertificatesResponse GetCertificates(IGetCertificatesRequest request) =>
 			Dispatcher.Dispatch<IGetCertificatesRequest, GetCertificatesRequestParameters, GetCertificatesResponse>(
 				request,
@@ -43,13 +43,13 @@ namespace Nest
 				(p, d) => LowLevelDispatch.XpackSslCertificatesDispatch<GetCertificatesResponse>(p)
 			);
 
-		/// <inheritdoc cref="GetCertificates(System.Func{Nest.GetCertificatesDescriptor,Nest.IGetCertificatesRequest})" />
+		/// <inheritdoc cref="GetCertificates(System.Func{Nest6.GetCertificatesDescriptor,Nest6.IGetCertificatesRequest})" />
 		public Task<IGetCertificatesResponse> GetCertificatesAsync(Func<GetCertificatesDescriptor, IGetCertificatesRequest> selector = null,
 			CancellationToken cancellationToken = default
 		) =>
 			GetCertificatesAsync(selector.InvokeOrDefault(new GetCertificatesDescriptor()), cancellationToken);
 
-		/// <inheritdoc cref="GetCertificates(System.Func{Nest.GetCertificatesDescriptor,Nest.IGetCertificatesRequest})" />
+		/// <inheritdoc cref="GetCertificates(System.Func{Nest6.GetCertificatesDescriptor,Nest6.IGetCertificatesRequest})" />
 		public Task<IGetCertificatesResponse> GetCertificatesAsync(IGetCertificatesRequest request,
 			CancellationToken cancellationToken = default
 		) =>

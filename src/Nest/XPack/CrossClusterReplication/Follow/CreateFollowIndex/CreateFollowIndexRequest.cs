@@ -2,7 +2,7 @@
 using Elasticsearch.Net;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Creates a new follower index that is configured to follow the referenced leader index.

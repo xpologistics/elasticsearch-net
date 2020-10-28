@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// This action sets the index priority on the index as soon as the policy enters the hot, warm, or cold phase. Indices

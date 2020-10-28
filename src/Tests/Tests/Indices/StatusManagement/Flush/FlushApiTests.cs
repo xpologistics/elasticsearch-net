@@ -1,6 +1,6 @@
 ﻿using System;
 using Elasticsearch.Net;
-using Nest;
+using Nest6;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Framework;
 using Tests.Framework.Integration;

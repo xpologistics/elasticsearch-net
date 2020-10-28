@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary> Shared properties of <see cref="IQuerySqlRequest" /> and <see cref="ITranslateSqlRequest" /> </summary>
 	public interface ISqlRequest

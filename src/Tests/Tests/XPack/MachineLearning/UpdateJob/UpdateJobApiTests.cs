@@ -1,6 +1,6 @@
 ﻿using System;
 using Elasticsearch.Net;
-using Nest;
+using Nest6;
 using Tests.Core.Extensions;
 using Tests.Domain;
 using Tests.Framework;

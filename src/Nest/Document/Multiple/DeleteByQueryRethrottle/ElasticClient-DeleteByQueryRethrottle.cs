@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -15,16 +15,16 @@ namespace Nest
 		/// </summary>
 		IListTasksResponse DeleteByQueryRethrottle(TaskId taskId, Func<DeleteByQueryRethrottleDescriptor, IDeleteByQueryRethrottleRequest> selector = null);
 
-		/// <inheritdoc cref="DeleteByQueryRethrottle(Nest.TaskId,System.Func{Nest.DeleteByQueryRethrottleDescriptor,Nest.IDeleteByQueryRethrottleRequest})" />
+		/// <inheritdoc cref="DeleteByQueryRethrottle(Nest6.TaskId,System.Func{Nest6.DeleteByQueryRethrottleDescriptor,Nest6.IDeleteByQueryRethrottleRequest})" />
 		IListTasksResponse DeleteByQueryRethrottle(IDeleteByQueryRethrottleRequest request);
 
-		/// <inheritdoc cref="DeleteByQueryRethrottle(Nest.TaskId,System.Func{Nest.DeleteByQueryRethrottleDescriptor,Nest.IDeleteByQueryRethrottleRequest})" />
+		/// <inheritdoc cref="DeleteByQueryRethrottle(Nest6.TaskId,System.Func{Nest6.DeleteByQueryRethrottleDescriptor,Nest6.IDeleteByQueryRethrottleRequest})" />
 		Task<IListTasksResponse> DeleteByQueryRethrottleAsync(TaskId taskId,
 			Func<DeleteByQueryRethrottleDescriptor, IDeleteByQueryRethrottleRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="DeleteByQueryRethrottle(Nest.TaskId,System.Func{Nest.DeleteByQueryRethrottleDescriptor,Nest.IDeleteByQueryRethrottleRequest})" />
+		/// <inheritdoc cref="DeleteByQueryRethrottle(Nest6.TaskId,System.Func{Nest6.DeleteByQueryRethrottleDescriptor,Nest6.IDeleteByQueryRethrottleRequest})" />
 		Task<IListTasksResponse> DeleteByQueryRethrottleAsync(IDeleteByQueryRethrottleRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);

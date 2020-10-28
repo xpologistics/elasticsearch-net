@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -12,15 +12,15 @@ namespace Nest
 		/// </summary>
 		IPutCalendarJobResponse PutCalendarJob(Id calendarId, Id jobId, Func<PutCalendarJobDescriptor, IPutCalendarJobRequest> selector = null);
 
-		/// <inheritdoc cref="PutCalendarJob(Nest.Id,Nest.Id,System.Func{Nest.PutCalendarJobDescriptor,Nest.IPutCalendarJobRequest})" />
+		/// <inheritdoc cref="PutCalendarJob(Nest6.Id,Nest6.Id,System.Func{Nest6.PutCalendarJobDescriptor,Nest6.IPutCalendarJobRequest})" />
 		IPutCalendarJobResponse PutCalendarJob(IPutCalendarJobRequest request);
 
-		/// <inheritdoc cref="PutCalendarJob(Nest.Id,Nest.Id,System.Func{Nest.PutCalendarJobDescriptor,Nest.IPutCalendarJobRequest})" />
+		/// <inheritdoc cref="PutCalendarJob(Nest6.Id,Nest6.Id,System.Func{Nest6.PutCalendarJobDescriptor,Nest6.IPutCalendarJobRequest})" />
 		Task<IPutCalendarJobResponse> PutCalendarJobAsync(Id calendarId, Id jobId, Func<PutCalendarJobDescriptor, IPutCalendarJobRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="PutCalendarJob(Nest.Id,Nest.Id,System.Func{Nest.PutCalendarJobDescriptor,Nest.IPutCalendarJobRequest})" />
+		/// <inheritdoc cref="PutCalendarJob(Nest6.Id,Nest6.Id,System.Func{Nest6.PutCalendarJobDescriptor,Nest6.IPutCalendarJobRequest})" />
 		Task<IPutCalendarJobResponse> PutCalendarJobAsync(IPutCalendarJobRequest request, CancellationToken cancellationToken = default(CancellationToken));
 	}
 

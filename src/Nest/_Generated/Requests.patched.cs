@@ -1,7 +1,7 @@
 ﻿using System;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	// Patched parameters - Update REST API json specifications to 6.2 #3268
 	public partial class ForceMergeRequest : PlainRequestBase<ForceMergeRequestParameters>, IForceMergeRequest

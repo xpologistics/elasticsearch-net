@@ -6,7 +6,7 @@ using System.Reflection;
 using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Framework;
 
 namespace Tests.CodeStandards
@@ -31,7 +31,7 @@ namespace Tests.CodeStandards
 			var abstractClassesNotEndingInBase = typeof(IRequest).Assembly.GetTypes()
 				.Where(t => t.IsClass && t.IsAbstract && !t.IsSealed && !exceptions.Contains(t))
 				//when testing nuget package against merged internalize json.net skip its types.
-				.Where(t => !t.Namespace.StartsWith("Nest.Json"))
+				.Where(t => !t.Namespace.StartsWith("Nest6.Json"))
 				.Where(t => !t.Namespace.StartsWith("Elastic.Internal"))
 				.Where(t => !t.Name.Split('`')[0].EndsWith("Base"))
 				.Select(t => t.Name.Split('`')[0])
@@ -172,7 +172,7 @@ namespace Tests.CodeStandards
 				.Where(t => !exceptions.Contains(t))
 				.Where(t => t.Namespace != "Nest")
 				//when testing nuget package against merged internalize json.net skip its types.
-				.Where(t => !string.IsNullOrWhiteSpace(t.Namespace) && !t.Namespace.StartsWith("Nest.Json"))
+				.Where(t => !string.IsNullOrWhiteSpace(t.Namespace) && !t.Namespace.StartsWith("Nest6.Json"))
 				.Where(t => !string.IsNullOrWhiteSpace(t.Namespace) && !t.Namespace.StartsWith("Elastic.Internal"))
 				.Where(t => !t.Name.StartsWith("<"))
 				.Where(t => IsValidTypeNameOrIdentifier(t.Name, true))

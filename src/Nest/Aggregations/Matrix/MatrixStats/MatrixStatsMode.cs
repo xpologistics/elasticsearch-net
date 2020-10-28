@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// The matrix_stats aggregation treats each document field as an independent sample.

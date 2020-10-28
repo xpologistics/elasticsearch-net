@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 using Tests.Domain;
 using Tests.Framework;
 using static Tests.Framework.UrlTester;
@@ -51,9 +51,9 @@ namespace Tests.Search.Validate
 			await POST("/_validate/query")
 					.Fluent(c => c.ValidateQuery<Project>(s => s.AllTypes().AllIndices()))
 					.Request(c => c.ValidateQuery(new ValidateQueryRequest()))
-					.Request(c => c.ValidateQuery(new ValidateQueryRequest<Project>(Nest.Indices.All, Types.All)))
+					.Request(c => c.ValidateQuery(new ValidateQueryRequest<Project>(Nest6.Indices.All, Types.All)))
 					.FluentAsync(c => c.ValidateQueryAsync<Project>(s => s.AllIndices().Type(Types.All)))
-					.RequestAsync(c => c.ValidateQueryAsync(new ValidateQueryRequest<Project>(Nest.Indices.All, Types.All)))
+					.RequestAsync(c => c.ValidateQueryAsync(new ValidateQueryRequest<Project>(Nest6.Indices.All, Types.All)))
 					.RequestAsync(c => c.ValidateQueryAsync(new ValidateQueryRequest()))
 				;
 		}

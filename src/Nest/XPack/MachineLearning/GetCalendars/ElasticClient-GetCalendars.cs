@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -13,15 +13,15 @@ namespace Nest
 		IGetCalendarsResponse GetCalendars(Func<GetCalendarsDescriptor, IGetCalendarsRequest> selector = null);
 
 
-		/// <inheritdoc cref="GetCalendars(System.Func{Nest.GetCalendarsDescriptor,Nest.IGetCalendarsRequest})" />
+		/// <inheritdoc cref="GetCalendars(System.Func{Nest6.GetCalendarsDescriptor,Nest6.IGetCalendarsRequest})" />
 		IGetCalendarsResponse GetCalendars(IGetCalendarsRequest request);
 
-		/// <inheritdoc cref="GetCalendars(System.Func{Nest.GetCalendarsDescriptor,Nest.IGetCalendarsRequest})" />
+		/// <inheritdoc cref="GetCalendars(System.Func{Nest6.GetCalendarsDescriptor,Nest6.IGetCalendarsRequest})" />
 		Task<IGetCalendarsResponse> GetCalendarsAsync(Func<GetCalendarsDescriptor, IGetCalendarsRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="GetCalendars(System.Func{Nest.GetCalendarsDescriptor,Nest.IGetCalendarsRequest})" />
+		/// <inheritdoc cref="GetCalendars(System.Func{Nest6.GetCalendarsDescriptor,Nest6.IGetCalendarsRequest})" />
 		Task<IGetCalendarsResponse> GetCalendarsAsync(IGetCalendarsRequest request, CancellationToken cancellationToken = default(CancellationToken));
 	}
 

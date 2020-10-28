@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -13,15 +13,15 @@ namespace Nest
 		/// </summary>
 		IPutLifecycleResponse PutLifecycle(PolicyId policyId, Func<PutLifecycleDescriptor, IPutLifecycleRequest> selector = null);
 
-		/// <inheritdoc cref="PutLifecycle(Nest.PolicyId,System.Func{Nest.PutLifecycleDescriptor,Nest.IPutLifecycleRequest})" />
+		/// <inheritdoc cref="PutLifecycle(Nest6.PolicyId,System.Func{Nest6.PutLifecycleDescriptor,Nest6.IPutLifecycleRequest})" />
 		IPutLifecycleResponse PutLifecycle(IPutLifecycleRequest request);
 
-		/// <inheritdoc cref="PutLifecycle(Nest.PolicyId,System.Func{Nest.PutLifecycleDescriptor,Nest.IPutLifecycleRequest})" />
+		/// <inheritdoc cref="PutLifecycle(Nest6.PolicyId,System.Func{Nest6.PutLifecycleDescriptor,Nest6.IPutLifecycleRequest})" />
 		Task<IPutLifecycleResponse> PutLifecycleAsync(PolicyId policyId, Func<PutLifecycleDescriptor, IPutLifecycleRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="PutLifecycle(Nest.PolicyId,System.Func{Nest.PutLifecycleDescriptor,Nest.IPutLifecycleRequest})" />
+		/// <inheritdoc cref="PutLifecycle(Nest6.PolicyId,System.Func{Nest6.PutLifecycleDescriptor,Nest6.IPutLifecycleRequest})" />
 		Task<IPutLifecycleResponse> PutLifecycleAsync(IPutLifecycleRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
@@ -29,24 +29,24 @@ namespace Nest
 
 	public partial class ElasticClient
 	{
-		/// <inheritdoc cref="PutLifecycle(Nest.PolicyId,System.Func{Nest.PutLifecycleDescriptor,Nest.IPutLifecycleRequest})" />
+		/// <inheritdoc cref="PutLifecycle(Nest6.PolicyId,System.Func{Nest6.PutLifecycleDescriptor,Nest6.IPutLifecycleRequest})" />
 		public IPutLifecycleResponse PutLifecycle(PolicyId policyId, Func<PutLifecycleDescriptor, IPutLifecycleRequest> selector = null) =>
 			PutLifecycle(selector.InvokeOrDefault(new PutLifecycleDescriptor(policyId)));
 
-		/// <inheritdoc cref="PutLifecycle(Nest.PolicyId,System.Func{Nest.PutLifecycleDescriptor,Nest.IPutLifecycleRequest})" />
+		/// <inheritdoc cref="PutLifecycle(Nest6.PolicyId,System.Func{Nest6.PutLifecycleDescriptor,Nest6.IPutLifecycleRequest})" />
 		public IPutLifecycleResponse PutLifecycle(IPutLifecycleRequest request) =>
 			Dispatcher.Dispatch<IPutLifecycleRequest, PutLifecycleRequestParameters, PutLifecycleResponse>(
 				request,
 				LowLevelDispatch.XpackIlmPutLifecycleDispatch<PutLifecycleResponse>
 			);
 
-		/// <inheritdoc cref="PutLifecycle(Nest.PolicyId,System.Func{Nest.PutLifecycleDescriptor,Nest.IPutLifecycleRequest})" />
+		/// <inheritdoc cref="PutLifecycle(Nest6.PolicyId,System.Func{Nest6.PutLifecycleDescriptor,Nest6.IPutLifecycleRequest})" />
 		public Task<IPutLifecycleResponse> PutLifecycleAsync(PolicyId policyId, Func<PutLifecycleDescriptor, IPutLifecycleRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>
 			PutLifecycleAsync(selector.InvokeOrDefault(new PutLifecycleDescriptor(policyId)), cancellationToken);
 
-		/// <inheritdoc cref="PutLifecycle(Nest.PolicyId,System.Func{Nest.PutLifecycleDescriptor,Nest.IPutLifecycleRequest})" />
+		/// <inheritdoc cref="PutLifecycle(Nest6.PolicyId,System.Func{Nest6.PutLifecycleDescriptor,Nest6.IPutLifecycleRequest})" />
 		public Task<IPutLifecycleResponse> PutLifecycleAsync(IPutLifecycleRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>

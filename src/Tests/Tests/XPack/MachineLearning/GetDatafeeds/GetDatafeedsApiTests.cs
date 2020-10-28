@@ -2,7 +2,7 @@
 using System.Linq;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core.Extensions;
 using Tests.Framework;
 using Tests.Framework.Integration;
@@ -53,7 +53,7 @@ namespace Tests.XPack.MachineLearning.GetDatafeeds
 			firstDatafeed.QueryDelay.Should().BeGreaterThan(new Time("1nanos"));
 
 			firstDatafeed.Indices.Should().NotBeNull("Indices");
-			firstDatafeed.Indices.Should().Be(Nest.Indices.Parse("server-metrics"));
+			firstDatafeed.Indices.Should().Be(Nest6.Indices.Parse("server-metrics"));
 
 			firstDatafeed.Types.Should().NotBeNull("Types");
 			firstDatafeed.Types.Should().Be(Types.Parse("metric"));
@@ -113,7 +113,7 @@ namespace Tests.XPack.MachineLearning.GetDatafeeds
 			firstDatafeed.QueryDelay.Should().BeGreaterThan(new Time("1nanos"));
 
 			firstDatafeed.Indices.Should().NotBeNull("Indices");
-			firstDatafeed.Indices.Should().Be(Nest.Indices.Parse("server-metrics"));
+			firstDatafeed.Indices.Should().Be(Nest6.Indices.Parse("server-metrics"));
 
 			firstDatafeed.Types.Should().NotBeNull("Types");
 			firstDatafeed.Types.Should().Be(Types.Parse("metric"));

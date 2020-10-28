@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Elasticsearch.Net;
-using Nest.JsonNetSerializer.Converters;
+using Nest6.JsonNetSerializer.Converters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Nest.JsonNetSerializer
+namespace Nest6.JsonNetSerializer
 {
 	public abstract partial class ConnectionSettingsAwareSerializerBase
 	{

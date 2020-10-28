@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Nest
+namespace Nest6
 {
 	public class QueryWalker
 	{

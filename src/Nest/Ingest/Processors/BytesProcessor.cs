@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Converts a human readable byte value (e.g. 1kb) to its value in bytes (e.g. 1024).

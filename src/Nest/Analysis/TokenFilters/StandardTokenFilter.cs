@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// A token filter of type standard that normalizes tokens extracted with the Standard Tokenizer.

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Nest
+namespace Nest6
 {
 	public static class Query<T> where T : class
 	{

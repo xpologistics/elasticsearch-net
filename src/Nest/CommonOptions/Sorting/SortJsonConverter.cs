@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Nest
+namespace Nest6
 {
 	internal class SortJsonConverter : ReserializeJsonConverter<SortField, ISort>
 	{

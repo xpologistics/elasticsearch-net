@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Returns any documents that match with at least one or more of the provided terms.

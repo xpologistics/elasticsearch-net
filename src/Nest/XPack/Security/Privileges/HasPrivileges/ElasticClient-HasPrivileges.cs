@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -12,38 +12,38 @@ namespace Nest
 		/// </summary>
 		IHasPrivilegesResponse HasPrivileges(Func<HasPrivilegesDescriptor, IHasPrivilegesRequest> selector = null);
 
-		/// <inheritdoc cref="HasPrivileges(System.Func{Nest.HasPrivilegesDescriptor,Nest.IHasPrivilegesRequest})" />
+		/// <inheritdoc cref="HasPrivileges(System.Func{Nest6.HasPrivilegesDescriptor,Nest6.IHasPrivilegesRequest})" />
 		IHasPrivilegesResponse HasPrivileges(IHasPrivilegesRequest request);
 
-		/// <inheritdoc cref="HasPrivileges(System.Func{Nest.HasPrivilegesDescriptor,Nest.IHasPrivilegesRequest})" />
+		/// <inheritdoc cref="HasPrivileges(System.Func{Nest6.HasPrivilegesDescriptor,Nest6.IHasPrivilegesRequest})" />
 		Task<IHasPrivilegesResponse> HasPrivilegesAsync(Func<HasPrivilegesDescriptor, IHasPrivilegesRequest> selector = null,
 			CancellationToken cancellationToken = default
 		);
 
-		/// <inheritdoc cref="HasPrivileges(System.Func{Nest.HasPrivilegesDescriptor,Nest.IHasPrivilegesRequest})" />
+		/// <inheritdoc cref="HasPrivileges(System.Func{Nest6.HasPrivilegesDescriptor,Nest6.IHasPrivilegesRequest})" />
 		Task<IHasPrivilegesResponse> HasPrivilegesAsync(IHasPrivilegesRequest request, CancellationToken cancellationToken = default);
 	}
 
 	public partial class ElasticClient
 	{
-		/// <inheritdoc cref="HasPrivileges(System.Func{Nest.HasPrivilegesDescriptor,Nest.IHasPrivilegesRequest})" />
+		/// <inheritdoc cref="HasPrivileges(System.Func{Nest6.HasPrivilegesDescriptor,Nest6.IHasPrivilegesRequest})" />
 		public IHasPrivilegesResponse HasPrivileges(Func<HasPrivilegesDescriptor, IHasPrivilegesRequest> selector = null) =>
 			HasPrivileges(selector.InvokeOrDefault(new HasPrivilegesDescriptor()));
 
-		/// <inheritdoc cref="HasPrivileges(System.Func{Nest.HasPrivilegesDescriptor,Nest.IHasPrivilegesRequest})" />
+		/// <inheritdoc cref="HasPrivileges(System.Func{Nest6.HasPrivilegesDescriptor,Nest6.IHasPrivilegesRequest})" />
 		public IHasPrivilegesResponse HasPrivileges(IHasPrivilegesRequest request) =>
 			Dispatcher.Dispatch<IHasPrivilegesRequest, HasPrivilegesRequestParameters, HasPrivilegesResponse>(
 				request,
 				LowLevelDispatch.XpackSecurityHasPrivilegesDispatch<HasPrivilegesResponse>
 			);
 
-		/// <inheritdoc cref="HasPrivileges(System.Func{Nest.HasPrivilegesDescriptor,Nest.IHasPrivilegesRequest})" />
+		/// <inheritdoc cref="HasPrivileges(System.Func{Nest6.HasPrivilegesDescriptor,Nest6.IHasPrivilegesRequest})" />
 		public Task<IHasPrivilegesResponse> HasPrivilegesAsync(Func<HasPrivilegesDescriptor, IHasPrivilegesRequest> selector = null,
 			CancellationToken cancellationToken = default
 		) =>
 			HasPrivilegesAsync(selector.InvokeOrDefault(new HasPrivilegesDescriptor()), cancellationToken);
 
-		/// <inheritdoc cref="HasPrivileges(System.Func{Nest.HasPrivilegesDescriptor,Nest.IHasPrivilegesRequest})" />
+		/// <inheritdoc cref="HasPrivileges(System.Func{Nest6.HasPrivilegesDescriptor,Nest6.IHasPrivilegesRequest})" />
 		public Task<IHasPrivilegesResponse> HasPrivilegesAsync(IHasPrivilegesRequest request, CancellationToken cancellationToken = default) =>
 			Dispatcher.DispatchAsync<IHasPrivilegesRequest, HasPrivilegesRequestParameters, HasPrivilegesResponse, IHasPrivilegesResponse>(
 				request,

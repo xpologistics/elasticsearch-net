@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -12,36 +12,36 @@ namespace Nest
 		/// </summary>
 		IGetUserPrivilegesResponse GetUserPrivileges(Func<GetUserPrivilegesDescriptor, IGetUserPrivilegesRequest> selector = null);
 
-		/// <inheritdoc cref="GetUserPrivileges(System.Func{Nest.GetUserPrivilegesDescriptor,Nest.IGetUserPrivilegesRequest})" />
+		/// <inheritdoc cref="GetUserPrivileges(System.Func{Nest6.GetUserPrivilegesDescriptor,Nest6.IGetUserPrivilegesRequest})" />
 		IGetUserPrivilegesResponse GetUserPrivileges(IGetUserPrivilegesRequest request);
 
-		/// <inheritdoc cref="GetUserPrivileges(System.Func{Nest.GetUserPrivilegesDescriptor,Nest.IGetUserPrivilegesRequest})" />
+		/// <inheritdoc cref="GetUserPrivileges(System.Func{Nest6.GetUserPrivilegesDescriptor,Nest6.IGetUserPrivilegesRequest})" />
 		Task<IGetUserPrivilegesResponse> GetUserPrivilegesAsync(Func<GetUserPrivilegesDescriptor, IGetUserPrivilegesRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="GetUserPrivileges(System.Func{Nest.GetUserPrivilegesDescriptor,Nest.IGetUserPrivilegesRequest})" />
+		/// <inheritdoc cref="GetUserPrivileges(System.Func{Nest6.GetUserPrivilegesDescriptor,Nest6.IGetUserPrivilegesRequest})" />
 		Task<IGetUserPrivilegesResponse> GetUserPrivilegesAsync(IGetUserPrivilegesRequest request, CancellationToken cancellationToken = default(CancellationToken));
 	}
 
 	public partial class ElasticClient
 	{
-		/// <inheritdoc cref="GetUserPrivileges(System.Func{Nest.GetUserPrivilegesDescriptor,Nest.IGetUserPrivilegesRequest})" />
+		/// <inheritdoc cref="GetUserPrivileges(System.Func{Nest6.GetUserPrivilegesDescriptor,Nest6.IGetUserPrivilegesRequest})" />
 		public IGetUserPrivilegesResponse GetUserPrivileges(Func<GetUserPrivilegesDescriptor, IGetUserPrivilegesRequest> selector = null) =>
 			GetUserPrivileges(selector.InvokeOrDefault(new GetUserPrivilegesDescriptor()));
-		/// <inheritdoc cref="GetUserPrivileges(System.Func{Nest.GetUserPrivilegesDescriptor,Nest.IGetUserPrivilegesRequest})" />
+		/// <inheritdoc cref="GetUserPrivileges(System.Func{Nest6.GetUserPrivilegesDescriptor,Nest6.IGetUserPrivilegesRequest})" />
 		public IGetUserPrivilegesResponse GetUserPrivileges(IGetUserPrivilegesRequest request) =>
 			Dispatcher.Dispatch<IGetUserPrivilegesRequest, GetUserPrivilegesRequestParameters, GetUserPrivilegesResponse>(
 				request,
 				(p, d) => LowLevelDispatch.XpackSecurityGetUserPrivilegesDispatch<GetUserPrivilegesResponse>(p)
 			);
 
-		/// <inheritdoc cref="GetUserPrivileges(System.Func{Nest.GetUserPrivilegesDescriptor,Nest.IGetUserPrivilegesRequest})" />
+		/// <inheritdoc cref="GetUserPrivileges(System.Func{Nest6.GetUserPrivilegesDescriptor,Nest6.IGetUserPrivilegesRequest})" />
 		public Task<IGetUserPrivilegesResponse> GetUserPrivilegesAsync(Func<GetUserPrivilegesDescriptor, IGetUserPrivilegesRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) => GetUserPrivilegesAsync(selector.InvokeOrDefault(new GetUserPrivilegesDescriptor()), cancellationToken);
 
-		/// <inheritdoc cref="GetUserPrivileges(System.Func{Nest.GetUserPrivilegesDescriptor,Nest.IGetUserPrivilegesRequest})" />
+		/// <inheritdoc cref="GetUserPrivileges(System.Func{Nest6.GetUserPrivilegesDescriptor,Nest6.IGetUserPrivilegesRequest})" />
 		public Task<IGetUserPrivilegesResponse> GetUserPrivilegesAsync(IGetUserPrivilegesRequest request, CancellationToken cancellationToken = default(CancellationToken)) =>
 			Dispatcher.DispatchAsync<IGetUserPrivilegesRequest, GetUserPrivilegesRequestParameters, GetUserPrivilegesResponse, IGetUserPrivilegesResponse>(
 				request,

@@ -1,4 +1,4 @@
-﻿namespace Nest
+﻿namespace Nest6
 {
 	/// <summary>
 	/// A token filter that drops identical tokens at the same position

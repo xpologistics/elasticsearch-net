@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	/// <inheritdoc cref="IProperty" />
 	public abstract class PropertyDescriptorBase<TDescriptor, TInterface, T>

@@ -1,4 +1,4 @@
-namespace Nest
+namespace Nest6
 {
 	public abstract class GaussDecayFunctionBase<TOrigin, TScale> : DecayFunctionBase<TOrigin, TScale>
 	{

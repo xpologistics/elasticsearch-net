@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nest
+namespace Nest6
 {
 	public interface IBulkDeleteOperation<T> : IBulkOperation
 		where T : class

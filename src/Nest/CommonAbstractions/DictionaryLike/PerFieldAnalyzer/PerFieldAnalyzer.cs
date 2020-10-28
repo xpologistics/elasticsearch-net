@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[JsonConverter(typeof(VerbatimDictionaryKeysJsonConverter<PerFieldAnalyzer, Field, string>))]
 	public interface IPerFieldAnalyzer : IIsADictionary<Field, string> { }

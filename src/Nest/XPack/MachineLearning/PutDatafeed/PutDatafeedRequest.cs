@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Creates a datafeed for a machine learning job.
@@ -142,7 +142,7 @@ namespace Nest
 		public PutDatafeedDescriptor<T> Indices<TOther>() => Assign(typeof(TOther), (a, v) => a.Indices = v);
 
 		///<summary>A shortcut into calling Indices(Indices.All)</summary>
-		public PutDatafeedDescriptor<T> AllIndices() => Indices(Nest.Indices.All);
+		public PutDatafeedDescriptor<T> AllIndices() => Indices(Nest6.Indices.All);
 
 		/// <inheritdoc />
 		public PutDatafeedDescriptor<T> JobId(Id jobId) => Assign(jobId, (a, v) => a.JobId = v);
@@ -168,6 +168,6 @@ namespace Nest
 		public PutDatafeedDescriptor<T> Types<TOther>() => Assign(typeof(TOther), (a, v) => a.Types = v);
 
 		///<summary>a shortcut into calling Types(Types.All)</summary>
-		public PutDatafeedDescriptor<T> AllTypes() => Types(Nest.Types.All);
+		public PutDatafeedDescriptor<T> AllTypes() => Types(Nest6.Types.All);
 	}
 }

@@ -5,7 +5,7 @@ using Elastic.Managed.Ephemeral;
 using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Framework;
 using Tests.Framework.EndpointTests.TestState;
@@ -33,7 +33,7 @@ namespace Tests.XPack.Security.Privileges
 						Applications = new AppPrivileges
 						{
 							{
-								$"app-{v}", new Nest.Privileges
+								$"app-{v}", new Nest6.Privileges
 								{
 									{
 										$"p1-{v}", new PrivilegesActions

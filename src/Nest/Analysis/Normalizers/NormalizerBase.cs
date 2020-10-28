@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[ContractJsonConverter(typeof(NormalizerJsonConverter))]
 	public interface INormalizer

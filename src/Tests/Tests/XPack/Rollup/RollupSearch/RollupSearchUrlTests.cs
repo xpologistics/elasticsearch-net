@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 using Tests.Domain;
 using Tests.Framework;
 using static Tests.Framework.UrlTester;
@@ -19,10 +19,10 @@ namespace Tests.XPack.Rollup.RollupSearch
 				.RequestAsync(c => c.RollupSearchAsync<Log>(new RollupSearchRequest(index)));
 
 			await POST($"/_all/_rollup_search")
-				.Fluent(c => c.RollupSearch<Log>(Nest.Indices.All, s => s))
-				.Request(c => c.RollupSearch<Log>(new RollupSearchRequest(Nest.Indices.All)))
-				.FluentAsync(c => c.RollupSearchAsync<Log>(Nest.Indices.All, s => s))
-				.RequestAsync(c => c.RollupSearchAsync<Log>(new RollupSearchRequest(Nest.Indices.All)));
+				.Fluent(c => c.RollupSearch<Log>(Nest6.Indices.All, s => s))
+				.Request(c => c.RollupSearch<Log>(new RollupSearchRequest(Nest6.Indices.All)))
+				.FluentAsync(c => c.RollupSearchAsync<Log>(Nest6.Indices.All, s => s))
+				.RequestAsync(c => c.RollupSearchAsync<Log>(new RollupSearchRequest(Nest6.Indices.All)));
 		}
 	}
 }

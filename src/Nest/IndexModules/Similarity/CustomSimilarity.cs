@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// A custom similarity

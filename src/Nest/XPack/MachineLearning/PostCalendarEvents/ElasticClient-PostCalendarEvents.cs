@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -12,15 +12,15 @@ namespace Nest
 		/// </summary>
 		IPostCalendarEventsResponse PostCalendarEvents(Id calendarId, Func<PostCalendarEventsDescriptor, IPostCalendarEventsRequest> selector = null);
 
-		/// <inheritdoc cref="PostCalendarEvents(Nest.Id,System.Func{Nest.PostCalendarEventsDescriptor,Nest.IPostCalendarEventsRequest})" />
+		/// <inheritdoc cref="PostCalendarEvents(Nest6.Id,System.Func{Nest6.PostCalendarEventsDescriptor,Nest6.IPostCalendarEventsRequest})" />
 		IPostCalendarEventsResponse PostCalendarEvents(IPostCalendarEventsRequest request);
 
-		/// <inheritdoc cref="PostCalendarEvents(Nest.Id,System.Func{Nest.PostCalendarEventsDescriptor,Nest.IPostCalendarEventsRequest})" />
+		/// <inheritdoc cref="PostCalendarEvents(Nest6.Id,System.Func{Nest6.PostCalendarEventsDescriptor,Nest6.IPostCalendarEventsRequest})" />
 		Task<IPostCalendarEventsResponse> PostCalendarEventsAsync(Id calendarId, Func<PostCalendarEventsDescriptor, IPostCalendarEventsRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="PostCalendarEvents(Nest.Id,System.Func{Nest.PostCalendarEventsDescriptor,Nest.IPostCalendarEventsRequest})" />
+		/// <inheritdoc cref="PostCalendarEvents(Nest6.Id,System.Func{Nest6.PostCalendarEventsDescriptor,Nest6.IPostCalendarEventsRequest})" />
 		Task<IPostCalendarEventsResponse> PostCalendarEventsAsync(IPostCalendarEventsRequest request, CancellationToken cancellationToken = default(CancellationToken));
 	}
 

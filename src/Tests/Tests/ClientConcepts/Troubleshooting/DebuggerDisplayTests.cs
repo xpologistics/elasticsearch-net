@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using Elastic.Xunit.XunitPlumbing;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Domain;
 
 // ReSharper disable SuggestVarOrType_Elsewhere
@@ -107,10 +107,10 @@ namespace Tests.ClientConcepts.Troubleshooting
 
 		[U] public void IndicesDebug()
 		{
-			Nest.Indices all = Nest.Indices.All;
-			Nest.Indices fromTypeName = Infer.Index<Project>();
-			Nest.Indices fromType = typeof(CommitActivity);
-			Nest.Indices multiple = Infer.Index("someindex").And<Project>();
+			Nest6.Indices all = Nest6.Indices.All;
+			Nest6.Indices fromTypeName = Infer.Index<Project>();
+			Nest6.Indices fromType = typeof(CommitActivity);
+			Nest6.Indices multiple = Infer.Index("someindex").And<Project>();
 
 			DebugFor(all).Should().Be("_all");
 			DebugFor(fromTypeName).Should().Be($"Count: 1 [(1: IndexName for typeof: {nameof(Project)})]");

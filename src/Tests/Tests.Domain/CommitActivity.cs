@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Bogus;
-using Nest;
+using Nest6;
 using Newtonsoft.Json;
 using Tests.Configuration;
 using Tests.Domain.Helpers;

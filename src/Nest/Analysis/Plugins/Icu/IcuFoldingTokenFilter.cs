@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Case folding of Unicode characters based on UTR#30, like the ASCII-folding token filter on steroids.

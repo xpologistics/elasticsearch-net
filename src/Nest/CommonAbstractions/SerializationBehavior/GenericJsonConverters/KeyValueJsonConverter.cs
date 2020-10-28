@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Nest
+namespace Nest6
 {
 	internal class KeyValueConversion
 	{

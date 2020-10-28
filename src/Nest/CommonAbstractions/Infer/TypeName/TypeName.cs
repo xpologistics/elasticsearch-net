@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	[ContractJsonConverter(typeof(TypeNameJsonConverter))]
 	[DebuggerDisplay("{DebugDisplay,nq}")]

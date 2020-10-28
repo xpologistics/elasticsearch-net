@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -12,15 +12,15 @@ namespace Nest
 		/// </summary>
 		IPutCalendarResponse PutCalendar(Id calendarId, Func<PutCalendarDescriptor, IPutCalendarRequest> selector = null);
 
-		/// <inheritdoc cref="PutCalendar(Nest.Id,System.Func{Nest.PutCalendarDescriptor,Nest.IPutCalendarRequest})" />
+		/// <inheritdoc cref="PutCalendar(Nest6.Id,System.Func{Nest6.PutCalendarDescriptor,Nest6.IPutCalendarRequest})" />
 		IPutCalendarResponse PutCalendar(IPutCalendarRequest request);
 
-		/// <inheritdoc cref="PutCalendar(Nest.Id,System.Func{Nest.PutCalendarDescriptor,Nest.IPutCalendarRequest})" />
+		/// <inheritdoc cref="PutCalendar(Nest6.Id,System.Func{Nest6.PutCalendarDescriptor,Nest6.IPutCalendarRequest})" />
 		Task<IPutCalendarResponse> PutCalendarAsync(Id calendarId, Func<PutCalendarDescriptor, IPutCalendarRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="PutCalendar(Nest.Id,System.Func{Nest.PutCalendarDescriptor,Nest.IPutCalendarRequest})" />
+		/// <inheritdoc cref="PutCalendar(Nest6.Id,System.Func{Nest6.PutCalendarDescriptor,Nest6.IPutCalendarRequest})" />
 		Task<IPutCalendarResponse> PutCalendarAsync(IPutCalendarRequest request, CancellationToken cancellationToken = default(CancellationToken));
 	}
 

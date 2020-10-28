@@ -109,12 +109,12 @@ Expect("name")
 ----
 
 [[nest-infer]]
-==== Using Nest.Infer methods
+==== using Nest6.Infer methods
 
 To ease creating a `Field` instance from expressions, there is a static `Infer` class you can use
 
 [TIP]
-This example uses the https://msdn.microsoft.com/en-us/library/sf0df423.aspx#Anchor_0[static import] `using static Nest.Infer;`
+This example uses the https://msdn.microsoft.com/en-us/library/sf0df423.aspx#Anchor_0[static import] `using static Nest6.Infer;`
 in the using directives to shorthand `Nest.Infer.Field<T>()`
 to simply `Field<T>()`. Be sure to include this static import if copying any of these examples.
 
@@ -327,7 +327,7 @@ Expect("metadata.hardcoded.raw.evendeeper").WhenSerializing(multiSuffixFieldExpr
 [[field-name-attribute]]
 ==== Attribute based naming
 
-Using NEST's property attributes you can specify a new name for the properties
+using Nest6's property attributes you can specify a new name for the properties
 
 [source,csharp]
 ----

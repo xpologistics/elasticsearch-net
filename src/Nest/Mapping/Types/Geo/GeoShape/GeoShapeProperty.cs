@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Maps a property as a geo_shape field

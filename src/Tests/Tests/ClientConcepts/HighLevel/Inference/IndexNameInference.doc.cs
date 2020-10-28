@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Nest;
+using Nest6;
 using System;
 using Elastic.Xunit.XunitPlumbing;
 using Tests.Core.Client;
@@ -9,7 +9,7 @@ using Tests.Framework;
 using Tests.Framework.ManagedElasticsearch;
 using Xunit;
 using static Tests.Core.Serialization.SerializationTestHelper;
-using static Nest.Infer;
+using static Nest6.Infer;
 
 namespace Tests.ClientConcepts.HighLevel.Inference
 {
@@ -183,8 +183,8 @@ namespace Tests.ClientConcepts.HighLevel.Inference
 			Index<Project>().Should().NotBe(Index<Developer>());
 			Index<Project>("cluster_one").Should().NotBe(Index<Developer>("cluster_one"));
 
-			Nest.Indices indices1 = "foo,bar";
-			Nest.Indices indices2 = "bar,foo";
+			Nest6.Indices indices1 = "foo,bar";
+			Nest6.Indices indices2 = "bar,foo";
 			indices1.Should().Be(indices2);
 			(indices1 == indices2).Should().BeTrue();
 		}

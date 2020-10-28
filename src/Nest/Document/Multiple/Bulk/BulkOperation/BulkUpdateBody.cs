@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	internal class BulkUpdateBody<TDocument, TPartialUpdate>
 		where TDocument : class

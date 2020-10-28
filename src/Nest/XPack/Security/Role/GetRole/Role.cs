@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	//only used by GetRoleResponse thus private setters and IReadOnlyCollection
 	public class XPackRole

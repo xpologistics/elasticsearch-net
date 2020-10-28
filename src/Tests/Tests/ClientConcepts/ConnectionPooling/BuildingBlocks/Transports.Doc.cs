@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
-using Nest;
+using Nest6;
 using System.Threading;
 using Tests.Domain;
 

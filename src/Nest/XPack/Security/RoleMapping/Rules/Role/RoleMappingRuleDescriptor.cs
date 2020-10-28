@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Nest
+namespace Nest6
 {
 	public class RoleMappingRuleDescriptor : DescriptorBase<RoleMappingRuleDescriptor, IDescriptor>, IDescriptor
 	{

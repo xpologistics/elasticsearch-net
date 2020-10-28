@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace Nest
+namespace Nest6
 {
 	public static class BlockingSubscribeExtensions
 	{

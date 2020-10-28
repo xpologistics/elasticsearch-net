@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public class SnapshotObservable : IDisposable, IObservable<ISnapshotStatusResponse>
 	{

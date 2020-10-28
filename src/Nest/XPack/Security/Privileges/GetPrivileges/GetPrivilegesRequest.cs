@@ -1,4 +1,4 @@
-﻿namespace Nest
+﻿namespace Nest6
 {
 	[MapsApi("xpack.security.get_privileges.json")]
 	public partial interface IGetPrivilegesRequest { }

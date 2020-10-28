@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Nest
+namespace Nest6
 {
 	internal class HasVariableExpressionVisitor : ExpressionVisitor
 	{

@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	/// <inheritdoc cref="IConnectionSettingsValues" />
 	public class ConnectionSettings : ConnectionSettingsBase<ConnectionSettings>

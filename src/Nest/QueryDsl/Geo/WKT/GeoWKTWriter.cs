@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Writes <see cref="IGeoShape" /> types to Well-Known Text (WKT)

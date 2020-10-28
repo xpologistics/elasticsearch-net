@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// A tokenizer that breaks text into terms whenever it encounters a character which is in a defined set. It is mostly useful

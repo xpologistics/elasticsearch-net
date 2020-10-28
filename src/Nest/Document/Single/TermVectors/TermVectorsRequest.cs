@@ -2,7 +2,7 @@
 using Elasticsearch.Net;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface ITermVectorsRequest<TDocument>
 		where TDocument : class

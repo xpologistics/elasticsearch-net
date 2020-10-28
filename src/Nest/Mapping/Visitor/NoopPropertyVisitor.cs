@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Nest
+namespace Nest6
 {
 	public class NoopPropertyVisitor : IPropertyVisitor
 	{

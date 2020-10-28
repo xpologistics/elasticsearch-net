@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -15,16 +15,16 @@ namespace Nest
 			Func<ExecutePainlessScriptDescriptor, IExecutePainlessScriptRequest> selector
 		);
 
-		/// <inheritdoc cref="ExecutePainlessScript{TResult}(System.Func{Nest.ExecutePainlessScriptDescriptor,Nest.IExecutePainlessScriptRequest})" />
+		/// <inheritdoc cref="ExecutePainlessScript{TResult}(System.Func{Nest6.ExecutePainlessScriptDescriptor,Nest6.IExecutePainlessScriptRequest})" />
 		IExecutePainlessScriptResponse<TResult> ExecutePainlessScript<TResult>(IExecutePainlessScriptRequest request);
 
-		/// <inheritdoc cref="ExecutePainlessScript{TResult}(System.Func{Nest.ExecutePainlessScriptDescriptor,Nest.IExecutePainlessScriptRequest})" />
+		/// <inheritdoc cref="ExecutePainlessScript{TResult}(System.Func{Nest6.ExecutePainlessScriptDescriptor,Nest6.IExecutePainlessScriptRequest})" />
 		Task<IExecutePainlessScriptResponse<TResult>> ExecutePainlessScriptAsync<TResult>(
 			Func<ExecutePainlessScriptDescriptor, IExecutePainlessScriptRequest> selector,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="ExecutePainlessScript{TResult}(System.Func{Nest.ExecutePainlessScriptDescriptor,Nest.IExecutePainlessScriptRequest})" />
+		/// <inheritdoc cref="ExecutePainlessScript{TResult}(System.Func{Nest6.ExecutePainlessScriptDescriptor,Nest6.IExecutePainlessScriptRequest})" />
 		Task<IExecutePainlessScriptResponse<TResult>> ExecutePainlessScriptAsync<TResult>(IExecutePainlessScriptRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);

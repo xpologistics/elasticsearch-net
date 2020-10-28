@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 
-namespace Nest
+namespace Nest6
 {
 	internal static class ExceptionExtensions
 	{

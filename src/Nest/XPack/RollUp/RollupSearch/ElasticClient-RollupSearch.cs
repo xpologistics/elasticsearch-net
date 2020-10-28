@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -16,28 +16,28 @@ namespace Nest
 		IRollupSearchResponse<THit> RollupSearch<THit>(Indices indices, Func<RollupSearchDescriptor<THit>, IRollupSearchRequest> selector = null)
 			where THit : class;
 
-		/// <inheritdoc cref="RollupSearch{THit}(Nest.Indices,System.Func{Nest.RollupSearchDescriptor{THit},Nest.IRollupSearchRequest})" />
+		/// <inheritdoc cref="RollupSearch{THit}(Nest6.Indices,System.Func{Nest6.RollupSearchDescriptor{THit},Nest6.IRollupSearchRequest})" />
 		IRollupSearchResponse<THit> RollupSearch<T, THit>(Indices indices, Func<RollupSearchDescriptor<T>, IRollupSearchRequest> selector = null)
 			where THit : class
 			where T : class;
 
-		/// <inheritdoc cref="RollupSearch{THit}(Nest.Indices,System.Func{Nest.RollupSearchDescriptor{THit},Nest.IRollupSearchRequest})" />
+		/// <inheritdoc cref="RollupSearch{THit}(Nest6.Indices,System.Func{Nest6.RollupSearchDescriptor{THit},Nest6.IRollupSearchRequest})" />
 		IRollupSearchResponse<THit> RollupSearch<THit>(IRollupSearchRequest request) where THit : class;
 
-		/// <inheritdoc cref="RollupSearch{THit}(Nest.Indices,System.Func{Nest.RollupSearchDescriptor{THit},Nest.IRollupSearchRequest})" />
+		/// <inheritdoc cref="RollupSearch{THit}(Nest6.Indices,System.Func{Nest6.RollupSearchDescriptor{THit},Nest6.IRollupSearchRequest})" />
 		Task<IRollupSearchResponse<THit>> RollupSearchAsync<THit>(Indices indices,
 			Func<RollupSearchDescriptor<THit>, IRollupSearchRequest> selector = null, CancellationToken cancellationToken = default
 		)
 			where THit : class;
 
-		/// <inheritdoc cref="RollupSearch{THit}(Nest.Indices,System.Func{Nest.RollupSearchDescriptor{THit},Nest.IRollupSearchRequest})" />
+		/// <inheritdoc cref="RollupSearch{THit}(Nest6.Indices,System.Func{Nest6.RollupSearchDescriptor{THit},Nest6.IRollupSearchRequest})" />
 		Task<IRollupSearchResponse<THit>> RollupSearchAsync<T, THit>(Indices indices,
 			Func<RollupSearchDescriptor<T>, IRollupSearchRequest> selector = null, CancellationToken cancellationToken = default
 		)
 			where THit : class
 			where T : class;
 
-		/// <inheritdoc cref="RollupSearch{THit}(Nest.Indices,System.Func{Nest.RollupSearchDescriptor{THit},Nest.IRollupSearchRequest})" />
+		/// <inheritdoc cref="RollupSearch{THit}(Nest6.Indices,System.Func{Nest6.RollupSearchDescriptor{THit},Nest6.IRollupSearchRequest})" />
 		Task<IRollupSearchResponse<THit>> RollupSearchAsync<THit>(IRollupSearchRequest request, CancellationToken cancellationToken = default)
 			where THit : class;
 	}

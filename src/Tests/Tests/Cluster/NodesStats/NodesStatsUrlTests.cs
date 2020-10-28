@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
-using Nest;
+using Nest6;
 using Tests.Framework;
 using static Tests.Framework.UrlTester;
 

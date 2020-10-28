@@ -1,4 +1,4 @@
-﻿namespace Nest
+﻿namespace Nest6
 {
 	[MapsApi("xpack.rollup.stop_job.json")]
 	public partial interface IStopRollupJobRequest { }

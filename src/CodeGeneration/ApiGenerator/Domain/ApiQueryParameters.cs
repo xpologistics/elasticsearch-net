@@ -29,7 +29,7 @@ namespace ApiGenerator.Domain
 						yield return "<para>Elasticsearch will use the document id if not provided. </para>";
 						yield return "<para>For requests that are constructed from/for a document NEST will automatically infer the routing key";
 						yield return
-							"if that document has a <see cref=\"Nest.JoinField\" /> or a routing mapping on for its type exists on <see cref=\"Nest.ConnectionSettings\" /></para> ";
+							"if that document has a <see cref=\"Nest6.JoinField\" /> or a routing mapping on for its type exists on <see cref=\"Nest6.ConnectionSettings\" /></para> ";
 
 						yield break;
 					case "_source":

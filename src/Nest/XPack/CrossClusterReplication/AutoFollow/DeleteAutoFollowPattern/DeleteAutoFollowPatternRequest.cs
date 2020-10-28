@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary> Deletes a configured collection of auto-follow patterns. </summary>
 	[MapsApi("ccr.delete_auto_follow_pattern.json")]

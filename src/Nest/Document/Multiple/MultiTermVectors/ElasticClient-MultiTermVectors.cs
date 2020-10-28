@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -15,15 +15,15 @@ namespace Nest
 		/// <param name="selector">The descriptor describing the multi termvectors operation</param>
 		IMultiTermVectorsResponse MultiTermVectors(Func<MultiTermVectorsDescriptor, IMultiTermVectorsRequest> selector = null);
 
-		/// <inheritdoc cref="MultiTermVectors(System.Func{Nest.MultiTermVectorsDescriptor,Nest.IMultiTermVectorsRequest})" />
+		/// <inheritdoc cref="MultiTermVectors(System.Func{Nest6.MultiTermVectorsDescriptor,Nest6.IMultiTermVectorsRequest})" />
 		IMultiTermVectorsResponse MultiTermVectors(IMultiTermVectorsRequest request);
 
-		/// <inheritdoc cref="MultiTermVectors(System.Func{Nest.MultiTermVectorsDescriptor,Nest.IMultiTermVectorsRequest})" />
+		/// <inheritdoc cref="MultiTermVectors(System.Func{Nest6.MultiTermVectorsDescriptor,Nest6.IMultiTermVectorsRequest})" />
 		Task<IMultiTermVectorsResponse> MultiTermVectorsAsync(Func<MultiTermVectorsDescriptor, IMultiTermVectorsRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="MultiTermVectors(System.Func{Nest.MultiTermVectorsDescriptor,Nest.IMultiTermVectorsRequest})" />
+		/// <inheritdoc cref="MultiTermVectors(System.Func{Nest6.MultiTermVectorsDescriptor,Nest6.IMultiTermVectorsRequest})" />
 		Task<IMultiTermVectorsResponse> MultiTermVectorsAsync(IMultiTermVectorsRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);

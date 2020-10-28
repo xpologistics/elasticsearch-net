@@ -1,6 +1,6 @@
 ﻿using System.Collections.Specialized;
 
-namespace Nest
+namespace Nest6
 {
 	internal static class StringExtensions
 	{

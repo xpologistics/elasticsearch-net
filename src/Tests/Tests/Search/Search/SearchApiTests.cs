@@ -4,7 +4,7 @@ using System.Linq;
 using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core.Extensions;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Core.ManagedElasticsearch.NodeSeeders;
@@ -524,7 +524,7 @@ namespace Tests.Search.Search
 		protected override int ExpectStatusCode => 200;
 
 		protected override Func<SearchDescriptor<Project>, ISearchRequest> Fluent => s => s
-			.Index(Nest.Indices.Index<Project>().And(RemoteIndex))
+			.Index(Nest6.Indices.Index<Project>().And(RemoteIndex))
 			.Query(q => q
 				.MatchAll()
 			);
@@ -533,7 +533,7 @@ namespace Tests.Search.Search
 
 		protected override HttpMethod HttpMethod => HttpMethod.POST;
 
-		protected override SearchRequest<Project> Initializer => new SearchRequest<Project>(Nest.Indices.Index<Project>().And(RemoteIndex))
+		protected override SearchRequest<Project> Initializer => new SearchRequest<Project>(Nest6.Indices.Index<Project>().And(RemoteIndex))
 		{
 			Query = new QueryContainer(new MatchAllQuery())
 		};

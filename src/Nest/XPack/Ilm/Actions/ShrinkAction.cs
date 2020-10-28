@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// This action shrinks an existing index into a new index with fewer primary shards. It calls the Shrink API to shrink the

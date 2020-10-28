@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	[ContractJsonConverter(typeof(PropertyNameJsonConverter))]
 	[DebuggerDisplay("{DebugDisplay,nq}")]

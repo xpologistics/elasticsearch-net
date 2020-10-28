@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -16,15 +16,15 @@ namespace Nest
 		/// </summary>
 		IStopIlmResponse StopIlm(Func<StopIlmDescriptor, IStopIlmRequest> selector = null);
 
-		/// <inheritdoc cref="StopIlm(System.Func{Nest.StopIlmDescriptor,Nest.IStopIlmRequest})" />
+		/// <inheritdoc cref="StopIlm(System.Func{Nest6.StopIlmDescriptor,Nest6.IStopIlmRequest})" />
 		IStopIlmResponse StopIlm(IStopIlmRequest request);
 
-		/// <inheritdoc cref="StopIlm(System.Func{Nest.StopIlmDescriptor,Nest.IStopIlmRequest})" />
+		/// <inheritdoc cref="StopIlm(System.Func{Nest6.StopIlmDescriptor,Nest6.IStopIlmRequest})" />
 		Task<IStopIlmResponse> StopIlmAsync(Func<StopIlmDescriptor, IStopIlmRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="StopIlm(System.Func{Nest.StopIlmDescriptor,Nest.IStopIlmRequest})" />
+		/// <inheritdoc cref="StopIlm(System.Func{Nest6.StopIlmDescriptor,Nest6.IStopIlmRequest})" />
 		Task<IStopIlmResponse> StopIlmAsync(IStopIlmRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
@@ -32,24 +32,24 @@ namespace Nest
 
 	public partial class ElasticClient
 	{
-		/// <inheritdoc cref="StopIlm(System.Func{Nest.StopIlmDescriptor,Nest.IStopIlmRequest})" />
+		/// <inheritdoc cref="StopIlm(System.Func{Nest6.StopIlmDescriptor,Nest6.IStopIlmRequest})" />
 		public IStopIlmResponse StopIlm(Func<StopIlmDescriptor, IStopIlmRequest> selector = null) =>
 			StopIlm(selector.InvokeOrDefault(new StopIlmDescriptor()));
 
-		/// <inheritdoc cref="StopIlm(System.Func{Nest.StopIlmDescriptor,Nest.IStopIlmRequest})" />
+		/// <inheritdoc cref="StopIlm(System.Func{Nest6.StopIlmDescriptor,Nest6.IStopIlmRequest})" />
 		public IStopIlmResponse StopIlm(IStopIlmRequest request) =>
 			Dispatcher.Dispatch<IStopIlmRequest, StopIlmRequestParameters, StopIlmResponse>(
 				request,
 				(p, d) => LowLevelDispatch.XpackIlmStopDispatch<StopIlmResponse>(p)
 			);
 
-		/// <inheritdoc cref="StopIlm(System.Func{Nest.StopIlmDescriptor,Nest.IStopIlmRequest})" />
+		/// <inheritdoc cref="StopIlm(System.Func{Nest6.StopIlmDescriptor,Nest6.IStopIlmRequest})" />
 		public Task<IStopIlmResponse> StopIlmAsync(Func<StopIlmDescriptor, IStopIlmRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>
 			StopIlmAsync(selector.InvokeOrDefault(new StopIlmDescriptor()), cancellationToken);
 
-		/// <inheritdoc cref="StopIlm(System.Func{Nest.StopIlmDescriptor,Nest.IStopIlmRequest})" />
+		/// <inheritdoc cref="StopIlm(System.Func{Nest6.StopIlmDescriptor,Nest6.IStopIlmRequest})" />
 		public Task<IStopIlmResponse> StopIlmAsync(IStopIlmRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>

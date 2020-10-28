@@ -7,7 +7,7 @@ using Elastic.Xunit.Sdk;
 using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core.Client.Settings;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Domain;

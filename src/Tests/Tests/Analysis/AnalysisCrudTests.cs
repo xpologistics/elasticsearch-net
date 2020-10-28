@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core.Extensions;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Framework;
@@ -39,7 +39,7 @@ namespace Tests.Analysis
 		{
 			Settings = new IndexSettings
 			{
-				Analysis = new Nest.Analysis
+				Analysis = new Nest6.Analysis
 				{
 					Analyzers = AnalysisUsageTests.AnalyzersInitializer.Analysis.Analyzers,
 					CharFilters = AnalysisUsageTests.CharFiltersInitializer.Analysis.CharFilters,
@@ -73,7 +73,7 @@ namespace Tests.Analysis
 				(s, c, r) => c.GetIndexSettingsAsync(r)
 			);
 
-		protected GetIndexSettingsRequest GetInitializer(string indexName) => new GetIndexSettingsRequest(Nest.Indices.Index(indexName)) { };
+		protected GetIndexSettingsRequest GetInitializer(string indexName) => new GetIndexSettingsRequest(Nest6.Indices.Index(indexName)) { };
 
 		protected IGetIndexSettingsRequest GetFluent(string indexName, GetIndexSettingsDescriptor u) => u.Index(indexName);
 
@@ -141,9 +141,9 @@ namespace Tests.Analysis
 		{
 			IndexSettings = new IndexSettings
 			{
-				Analysis = new Nest.Analysis
+				Analysis = new Nest6.Analysis
 				{
-					CharFilters = new Nest.CharFilters { { "differentHtml", new HtmlStripCharFilter { } } }
+					CharFilters = new Nest6.CharFilters { { "differentHtml", new HtmlStripCharFilter { } } }
 				}
 			}
 		};

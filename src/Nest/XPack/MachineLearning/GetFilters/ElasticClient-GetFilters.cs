@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -13,15 +13,15 @@ namespace Nest
 		IGetFiltersResponse GetFilters(Func<GetFiltersDescriptor, IGetFiltersRequest> selector = null);
 
 
-		/// <inheritdoc cref="GetFilters(System.Func{Nest.GetFiltersDescriptor,Nest.IGetFiltersRequest})" />
+		/// <inheritdoc cref="GetFilters(System.Func{Nest6.GetFiltersDescriptor,Nest6.IGetFiltersRequest})" />
 		IGetFiltersResponse GetFilters(IGetFiltersRequest request);
 
-		/// <inheritdoc cref="GetFilters(System.Func{Nest.GetFiltersDescriptor,Nest.IGetFiltersRequest})" />
+		/// <inheritdoc cref="GetFilters(System.Func{Nest6.GetFiltersDescriptor,Nest6.IGetFiltersRequest})" />
 		Task<IGetFiltersResponse> GetFiltersAsync(Func<GetFiltersDescriptor, IGetFiltersRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="GetFilters(System.Func{Nest.GetFiltersDescriptor,Nest.IGetFiltersRequest})" />
+		/// <inheritdoc cref="GetFilters(System.Func{Nest6.GetFiltersDescriptor,Nest6.IGetFiltersRequest})" />
 		Task<IGetFiltersResponse> GetFiltersAsync(IGetFiltersRequest request, CancellationToken cancellationToken = default(CancellationToken));
 	}
 

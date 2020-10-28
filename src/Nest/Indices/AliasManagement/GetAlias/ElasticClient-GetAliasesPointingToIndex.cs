@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Nest
+namespace Nest6
 {
 	public static class AliasPointingToIndexExtensions
 	{

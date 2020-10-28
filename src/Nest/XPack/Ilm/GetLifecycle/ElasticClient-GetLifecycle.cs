@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -14,15 +14,15 @@ namespace Nest
 		/// </summary>
 		IGetLifecycleResponse GetLifecycle(Func<GetLifecycleDescriptor, IGetLifecycleRequest> selector = null);
 
-		/// <inheritdoc cref="GetLifecycle(System.Func{Nest.GetLifecycleDescriptor,Nest.IGetLifecycleRequest})" />
+		/// <inheritdoc cref="GetLifecycle(System.Func{Nest6.GetLifecycleDescriptor,Nest6.IGetLifecycleRequest})" />
 		IGetLifecycleResponse GetLifecycle(IGetLifecycleRequest request);
 
-		/// <inheritdoc cref="GetLifecycle(System.Func{Nest.GetLifecycleDescriptor,Nest.IGetLifecycleRequest})" />
+		/// <inheritdoc cref="GetLifecycle(System.Func{Nest6.GetLifecycleDescriptor,Nest6.IGetLifecycleRequest})" />
 		Task<IGetLifecycleResponse> GetLifecycleAsync(Func<GetLifecycleDescriptor, IGetLifecycleRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="GetLifecycle(System.Func{Nest.GetLifecycleDescriptor,Nest.IGetLifecycleRequest})" />
+		/// <inheritdoc cref="GetLifecycle(System.Func{Nest6.GetLifecycleDescriptor,Nest6.IGetLifecycleRequest})" />
 		Task<IGetLifecycleResponse> GetLifecycleAsync(IGetLifecycleRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
@@ -30,24 +30,24 @@ namespace Nest
 
 	public partial class ElasticClient
 	{
-		/// <inheritdoc cref="GetLifecycle(System.Func{Nest.GetLifecycleDescriptor,Nest.IGetLifecycleRequest})" />
+		/// <inheritdoc cref="GetLifecycle(System.Func{Nest6.GetLifecycleDescriptor,Nest6.IGetLifecycleRequest})" />
 		public IGetLifecycleResponse GetLifecycle(Func<GetLifecycleDescriptor, IGetLifecycleRequest> selector = null) =>
 			GetLifecycle(selector.InvokeOrDefault(new GetLifecycleDescriptor()));
 
-		/// <inheritdoc cref="GetLifecycle(System.Func{Nest.GetLifecycleDescriptor,Nest.IGetLifecycleRequest})" />
+		/// <inheritdoc cref="GetLifecycle(System.Func{Nest6.GetLifecycleDescriptor,Nest6.IGetLifecycleRequest})" />
 		public IGetLifecycleResponse GetLifecycle(IGetLifecycleRequest request) =>
 			Dispatcher.Dispatch<IGetLifecycleRequest, GetLifecycleRequestParameters, GetLifecycleResponse>(
 				request,
 				(p, d) => LowLevelDispatch.XpackIlmGetLifecycleDispatch<GetLifecycleResponse>(p)
 			);
 
-		/// <inheritdoc cref="GetLifecycle(System.Func{Nest.GetLifecycleDescriptor,Nest.IGetLifecycleRequest})" />
+		/// <inheritdoc cref="GetLifecycle(System.Func{Nest6.GetLifecycleDescriptor,Nest6.IGetLifecycleRequest})" />
 		public Task<IGetLifecycleResponse> GetLifecycleAsync(Func<GetLifecycleDescriptor, IGetLifecycleRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>
 			GetLifecycleAsync(selector.InvokeOrDefault(new GetLifecycleDescriptor()), cancellationToken);
 
-		/// <inheritdoc cref="GetLifecycle(System.Func{Nest.GetLifecycleDescriptor,Nest.IGetLifecycleRequest})" />
+		/// <inheritdoc cref="GetLifecycle(System.Func{Nest6.GetLifecycleDescriptor,Nest6.IGetLifecycleRequest})" />
 		public Task<IGetLifecycleResponse> GetLifecycleAsync(IGetLifecycleRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>

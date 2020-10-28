@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// An exception when handling <see cref="IGeoShape" /> in Well-Known Text format

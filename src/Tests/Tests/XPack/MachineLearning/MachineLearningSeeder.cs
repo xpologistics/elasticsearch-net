@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using Elastic.Managed.FileSystem;
 using Elasticsearch.Net;
-using Nest;
+using Nest6;
 using Tests.Core.Client;
 using Tests.Core.Extensions;
 using Tests.Domain;

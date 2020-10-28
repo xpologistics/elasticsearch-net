@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Elastic.Xunit.XunitPlumbing;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core.Extensions;
 using static Tests.Core.Serialization.SerializationTestHelper;
 using Name = Bogus.DataSets.Name;

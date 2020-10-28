@@ -5,7 +5,7 @@ using System.Text;
 using Newtonsoft.Json;
 using static Elasticsearch.Net.SerializationFormatting;
 
-namespace Nest
+namespace Nest6
 {
 	internal abstract class DocumentProxyRequestConverterBase : JsonConverter
 	{

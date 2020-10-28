@@ -2,7 +2,7 @@
 using System.Linq;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Document.Multiple.Reindex;
 using Tests.Domain;
 using Tests.Framework;

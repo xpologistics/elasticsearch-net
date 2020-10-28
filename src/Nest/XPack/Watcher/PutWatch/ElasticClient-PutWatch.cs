@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -14,15 +14,15 @@ namespace Nest
 		/// </summary>
 		IPutWatchResponse PutWatch(Id watchId, Func<PutWatchDescriptor, IPutWatchRequest> selector = null);
 
-		/// <inheritdoc cref="PutWatch(Nest.Id,System.Func{Nest.PutWatchDescriptor,Nest.IPutWatchRequest})" />
+		/// <inheritdoc cref="PutWatch(Nest6.Id,System.Func{Nest6.PutWatchDescriptor,Nest6.IPutWatchRequest})" />
 		IPutWatchResponse PutWatch(IPutWatchRequest request);
 
-		/// <inheritdoc cref="PutWatch(Nest.Id,System.Func{Nest.PutWatchDescriptor,Nest.IPutWatchRequest})" />
+		/// <inheritdoc cref="PutWatch(Nest6.Id,System.Func{Nest6.PutWatchDescriptor,Nest6.IPutWatchRequest})" />
 		Task<IPutWatchResponse> PutWatchAsync(Id watchId, Func<PutWatchDescriptor, IPutWatchRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="PutWatch(Nest.Id,System.Func{Nest.PutWatchDescriptor,Nest.IPutWatchRequest})" />
+		/// <inheritdoc cref="PutWatch(Nest6.Id,System.Func{Nest6.PutWatchDescriptor,Nest6.IPutWatchRequest})" />
 		Task<IPutWatchResponse> PutWatchAsync(IPutWatchRequest request, CancellationToken cancellationToken = default(CancellationToken));
 	}
 

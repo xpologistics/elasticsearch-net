@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	[ContractJsonConverter(typeof(IndexJsonConverter))]
 	public partial interface IIndexRequest<TDocument> : IProxyRequest where TDocument : class

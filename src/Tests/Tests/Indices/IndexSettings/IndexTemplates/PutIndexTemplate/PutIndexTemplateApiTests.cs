@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Core.Extensions;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Framework;
@@ -80,7 +80,7 @@ namespace Tests.Indices.IndexSettings.IndexTemplates.PutIndexTemplate
 			Version = 2,
 			IndexPatterns = new[] { "nestx-*" },
 			Create = false,
-			Settings = new Nest.IndexSettings
+			Settings = new Nest6.IndexSettings
 			{
 				NumberOfShards = 1
 			},

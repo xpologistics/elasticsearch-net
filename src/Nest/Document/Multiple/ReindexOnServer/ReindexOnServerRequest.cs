@@ -3,7 +3,7 @@ using Elasticsearch.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// A request to Reindex API

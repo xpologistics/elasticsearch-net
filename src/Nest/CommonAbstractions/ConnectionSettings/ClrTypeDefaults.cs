@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Nest
+namespace Nest6
 {
 	public interface IClrTypeMapping
 	{

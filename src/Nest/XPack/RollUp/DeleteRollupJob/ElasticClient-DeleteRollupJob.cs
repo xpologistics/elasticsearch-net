@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -13,15 +13,15 @@ namespace Nest
 		/// </summary>
 		IDeleteRollupJobResponse DeleteRollupJob(Id id, Func<DeleteRollupJobDescriptor, IDeleteRollupJobRequest> selector = null);
 
-		/// <inheritdoc cref="DeleteRollupJob(Nest.Id,System.Func{Nest.DeleteRollupJobDescriptor,Nest.IDeleteRollupJobRequest})" />
+		/// <inheritdoc cref="DeleteRollupJob(Nest6.Id,System.Func{Nest6.DeleteRollupJobDescriptor,Nest6.IDeleteRollupJobRequest})" />
 		IDeleteRollupJobResponse DeleteRollupJob(IDeleteRollupJobRequest request);
 
-		/// <inheritdoc cref="DeleteRollupJob(Nest.Id,System.Func{Nest.DeleteRollupJobDescriptor,Nest.IDeleteRollupJobRequest})" />
+		/// <inheritdoc cref="DeleteRollupJob(Nest6.Id,System.Func{Nest6.DeleteRollupJobDescriptor,Nest6.IDeleteRollupJobRequest})" />
 		Task<IDeleteRollupJobResponse> DeleteRollupJobAsync(Id id,
 			Func<DeleteRollupJobDescriptor, IDeleteRollupJobRequest> selector = null, CancellationToken cancellationToken = default
 		);
 
-		/// <inheritdoc cref="DeleteRollupJob(Nest.Id,System.Func{Nest.DeleteRollupJobDescriptor,Nest.IDeleteRollupJobRequest})" />
+		/// <inheritdoc cref="DeleteRollupJob(Nest6.Id,System.Func{Nest6.DeleteRollupJobDescriptor,Nest6.IDeleteRollupJobRequest})" />
 		Task<IDeleteRollupJobResponse> DeleteRollupJobAsync(IDeleteRollupJobRequest request, CancellationToken cancellationToken = default);
 	}
 

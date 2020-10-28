@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -14,15 +14,15 @@ namespace Nest
 		/// </summary>
 		IStartIlmResponse StartIlm(Func<StartIlmDescriptor, IStartIlmRequest> selector = null);
 
-		/// <inheritdoc cref="StartIlm(System.Func{Nest.StartIlmDescriptor,Nest.IStartIlmRequest})" />
+		/// <inheritdoc cref="StartIlm(System.Func{Nest6.StartIlmDescriptor,Nest6.IStartIlmRequest})" />
 		IStartIlmResponse StartIlm(IStartIlmRequest request);
 
-		/// <inheritdoc cref="StartIlm(System.Func{Nest.StartIlmDescriptor,Nest.IStartIlmRequest})" />
+		/// <inheritdoc cref="StartIlm(System.Func{Nest6.StartIlmDescriptor,Nest6.IStartIlmRequest})" />
 		Task<IStartIlmResponse> StartIlmAsync(Func<StartIlmDescriptor, IStartIlmRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="StartIlm(System.Func{Nest.StartIlmDescriptor,Nest.IStartIlmRequest})" />
+		/// <inheritdoc cref="StartIlm(System.Func{Nest6.StartIlmDescriptor,Nest6.IStartIlmRequest})" />
 		Task<IStartIlmResponse> StartIlmAsync(IStartIlmRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
@@ -30,24 +30,24 @@ namespace Nest
 
 	public partial class ElasticClient
 	{
-		/// <inheritdoc cref="StartIlm(System.Func{Nest.StartIlmDescriptor,Nest.IStartIlmRequest})" />
+		/// <inheritdoc cref="StartIlm(System.Func{Nest6.StartIlmDescriptor,Nest6.IStartIlmRequest})" />
 		public IStartIlmResponse StartIlm(Func<StartIlmDescriptor, IStartIlmRequest> selector = null) =>
 			StartIlm(selector.InvokeOrDefault(new StartIlmDescriptor()));
 
-		/// <inheritdoc cref="StartIlm(System.Func{Nest.StartIlmDescriptor,Nest.IStartIlmRequest})" />
+		/// <inheritdoc cref="StartIlm(System.Func{Nest6.StartIlmDescriptor,Nest6.IStartIlmRequest})" />
 		public IStartIlmResponse StartIlm(IStartIlmRequest request) =>
 			Dispatcher.Dispatch<IStartIlmRequest, StartIlmRequestParameters, StartIlmResponse>(
 				request,
 				(p, d) => LowLevelDispatch.XpackIlmStartDispatch<StartIlmResponse>(p)
 			);
 
-		/// <inheritdoc cref="StartIlm(System.Func{Nest.StartIlmDescriptor,Nest.IStartIlmRequest})" />
+		/// <inheritdoc cref="StartIlm(System.Func{Nest6.StartIlmDescriptor,Nest6.IStartIlmRequest})" />
 		public Task<IStartIlmResponse> StartIlmAsync(Func<StartIlmDescriptor, IStartIlmRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>
 			StartIlmAsync(selector.InvokeOrDefault(new StartIlmDescriptor()), cancellationToken);
 
-		/// <inheritdoc cref="StartIlm(System.Func{Nest.StartIlmDescriptor,Nest.IStartIlmRequest})" />
+		/// <inheritdoc cref="StartIlm(System.Func{Nest6.StartIlmDescriptor,Nest6.IStartIlmRequest})" />
 		public Task<IStartIlmResponse> StartIlmAsync(IStartIlmRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>

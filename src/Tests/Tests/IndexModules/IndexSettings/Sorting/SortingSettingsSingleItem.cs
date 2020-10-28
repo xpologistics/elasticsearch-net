@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Nest;
+using Nest6;
 using Tests.Framework;
 
 namespace Tests.IndexModules.IndexSettings.Sorting
@@ -12,7 +12,7 @@ namespace Tests.IndexModules.IndexSettings.Sorting
 			public string field1 { get; set; }
 		}
 
-		public class Usage : PromiseUsageTestBase<IIndexSettings, IndexSettingsDescriptor, Nest.IndexSettings>
+		public class Usage : PromiseUsageTestBase<IIndexSettings, IndexSettingsDescriptor, Nest6.IndexSettings>
 		{
 			protected override object ExpectJson => new Dictionary<string, object>
 			{
@@ -30,8 +30,8 @@ namespace Tests.IndexModules.IndexSettings.Sorting
 					.Missing(IndexSortMissing.First)
 				);
 
-			protected override Nest.IndexSettings Initializer =>
-				new Nest.IndexSettings
+			protected override Nest6.IndexSettings Initializer =>
+				new Nest6.IndexSettings
 				{
 					Sorting = new SortingSettings
 					{
@@ -52,7 +52,7 @@ namespace Tests.IndexModules.IndexSettings.Sorting
 			public string field2 { get; set; }
 		}
 
-		public class Usage : PromiseUsageTestBase<IIndexSettings, IndexSettingsDescriptor, Nest.IndexSettings>
+		public class Usage : PromiseUsageTestBase<IIndexSettings, IndexSettingsDescriptor, Nest6.IndexSettings>
 		{
 			protected override object ExpectJson => new Dictionary<string, object>
 			{
@@ -70,8 +70,8 @@ namespace Tests.IndexModules.IndexSettings.Sorting
 					.Missing(IndexSortMissing.First, IndexSortMissing.Last)
 				);
 
-			protected override Nest.IndexSettings Initializer =>
-				new Nest.IndexSettings
+			protected override Nest6.IndexSettings Initializer =>
+				new Nest6.IndexSettings
 				{
 					Sorting = new SortingSettings
 					{

@@ -5,7 +5,7 @@ using System.Linq;
 using Elasticsearch.Net;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[ContractJsonConverter(typeof(RoutingJsonConverter))]
 	[DebuggerDisplay("{DebugDisplay,nq}")]

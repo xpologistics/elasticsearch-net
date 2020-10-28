@@ -1,7 +1,7 @@
 ﻿using System;
 using Elastic.Xunit.XunitPlumbing;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Domain;
 
 namespace Tests.Reproduce

@@ -1,6 +1,6 @@
 ﻿using System;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Configuration;
 using Tests.Core.Extensions;
 using Tests.Core.ManagedElasticsearch.Clusters;

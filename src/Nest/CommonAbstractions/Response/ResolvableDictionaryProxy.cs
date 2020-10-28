@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Elasticsearch.Net;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	public class ResolvableDictionaryProxy<TKey, TValue> : IIsAReadOnlyDictionary<TKey, TValue>
 		where TKey : IUrlParameter

@@ -6,7 +6,7 @@ using System.Text;
 using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Newtonsoft.Json;
 using Tests.Core.Extensions;
 using Tests.Domain;
@@ -31,7 +31,7 @@ namespace Tests.ClientConcepts.Connection
 	 * on netstandard 1.3.
 	 *
 	 * The Desktop CLR implementation using `WebRequest` is the most mature implementation, having been tried and trusted
-	 * in production since the beginning of NEST. For this reason, we aren't quite ready to it give up in favour of
+	 * in production since the beginning of Nest6. For this reason, we aren't quite ready to it give up in favour of
 	 * a `HttpClient` implementation across all CLR versions.
 	 *
 	 * In addition to production usage, there are also a couple of important toggles that are easy to set against a

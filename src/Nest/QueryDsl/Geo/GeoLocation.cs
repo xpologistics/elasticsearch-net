@@ -6,7 +6,7 @@ using Newtonsoft.Json;
  * Taken from SolrNet https://github.com/mausch/SolrNet/blob/master/SolrNet/Location.cs
  */
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Represents a Latitude/Longitude as a 2 dimensional point that gets serialized as { lat, lon }

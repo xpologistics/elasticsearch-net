@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Nest
+namespace Nest6
 {
 	[ContractJsonConverter(typeof(GeoShapeConverter))]
 	public interface IGeoShape

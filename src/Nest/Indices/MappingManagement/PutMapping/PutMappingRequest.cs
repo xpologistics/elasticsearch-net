@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[JsonConverter(typeof(ReadAsTypeJsonConverter<PutMappingRequest>))]
 	public partial interface IPutMappingRequest : ITypeMapping { }
@@ -143,7 +143,7 @@ namespace Nest
 			return this;
 		}
 
-		/// <inheritdoc cref="AutoMap(Nest.IPropertyVisitor,int)" />
+		/// <inheritdoc cref="AutoMap(Nest6.IPropertyVisitor,int)" />
 		public PutMappingDescriptor<T> AutoMap(int maxRecursion) => AutoMap(null, maxRecursion);
 
 		/// <inheritdoc cref="ITypeMapping.Dynamic" />

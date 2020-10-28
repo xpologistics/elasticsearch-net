@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[MapsApi("xpack.sql.query.json")]
 	[ContractJsonConverter(typeof(ReadAsTypeJsonConverter<QuerySqlRequest>))]

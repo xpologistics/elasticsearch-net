@@ -1,6 +1,6 @@
 using System;
 using System.Net.Http;
-using Nest;
+using Nest6;
 
 namespace Tests.Framework
 {

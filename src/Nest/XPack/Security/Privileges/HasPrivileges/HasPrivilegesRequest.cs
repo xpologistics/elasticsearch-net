@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[MapsApi("xpack.security.has_privileges.json")]
 	public partial interface IHasPrivilegesRequest

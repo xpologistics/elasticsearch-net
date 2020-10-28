@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 
 namespace Tests.Analysis.Normalizers
 {
@@ -20,8 +20,8 @@ namespace Tests.Analysis.Normalizers
 		protected override IAnalysis FluentAnalysis(AnalysisDescriptor an) =>
 			an.Normalizers(d => AssertionSetup.Fluent(AssertionSetup.Name, d));
 
-		protected override Nest.Analysis InitializerAnalysis() =>
-			new Nest.Analysis { Normalizers = new Nest.Normalizers { { AssertionSetup.Name, AssertionSetup.Initializer } } };
+		protected override Nest6.Analysis InitializerAnalysis() =>
+			new Nest6.Analysis { Normalizers = new Nest6.Normalizers { { AssertionSetup.Name, AssertionSetup.Initializer } } };
 
 		// https://youtrack.jetbrains.com/issue/RIDER-19912
 		[U] public override Task TestPutSettingsRequest() => base.TestPutSettingsRequest();

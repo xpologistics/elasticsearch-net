@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Elastic.Xunit.XunitPlumbing;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Domain;
 
 namespace Tests.ClientConcepts.HighLevel.Inference
@@ -90,19 +90,19 @@ namespace Tests.ClientConcepts.HighLevel.Inference
 
 		[U] public void Indices()
 		{
-			Implicit<Nest.Indices>((string)null).Should().BeNull();
-			Implicit<Nest.Indices>((Nest.Indices.ManyIndices)null).Should().BeNull();
-			Implicit<Nest.Indices>((string[])null).Should().BeNull();
-			Implicit<Nest.Indices>((IndexName)null).Should().BeNull();
-			Implicit<Nest.Indices>((IndexName[])null).Should().BeNull();
-			Implicit<Nest.Indices>((IndexName)null).Should().BeNull();
-			Implicit<Nest.Indices>("").Should().BeNull();
-			Implicit<Nest.Indices>("    ").Should().BeNull();
-			Implicit<Nest.Indices>(",, ,,    ").Should().BeNull();
-			Implicit<Nest.Indices>(new string[] { }).Should().BeNull();
-			Implicit<Nest.Indices>(new IndexName[] { }).Should().BeNull();
-			Implicit<Nest.Indices>(new string[] { null, null }).Should().BeNull();
-			Implicit<Nest.Indices>(new IndexName[] { null, null }).Should().BeNull();
+			Implicit<Nest6.Indices>((string)null).Should().BeNull();
+			Implicit<Nest6.Indices>((Nest6.Indices.ManyIndices)null).Should().BeNull();
+			Implicit<Nest6.Indices>((string[])null).Should().BeNull();
+			Implicit<Nest6.Indices>((IndexName)null).Should().BeNull();
+			Implicit<Nest6.Indices>((IndexName[])null).Should().BeNull();
+			Implicit<Nest6.Indices>((IndexName)null).Should().BeNull();
+			Implicit<Nest6.Indices>("").Should().BeNull();
+			Implicit<Nest6.Indices>("    ").Should().BeNull();
+			Implicit<Nest6.Indices>(",, ,,    ").Should().BeNull();
+			Implicit<Nest6.Indices>(new string[] { }).Should().BeNull();
+			Implicit<Nest6.Indices>(new IndexName[] { }).Should().BeNull();
+			Implicit<Nest6.Indices>(new string[] { null, null }).Should().BeNull();
+			Implicit<Nest6.Indices>(new IndexName[] { null, null }).Should().BeNull();
 		}
 
 		[U] public void Names()

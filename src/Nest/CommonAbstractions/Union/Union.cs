@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Represents the union of two types, <typeparamref name="TFirst" /> and <typeparamref name="TSecond" />. Used

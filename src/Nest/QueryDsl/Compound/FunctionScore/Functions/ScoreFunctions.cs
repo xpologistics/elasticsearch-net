@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Nest
+namespace Nest6
 {
 	public class ScoreFunctionsDescriptor<T> : DescriptorPromiseBase<ScoreFunctionsDescriptor<T>, IList<IScoreFunction>>
 		where T : class

@@ -4,7 +4,7 @@ using System.Linq;
 using Elasticsearch.Net;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[JsonObject(MemberSerialization = MemberSerialization.OptIn)]
 	[ContractJsonConverter(typeof(ReadAsTypeJsonConverter<MoreLikeThisQueryDescriptor<object>>))]
@@ -99,7 +99,7 @@ namespace Nest
 		internal override void InternalWrapInContainer(IQueryContainer c) => c.MoreLikeThis = this;
 
 		internal static bool IsConditionless(IMoreLikeThisQuery q) =>
-			q.Fields.IsConditionless() && (!q.Like.HasAny() || q.Like.All(Nest.Like.IsConditionless));
+			q.Fields.IsConditionless() && (!q.Like.HasAny() || q.Like.All(Nest6.Like.IsConditionless));
 	}
 
 	public class MoreLikeThisQueryDescriptor<T>

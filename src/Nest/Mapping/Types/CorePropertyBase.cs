@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Core properties of a mapping for a property type to a document field in Elasticsearch

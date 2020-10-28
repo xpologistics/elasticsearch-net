@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -14,15 +14,15 @@ namespace Nest
 		/// </summary>
 		IDeleteLifecycleResponse DeleteLifecycle(PolicyId policyId, Func<DeleteLifecycleDescriptor, IDeleteLifecycleRequest> selector = null);
 
-		/// <inheritdoc cref="DeleteLifecycle(Nest.PolicyId,System.Func{Nest.DeleteLifecycleDescriptor,Nest.IDeleteLifecycleRequest})" />
+		/// <inheritdoc cref="DeleteLifecycle(Nest6.PolicyId,System.Func{Nest6.DeleteLifecycleDescriptor,Nest6.IDeleteLifecycleRequest})" />
 		IDeleteLifecycleResponse DeleteLifecycle(IDeleteLifecycleRequest request);
 
-		/// <inheritdoc cref="DeleteLifecycle(Nest.PolicyId,System.Func{Nest.DeleteLifecycleDescriptor,Nest.IDeleteLifecycleRequest})" />
+		/// <inheritdoc cref="DeleteLifecycle(Nest6.PolicyId,System.Func{Nest6.DeleteLifecycleDescriptor,Nest6.IDeleteLifecycleRequest})" />
 		Task<IDeleteLifecycleResponse> DeleteLifecycleAsync(PolicyId policyId, Func<DeleteLifecycleDescriptor, IDeleteLifecycleRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="DeleteLifecycle(Nest.PolicyId,System.Func{Nest.DeleteLifecycleDescriptor,Nest.IDeleteLifecycleRequest})" />
+		/// <inheritdoc cref="DeleteLifecycle(Nest6.PolicyId,System.Func{Nest6.DeleteLifecycleDescriptor,Nest6.IDeleteLifecycleRequest})" />
 		Task<IDeleteLifecycleResponse> DeleteLifecycleAsync(IDeleteLifecycleRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
@@ -30,24 +30,24 @@ namespace Nest
 
 	public partial class ElasticClient
 	{
-		/// <inheritdoc cref="DeleteLifecycle(Nest.PolicyId,System.Func{Nest.DeleteLifecycleDescriptor,Nest.IDeleteLifecycleRequest})" />
+		/// <inheritdoc cref="DeleteLifecycle(Nest6.PolicyId,System.Func{Nest6.DeleteLifecycleDescriptor,Nest6.IDeleteLifecycleRequest})" />
 		public IDeleteLifecycleResponse DeleteLifecycle(PolicyId policyId, Func<DeleteLifecycleDescriptor, IDeleteLifecycleRequest> selector = null) =>
 			DeleteLifecycle(selector.InvokeOrDefault(new DeleteLifecycleDescriptor(policyId)));
 
-		/// <inheritdoc cref="DeleteLifecycle(Nest.PolicyId,System.Func{Nest.DeleteLifecycleDescriptor,Nest.IDeleteLifecycleRequest})" />
+		/// <inheritdoc cref="DeleteLifecycle(Nest6.PolicyId,System.Func{Nest6.DeleteLifecycleDescriptor,Nest6.IDeleteLifecycleRequest})" />
 		public IDeleteLifecycleResponse DeleteLifecycle(IDeleteLifecycleRequest request) =>
 			Dispatcher.Dispatch<IDeleteLifecycleRequest, DeleteLifecycleRequestParameters, DeleteLifecycleResponse>(
 				request,
 				(p, d) => LowLevelDispatch.XpackIlmDeleteLifecycleDispatch<DeleteLifecycleResponse>(p)
 			);
 
-		/// <inheritdoc cref="DeleteLifecycle(Nest.PolicyId,System.Func{Nest.DeleteLifecycleDescriptor,Nest.IDeleteLifecycleRequest})" />
+		/// <inheritdoc cref="DeleteLifecycle(Nest6.PolicyId,System.Func{Nest6.DeleteLifecycleDescriptor,Nest6.IDeleteLifecycleRequest})" />
 		public Task<IDeleteLifecycleResponse> DeleteLifecycleAsync(PolicyId policyId, Func<DeleteLifecycleDescriptor, IDeleteLifecycleRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>
 			DeleteLifecycleAsync(selector.InvokeOrDefault(new DeleteLifecycleDescriptor(policyId)), cancellationToken);
 
-		/// <inheritdoc cref="DeleteLifecycle(Nest.PolicyId,System.Func{Nest.DeleteLifecycleDescriptor,Nest.IDeleteLifecycleRequest})" />
+		/// <inheritdoc cref="DeleteLifecycle(Nest6.PolicyId,System.Func{Nest6.DeleteLifecycleDescriptor,Nest6.IDeleteLifecycleRequest})" />
 		public Task<IDeleteLifecycleResponse> DeleteLifecycleAsync(IDeleteLifecycleRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		) =>

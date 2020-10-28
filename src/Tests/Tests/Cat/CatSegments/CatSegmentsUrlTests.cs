@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 using Tests.Domain;
 using Tests.Framework;
 using static Tests.Framework.UrlTester;
@@ -20,9 +20,9 @@ namespace Tests.Cat.CatSegments
 
 			await GET("/_cat/segments/project")
 				.Fluent(c => c.CatSegments(r => r.Index<Project>()))
-				.Request(c => c.CatSegments(new CatSegmentsRequest(Nest.Indices.Index<Project>())))
+				.Request(c => c.CatSegments(new CatSegmentsRequest(Nest6.Indices.Index<Project>())))
 				.FluentAsync(c => c.CatSegmentsAsync(r => r.Index<Project>()))
-				.RequestAsync(c => c.CatSegmentsAsync(new CatSegmentsRequest(Nest.Indices.Index<Project>())));
+				.RequestAsync(c => c.CatSegmentsAsync(new CatSegmentsRequest(Nest6.Indices.Index<Project>())));
 		}
 	}
 }

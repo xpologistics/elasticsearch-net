@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 using Tests.Domain;
 using Tests.Framework;
 using static Tests.Framework.UrlTester;
@@ -30,9 +30,9 @@ namespace Tests.Search.SearchShards
 			await POST("/_search_shards")
 					.Fluent(c => c.SearchShards<Project>(s => s.AllIndices()))
 					.Request(c => c.SearchShards(new SearchShardsRequest()))
-					.Request(c => c.SearchShards(new SearchShardsRequest<Project>(Nest.Indices.All)))
+					.Request(c => c.SearchShards(new SearchShardsRequest<Project>(Nest6.Indices.All)))
 					.FluentAsync(c => c.SearchShardsAsync<Project>(s => s.AllIndices()))
-					.RequestAsync(c => c.SearchShardsAsync(new SearchShardsRequest<Project>(Nest.Indices.All)))
+					.RequestAsync(c => c.SearchShardsAsync(new SearchShardsRequest<Project>(Nest6.Indices.All)))
 					.RequestAsync(c => c.SearchShardsAsync(new SearchShardsRequest()))
 				;
 		}

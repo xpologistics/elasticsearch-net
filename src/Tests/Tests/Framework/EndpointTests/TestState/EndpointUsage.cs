@@ -7,7 +7,7 @@ using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using Bogus;
 using Elasticsearch.Net;
-using Nest;
+using Nest6;
 using Tests.Configuration;
 using Tests.Core.Client;
 

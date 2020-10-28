@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	public interface IBulkResponse : IResponse
 	{

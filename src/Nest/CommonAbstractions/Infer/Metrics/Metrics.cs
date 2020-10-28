@@ -1,7 +1,7 @@
 ﻿using System;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public class Metrics : IEquatable<Metrics>, IUrlParameter
 	{

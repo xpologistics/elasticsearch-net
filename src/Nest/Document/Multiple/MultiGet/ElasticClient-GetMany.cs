@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// Provides GetMany extensions that make it easier to get many documents given a list of ids

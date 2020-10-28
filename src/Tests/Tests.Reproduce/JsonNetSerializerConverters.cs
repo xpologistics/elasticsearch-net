@@ -4,8 +4,8 @@ using System.Text;
 using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
-using Nest.JsonNetSerializer;
+using Nest6;
+using Nest6.JsonNetSerializer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 

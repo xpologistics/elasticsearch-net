@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	/// <summary>
 	/// A Json converter that can serialize enums to strings where the string values

@@ -1,7 +1,7 @@
 using System;
 using System.Net;
 using Bogus;
-using Nest;
+using Nest6;
 using Tests.Configuration;
 
 namespace Tests.Domain

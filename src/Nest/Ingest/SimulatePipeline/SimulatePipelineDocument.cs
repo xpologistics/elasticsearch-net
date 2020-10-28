@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Nest
+namespace Nest6
 {
 	[JsonObject(MemberSerialization.OptIn)]
 	public interface ISimulatePipelineDocument
@@ -62,7 +62,7 @@ namespace Nest
 			a.Source = v;
 			a.Index = a.Index ?? v.GetType();
 			a.Type = a.Type ?? v.GetType();
-			a.Id = a.Id ?? Nest.Id.From(v);
+			a.Id = a.Id ?? Nest6.Id.From(v);
 		});
 	}
 

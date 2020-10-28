@@ -1,12 +1,12 @@
 ﻿using System;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Domain;
 using Tests.Framework;
 using Tests.Framework.Integration;
 using Tests.Framework.ManagedElasticsearch.Clusters;
-using static Nest.Infer;
+using static Nest6.Infer;
 
 namespace Tests.XPack.MachineLearning.ValidateJob
 {

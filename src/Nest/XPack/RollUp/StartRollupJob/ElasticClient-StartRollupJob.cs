@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -13,15 +13,15 @@ namespace Nest
 		/// </summary>
 		IStartRollupJobResponse StartRollupJob(Id id, Func<StartRollupJobDescriptor, IStartRollupJobRequest> selector = null);
 
-		/// <inheritdoc cref="StartRollupJob(Nest.Id,System.Func{Nest.StartRollupJobDescriptor,Nest.IStartRollupJobRequest})" />
+		/// <inheritdoc cref="StartRollupJob(Nest6.Id,System.Func{Nest6.StartRollupJobDescriptor,Nest6.IStartRollupJobRequest})" />
 		IStartRollupJobResponse StartRollupJob(IStartRollupJobRequest request);
 
-		/// <inheritdoc cref="StartRollupJob(Nest.Id,System.Func{Nest.StartRollupJobDescriptor,Nest.IStartRollupJobRequest})" />
+		/// <inheritdoc cref="StartRollupJob(Nest6.Id,System.Func{Nest6.StartRollupJobDescriptor,Nest6.IStartRollupJobRequest})" />
 		Task<IStartRollupJobResponse> StartRollupJobAsync(Id id,
 			Func<StartRollupJobDescriptor, IStartRollupJobRequest> selector = null, CancellationToken cancellationToken = default
 		);
 
-		/// <inheritdoc cref="StartRollupJob(Nest.Id,System.Func{Nest.StartRollupJobDescriptor,Nest.IStartRollupJobRequest})" />
+		/// <inheritdoc cref="StartRollupJob(Nest6.Id,System.Func{Nest6.StartRollupJobDescriptor,Nest6.IStartRollupJobRequest})" />
 		Task<IStartRollupJobResponse> StartRollupJobAsync(IStartRollupJobRequest request, CancellationToken cancellationToken = default);
 	}
 

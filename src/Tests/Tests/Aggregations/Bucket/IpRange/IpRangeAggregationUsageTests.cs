@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Tests.Configuration;
 using Tests.Core.Extensions;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Domain;
 using Tests.Framework.Integration;
-using static Nest.Infer;
+using static Nest6.Infer;
 
 namespace Tests.Aggregations.Bucket.IpRange
 {
@@ -44,10 +44,10 @@ namespace Tests.Aggregations.Bucket.IpRange
 			new IpRangeAggregation("ip_ranges")
 			{
 				Field = Field((Project p) => p.LeadDeveloper.IpAddress),
-				Ranges = new List<Nest.IpRange>
+				Ranges = new List<Nest6.IpRange>
 				{
-					new Nest.IpRange { To = "127.0.0.1" },
-					new Nest.IpRange { From = "127.0.0.1" }
+					new Nest6.IpRange { To = "127.0.0.1" },
+					new Nest6.IpRange { From = "127.0.0.1" }
 				}
 			};
 

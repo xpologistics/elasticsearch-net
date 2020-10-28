@@ -5,13 +5,13 @@ using System.Text;
 using Elastic.Xunit.XunitPlumbing;
 using Elasticsearch.Net;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Tests.Core.Client;
 using Tests.Framework;
 using static Tests.Core.Serialization.SerializationTestHelper;
-using static Nest.Infer;
+using static Nest6.Infer;
 
 namespace Tests.ClientConcepts.HighLevel.Mapping
 {
@@ -283,7 +283,7 @@ namespace Tests.ClientConcepts.HighLevel.Mapping
 
 			/**
 			 * The same goes for when we index a child, we can pass the instance directly to `Routing` and NEST will use the parent id
-			 * already specified on `child`. Here we use the static import `using static Nest.Infer` and it's `Route()` static method to
+			 * already specified on `child`. Here we use the static import `using static Nest6.Infer` and it's `Route()` static method to
 			 * create an instance of `Routing`
 			 */
 			indexResponse = client.Index(child, i => i.Routing(Route(child)));

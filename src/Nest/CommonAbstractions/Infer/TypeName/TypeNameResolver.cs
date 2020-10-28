@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace Nest
+namespace Nest6
 {
 	public class TypeNameResolver
 	{

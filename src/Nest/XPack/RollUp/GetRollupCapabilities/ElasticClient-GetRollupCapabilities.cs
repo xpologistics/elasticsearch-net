@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 
-namespace Nest
+namespace Nest6
 {
 	public partial interface IElasticClient
 	{
@@ -22,16 +22,16 @@ namespace Nest
 		/// </summary>
 		IGetRollupCapabilitiesResponse GetRollupCapabilities(Func<GetRollupCapabilitiesDescriptor, IGetRollupCapabilitiesRequest> selector = null);
 
-		/// <inheritdoc cref="GetRollupCapabilities(System.Func{Nest.GetRollupCapabilitiesDescriptor,Nest.IGetRollupCapabilitiesRequest})" />
+		/// <inheritdoc cref="GetRollupCapabilities(System.Func{Nest6.GetRollupCapabilitiesDescriptor,Nest6.IGetRollupCapabilitiesRequest})" />
 		IGetRollupCapabilitiesResponse GetRollupCapabilities(IGetRollupCapabilitiesRequest request);
 
-		/// <inheritdoc cref="GetRollupCapabilities(System.Func{Nest.GetRollupCapabilitiesDescriptor,Nest.IGetRollupCapabilitiesRequest})" />
+		/// <inheritdoc cref="GetRollupCapabilities(System.Func{Nest6.GetRollupCapabilitiesDescriptor,Nest6.IGetRollupCapabilitiesRequest})" />
 		Task<IGetRollupCapabilitiesResponse> GetRollupCapabilitiesAsync(
 			Func<GetRollupCapabilitiesDescriptor, IGetRollupCapabilitiesRequest> selector = null,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);
 
-		/// <inheritdoc cref="GetRollupCapabilities(System.Func{Nest.GetRollupCapabilitiesDescriptor,Nest.IGetRollupCapabilitiesRequest})" />
+		/// <inheritdoc cref="GetRollupCapabilities(System.Func{Nest6.GetRollupCapabilitiesDescriptor,Nest6.IGetRollupCapabilitiesRequest})" />
 		Task<IGetRollupCapabilitiesResponse> GetRollupCapabilitiesAsync(IGetRollupCapabilitiesRequest request,
 			CancellationToken cancellationToken = default(CancellationToken)
 		);

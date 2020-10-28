@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Elastic.Xunit.XunitPlumbing;
-using Nest;
+using Nest6;
 using Tests.Domain;
 using Tests.Framework;
-using static Nest.Infer;
+using static Nest6.Infer;
 
 namespace Tests.Search.SearchTemplate
 {
@@ -31,9 +31,9 @@ namespace Tests.Search.SearchTemplate
 			await UrlTester.POST("/_search/template")
 					.Fluent(c => c.SearchTemplate<Project>(s => s.AllIndices().AllTypes()))
 					.Request(c => c.SearchTemplate<Project>(new SearchTemplateRequest()))
-					.Request(c => c.SearchTemplate<Project>(new SearchTemplateRequest<Project>(Nest.Indices.All, Types.All)))
+					.Request(c => c.SearchTemplate<Project>(new SearchTemplateRequest<Project>(Nest6.Indices.All, Types.All)))
 					.FluentAsync(c => c.SearchTemplateAsync<Project>(s => s.AllIndices().AllTypes()))
-					.RequestAsync(c => c.SearchTemplateAsync<Project>(new SearchTemplateRequest<Project>(Nest.Indices.All, Types.All)))
+					.RequestAsync(c => c.SearchTemplateAsync<Project>(new SearchTemplateRequest<Project>(Nest6.Indices.All, Types.All)))
 					.RequestAsync(c => c.SearchTemplateAsync<Project>(new SearchTemplateRequest()))
 				;
 		}

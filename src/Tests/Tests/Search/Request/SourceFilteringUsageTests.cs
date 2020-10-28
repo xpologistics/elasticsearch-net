@@ -1,14 +1,14 @@
 using System;
 using Elastic.Xunit.XunitPlumbing;
 using FluentAssertions;
-using Nest;
+using Nest6;
 using Newtonsoft.Json;
 using Tests.Core.Extensions;
 using Tests.Core.ManagedElasticsearch.Clusters;
 using Tests.Domain;
 using Tests.Framework.Integration;
 using Xunit;
-using static Nest.Infer;
+using static Nest6.Infer;
 using static Tests.Core.Serialization.SerializationTestHelper;
 
 namespace Tests.Search.Request

@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
-using Nest;
+using Nest6;
 
 namespace Tests.ClientConcepts.HighLevel
 {
@@ -222,7 +222,7 @@ namespace Tests.ClientConcepts.HighLevel
 		 */
 		public async Task ObjectInitializerSyntax()
 		{
-			var searchRequest = new SearchRequest<Person>(Nest.Indices.All, Types.All) //<1> All indices and types are specified in the constructor
+			var searchRequest = new SearchRequest<Person>(Nest6.Indices.All, Types.All) //<1> All indices and types are specified in the constructor
 			{
 				From = 0,
 				Size = 10,
@@ -272,7 +272,7 @@ namespace Tests.ClientConcepts.HighLevel
 		}
 		/**
 		 * Here, the query is represented as an anonymous type, but the body of the response is a concrete
-		 * implementation of the same response type returned from NEST.
+		 * implementation of the same response type returned from Nest6.
 		 * --
 		 */
 
