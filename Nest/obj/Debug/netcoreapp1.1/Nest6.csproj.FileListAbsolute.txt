@@ -1,0 +1,4 @@
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net\src\Nest\bin\Debug\netcoreapp1.1\Nest6.deps.json
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net\src\Nest\obj\Debug\netcoreapp1.1\Nest6.csprojAssemblyReference.cache
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net\src\Nest\obj\Debug\netcoreapp1.1\Nest6.csproj.CoreCompileInputs.cache
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net\src\Nest\obj\Debug\netcoreapp1.1\Nest6.AssemblyInfo.cs

@@ -1,0 +1,8 @@
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Elasticsearch.Net\bin\Debug\netstandard2.0\Elasticsearch6.Net.deps.json
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Elasticsearch.Net\bin\Debug\netstandard2.0\Elasticsearch6.Net.dll
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Elasticsearch.Net\bin\Debug\netstandard2.0\Elasticsearch6.Net.pdb
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Elasticsearch.Net\obj\Debug\netstandard2.0\Elasticsearch6.Net.csproj.CoreCompileInputs.cache
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Elasticsearch.Net\obj\Debug\netstandard2.0\Elasticsearch6.Net.AssemblyInfoInputs.cache
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Elasticsearch.Net\obj\Debug\netstandard2.0\Elasticsearch6.Net.AssemblyInfo.cs
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Elasticsearch.Net\obj\Debug\netstandard2.0\Elasticsearch6.Net.dll
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Elasticsearch.Net\obj\Debug\netstandard2.0\Elasticsearch6.Net.pdb

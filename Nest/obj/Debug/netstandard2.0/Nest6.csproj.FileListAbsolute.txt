@@ -1,0 +1,12 @@
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Nest\obj\Debug\netstandard2.0\Nest6.csprojAssemblyReference.cache
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Nest\obj\Debug\netstandard2.0\Nest6.csproj.CoreCompileInputs.cache
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Nest\obj\Debug\netstandard2.0\Nest6.AssemblyInfoInputs.cache
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Nest\obj\Debug\netstandard2.0\Nest6.AssemblyInfo.cs
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Nest\bin\Debug\netstandard2.0\Nest6.deps.json
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Nest\bin\Debug\netstandard2.0\Nest6.dll
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Nest\bin\Debug\netstandard2.0\Nest6.pdb
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Nest\bin\Debug\netstandard2.0\Elasticsearch6.Net.dll
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Nest\bin\Debug\netstandard2.0\Elasticsearch6.Net.pdb
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Nest\obj\Debug\netstandard2.0\Nest6.csproj.CopyComplete
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Nest\obj\Debug\netstandard2.0\Nest6.dll
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net-temp\Nest\obj\Debug\netstandard2.0\Nest6.pdb

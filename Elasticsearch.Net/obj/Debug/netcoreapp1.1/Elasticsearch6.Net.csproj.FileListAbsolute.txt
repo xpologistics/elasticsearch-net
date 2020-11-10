@@ -1,0 +1,4 @@
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net\src\Elasticsearch.Net\bin\Debug\netcoreapp1.1\Elasticsearch6.Net.deps.json
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net\src\Elasticsearch.Net\obj\Debug\netcoreapp1.1\Elasticsearch6.Net.csprojAssemblyReference.cache
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net\src\Elasticsearch.Net\obj\Debug\netcoreapp1.1\Elasticsearch6.Net.csproj.CoreCompileInputs.cache
+C:\Users\xdbahuleyan\Documents\code\elasticsearch6-net\src\Elasticsearch.Net\obj\Debug\netcoreapp1.1\Elasticsearch6.Net.AssemblyInfo.cs

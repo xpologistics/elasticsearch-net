@@ -1,0 +1,48 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v2.2": {}
+  },
+  "libraries": {},
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v2.2": []
+  },
+  "packageFolders": {
+    "C:\\Users\\xdbahuleyan\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net\\src\\Nest\\Nest6\\Nest6.csproj",
+      "projectName": "Nest6",
+      "projectPath": "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net\\src\\Nest\\Nest6\\Nest6.csproj",
+      "packagesPath": "C:\\Users\\xdbahuleyan\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net\\src\\Nest\\Nest6\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net\\NuGet.Config",
+        "C:\\Users\\xdbahuleyan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp2.2"
+      ],
+      "sources": {
+        "C:\\Users\\xdbahuleyan\\Local Nuget Repo": {},
+        "http://packages.xpo.pvt/nuget/xpo/": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://ci.appveyor.com/nuget/assemblydiffer": {},
+        "https://ci.appveyor.com/nuget/assemblyrewriter": {},
+        "https://ci.appveyor.com/nuget/elasticsearch-net-abstractions": {}
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "projectReferences": {}
+        }
+      }
+    },
+    "frameworks": {
+      "netcoreapp2.2": {}
+    }
+  }
+}
