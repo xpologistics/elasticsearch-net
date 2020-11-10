@@ -21,6 +21,6 @@
 	<files>	
 		<file src="..\Elasticsearch.Net\bin\Release\netstandard2.0\Elasticsearch6.Net.dll" target="lib\netstandard2.0"/>
 
-		<file src="..\Elasticsearch.Net\bin\Release\\net461\Elasticsearch6.Net.dll" target="lib\net461"/>
+		<file src="..\Elasticsearch.Net\bin\Release\net461\Elasticsearch6.Net.dll" target="lib\net461"/>
 	</files>
 </package>
