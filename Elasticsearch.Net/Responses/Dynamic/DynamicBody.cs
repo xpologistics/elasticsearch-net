@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	/// <summary>
 	/// A dictionary that supports dynamic access.

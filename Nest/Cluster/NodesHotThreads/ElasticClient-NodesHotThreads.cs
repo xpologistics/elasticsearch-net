@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Elasticsearch.Net;
+using Elasticsearch6.Net;
 
 namespace Nest6
 {

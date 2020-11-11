@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	public class ShardFailure
 	{

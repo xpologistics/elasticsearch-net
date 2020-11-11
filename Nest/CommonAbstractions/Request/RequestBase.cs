@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel;
-using Elasticsearch.Net;
+using Elasticsearch6.Net;
 using Newtonsoft.Json;
 
 namespace Nest6

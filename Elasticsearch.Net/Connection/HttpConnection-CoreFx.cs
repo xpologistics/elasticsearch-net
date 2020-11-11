@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static System.Net.DecompressionMethods;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	internal class WebProxy : IWebProxy
 	{

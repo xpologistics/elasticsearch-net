@@ -30,7 +30,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	internal class RecyclableMemoryStreamManager
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Elasticsearch.Net;
+using Elasticsearch6.Net;
 using Newtonsoft.Json;
 using static Nest6.Infer;
 

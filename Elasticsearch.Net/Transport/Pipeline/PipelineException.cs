@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	public class PipelineException : Exception
 	{

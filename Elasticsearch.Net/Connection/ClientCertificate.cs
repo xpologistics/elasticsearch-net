@@ -33,7 +33,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 //.NET core removed the setter for PrivateKey for X509Certificate, you'll have to manually convert to pfx/p12 or add the key to the machine store
 #if !DOTNETCORE

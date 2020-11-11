@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	public static class SniffParser
 	{

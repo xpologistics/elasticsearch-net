@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	public class RequestData
 	{

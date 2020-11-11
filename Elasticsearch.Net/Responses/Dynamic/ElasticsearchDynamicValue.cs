@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Microsoft.CSharp.RuntimeBinder;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	public class ElasticsearchDynamicValue : DynamicObject, IEquatable<ElasticsearchDynamicValue>, IConvertible
 	{

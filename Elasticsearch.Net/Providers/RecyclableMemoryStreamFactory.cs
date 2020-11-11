@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	/// <summary>
 	/// A factory for creating memory streams using a recyclable pool of <see cref="MemoryStream" /> instances

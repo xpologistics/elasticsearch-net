@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	internal static class Extensions
 	{

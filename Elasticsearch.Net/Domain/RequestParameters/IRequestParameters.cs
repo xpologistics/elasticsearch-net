@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	public interface IRequestParameters
 	{

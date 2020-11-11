@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
-using static Elasticsearch.Net.SerializationFormatting;
+using static Elasticsearch6.Net.SerializationFormatting;
 
 namespace Nest6
 {

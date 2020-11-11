@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 // ReSharper disable UnusedMember.Global
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	/// <summary>
 	/// Helper interface used to hide the base <see cref="object" />  members from the fluent API to make it much cleaner

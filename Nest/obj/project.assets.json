@@ -2227,11 +2227,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net-temp\\Nest\\Nest6.csproj",
+      "projectUniqueName": "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net\\Nest\\Nest6.csproj",
       "projectName": "Nest6",
-      "projectPath": "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net-temp\\Nest\\Nest6.csproj",
+      "projectPath": "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net\\Nest\\Nest6.csproj",
       "packagesPath": "C:\\Users\\xdbahuleyan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net-temp\\Nest\\obj\\",
+      "outputPath": "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net\\Nest\\obj\\",
       "projectStyle": "PackageReference",
       "crossTargeting": true,
       "fallbackFolders": [
@@ -2246,22 +2246,20 @@
         "netstandard2.0"
       ],
       "sources": {
-        "C:\\Users\\xdbahuleyan\\Local Nuget Repo": {},
-        "http://packages.xpo.pvt/nuget/xpo/": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net461": {
           "projectReferences": {
-            "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net-temp\\Elasticsearch.Net\\Elasticsearch6.Net.csproj": {
-              "projectPath": "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net-temp\\Elasticsearch.Net\\Elasticsearch6.Net.csproj"
+            "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net\\Elasticsearch.Net\\Elasticsearch6.Net.csproj": {
+              "projectPath": "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net\\Elasticsearch.Net\\Elasticsearch6.Net.csproj"
             }
           }
         },
         "netstandard2.0": {
           "projectReferences": {
-            "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net-temp\\Elasticsearch.Net\\Elasticsearch6.Net.csproj": {
-              "projectPath": "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net-temp\\Elasticsearch.Net\\Elasticsearch6.Net.csproj"
+            "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net\\Elasticsearch.Net\\Elasticsearch6.Net.csproj": {
+              "projectPath": "C:\\Users\\xdbahuleyan\\Documents\\code\\elasticsearch6-net\\Elasticsearch.Net\\Elasticsearch6.Net.csproj"
             }
           }
         }

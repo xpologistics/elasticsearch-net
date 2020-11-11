@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using static Elasticsearch.Net.ElasticsearchUrlFormatter;
+using static Elasticsearch6.Net.ElasticsearchUrlFormatter;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	/// <summary>
 	/// Used by the raw client to compose querystring parameters in a matter that still exposes some xmldocs

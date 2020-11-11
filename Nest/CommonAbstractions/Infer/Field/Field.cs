@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
-using Elasticsearch.Net;
+using Elasticsearch6.Net;
 using Newtonsoft.Json;
 
 namespace Nest6

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Elasticsearch.Net;
+using Elasticsearch6.Net;
 using Newtonsoft.Json;
 
 namespace Nest6

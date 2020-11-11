@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	public partial interface IElasticLowLevelClient
 	{

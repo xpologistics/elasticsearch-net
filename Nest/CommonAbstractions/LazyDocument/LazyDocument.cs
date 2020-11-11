@@ -1,5 +1,5 @@
 ﻿using System;
-using Elasticsearch.Net;
+using Elasticsearch6.Net;
 using Newtonsoft.Json.Linq;
 
 namespace Nest6

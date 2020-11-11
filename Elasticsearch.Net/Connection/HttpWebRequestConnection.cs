@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 #if DOTNETCORE
 	[Obsolete("CoreFX HttpWebRequest uses HttpClient under the covers but does not reuse HttpClient instances, we'll therefore stop shipping with this class in the next major version")]

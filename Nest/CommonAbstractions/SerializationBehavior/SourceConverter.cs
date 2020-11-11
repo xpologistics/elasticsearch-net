@@ -1,7 +1,7 @@
 using System;
-using Elasticsearch.Net;
+using Elasticsearch6.Net;
 using Newtonsoft.Json;
-using static Elasticsearch.Net.SerializationFormatting;
+using static Elasticsearch6.Net.SerializationFormatting;
 
 namespace Nest6
 {

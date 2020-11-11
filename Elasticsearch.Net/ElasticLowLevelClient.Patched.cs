@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using static Elasticsearch.Net.HttpMethod;
+using static Elasticsearch6.Net.HttpMethod;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	public partial class ElasticLowLevelClient
 	{

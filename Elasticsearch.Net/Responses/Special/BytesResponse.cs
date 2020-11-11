@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	public class BytesResponse : ElasticsearchResponse<byte[]>
 	{

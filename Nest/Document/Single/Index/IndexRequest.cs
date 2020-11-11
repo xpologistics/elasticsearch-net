@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using Elasticsearch.Net;
+using Elasticsearch6.Net;
 
 namespace Nest6
 {

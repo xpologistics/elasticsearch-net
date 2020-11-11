@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using Elasticsearch.Net;
+using Elasticsearch6.Net;
 using Newtonsoft.Json;
 
 namespace Nest6

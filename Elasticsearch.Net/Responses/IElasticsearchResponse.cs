@@ -1,4 +1,4 @@
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	/// <summary>
 	/// The minimum interface your custom responses should implement when providing a response type

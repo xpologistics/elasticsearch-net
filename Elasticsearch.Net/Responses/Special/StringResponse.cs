@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	public class StringResponse : ElasticsearchResponse<string>
 	{

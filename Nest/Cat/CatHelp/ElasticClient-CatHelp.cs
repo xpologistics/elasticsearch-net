@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Elasticsearch.Net;
+using Elasticsearch6.Net;
 
 namespace Nest6
 {

@@ -5,7 +5,7 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	public interface IConnectionConfigurationValues : IDisposable
 	{

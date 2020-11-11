@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	public class ErrorCause
 	{

@@ -1,4 +1,4 @@
-﻿namespace Elasticsearch.Net
+﻿namespace Elasticsearch6.Net
 {
 	public class VoidResponse : ElasticsearchResponse<VoidResponse.VoidBody>
 	{

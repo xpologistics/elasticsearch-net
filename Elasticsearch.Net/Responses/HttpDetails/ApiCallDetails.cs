@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	public class ApiCallDetails : IApiCallDetails
 	{

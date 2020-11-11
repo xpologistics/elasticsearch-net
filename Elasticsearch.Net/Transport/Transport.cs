@@ -8,7 +8,7 @@ using System.Net;
 
 #endif
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 	public class Transport<TConnectionSettings> : ITransport<TConnectionSettings>
 		where TConnectionSettings : IConnectionConfigurationValues

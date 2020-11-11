@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using Elasticsearch.Net;
+using Elasticsearch6.Net;
 
 namespace Nest6
 {

@@ -70,7 +70,7 @@ using System.Text;
 // ReSharper disable RemoveRedundantBraces
 // ReSharper disable BuiltInTypeReferenceStyle
 
-namespace Elasticsearch.Net
+namespace Elasticsearch6.Net
 {
 // ReSharper disable LoopCanBeConvertedToQuery
 // ReSharper disable RedundantExplicitArrayCreation
